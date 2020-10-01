@@ -1,0 +1,15 @@
+{
+	"1":{
+
+		"image":["/assets/img/f1.jpg", "/assets/img/porsche.png"]
+		}
+	,
+	"2":{
+		"make":"Mazda",
+		"model":"RX-5",
+		"year":2008,
+		"price":5000,
+		"image":""
+	}
+
+}

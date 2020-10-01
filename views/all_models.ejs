@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/all_models">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Models</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<script src="dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="models">
+	<dmx-data-view id="data_view1" dmx-bind:data="query_car_images.data.query1" sortOn="price" sortDir="desc" dmx-bind:sortdir="sort_options.value"></dmx-data-view>
+	<dmx-serverconnect id="logout" url="api/Logout/logout"></dmx-serverconnect>
+	<dmx-session-manager id="session"></dmx-session-manager>
+	<dmx-serverconnect id="query_car_images" url="api/Retrieve_images/query_all_images"></dmx-serverconnect>
+
+	<div is="dmx-browser" id="redirect"></div>
+
+
+
+
+	<div class="row border-bottom text-center">
+		<div class="col pb-1">
+			<img src="assets/img/koenigsegg-agera-symbol.jpg" width="120" height="84" dmx-on:click="redirect.goto('http://localhost:8100/')" class="img-fluid">
+		</div>
+	</div>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-white">
+		<button id="models" class="btn btn-sm font-weight-bold ok1 w-auto">Models&nbsp;<i class="fa fa-car"></i></button>
+		<button id="service" class="btn btn-sm font-weight-bold ok1" dmx-on:click="redirect.goto('http://localhost:8100/service')">Service&nbsp;<i class="fa fa-wrench"></i></button>
+		<button id="login" class="btn font-weight-bold btn-sm ok1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')">Log in&nbsp;<i class="fa fa-sign-in"></i></button>
+		<button id="account" class="btn btn-sm font-weight-bold ok1" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')">My Account&nbsp;<i class="fa fa-user"></i></button>
+		<button id="logout" class="btn font-weight-bold btn-sm ok1" dmx-show="session.data.on.contains('on')" dmx-on:click="logout.load();session.set('on','off')">Log out&nbsp;<i class="fa fa-sign-out"></i></button>
+	</nav>
+	<div class="row mt-2 ml-5">
+
+		<div class="offset-0 mt-2 ml-3 col-1 col-lg-1">
+			<h6 class="font-weight-light text-left ml-2">Sort by</h6>
+
+		</div>
+		<div class="col-2"><select id="vehicle_class" class="form-control" name="Vehicle class">
+				<option selected="" value="0">Class</option>
+				<option value="1">SUV</option>
+				<option value="2">Sport</option>
+				<option value="3">Sedane</option>
+				<option value="4">Coupe</option>
+				<option value="5">Executive</option>
+			</select></div>
+		<div class="col-2 border-right">
+			<select id="sort_options" class="form-control">
+				<option selected="" value="desc">High to Low</option>
+				<option value="asc">Low to High</option>
+			</select>
+		</div>
+		<div class="col-5">
+			<input id="car_search" name="carsearch" type="text" class="form-control" placeholder="Search" dmx-on:input="">
+		</div>
+	</div>
+	<div class="row row-cols-7 mt-5 ml-4 mr-4" is="dmx-repeat" id="repeat1" key="id" dmx-bind:repeat="data_view1.data">
+		<div class="col-4 mb-3">
+			<div class="card">
+				<img class="card-img-top img-fluid" alt="Card image cap" dmx-bind:src="image" width="250" height="300">
+				<div class="card-body">
+					<dmx-value id="ide" dmx-bind:value="id"></dmx-value>
+
+					<h6 class="card-title" dmx-text="make+'&nbsp;-&nbsp;'+model"></h6>
+					<p class="card-text" dmx-text="price+'€'"></p>
+					<button id="details" class="btn ml-n2 btn-ml-n2" dmx-on:click="redirect.goto('http://localhost:8100/modelx?id='+ide.value)"><i class="fa fa-search"></i>&nbsp;Details</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

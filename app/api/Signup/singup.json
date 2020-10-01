@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "password"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      "DatabaseUpdater/insert/sign_up"
+    ]
+  }
+}

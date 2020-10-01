@@ -1,0 +1,23 @@
+{
+  "name": "argon_singup",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "2PPPHpbQwLErh0D",
+    "provider": "Database",
+    "connection": "db",
+    "users": {
+      "table": "users",
+      "identity": "id",
+      "username": "email",
+      "password": "password"
+    },
+    "permissions": {}
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    }
+  ]
+}

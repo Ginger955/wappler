@@ -1,0 +1,37 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page"
+    },
+    {
+      "path": "/login",
+      "page": "login"
+    },
+    {
+      "path": "/signup",
+      "page": "signup"
+    },
+    {
+      "path": "/account",
+      "page": "account"
+    },
+    {
+      "path": "/modelx",
+      "page": "modelx"
+    },
+    {
+      "path": "/all_models",
+      "page": "all_models"
+    },
+    {
+      "path": "/service",
+      "page": "service"
+    },
+    {
+      "path": "/leasing",
+      "page": "leasing"
+    }
+  ]
+}

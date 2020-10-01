@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/modelx">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Catalog</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="dmxAppConnect/dmxMasonry/dmxMasonry.js" defer=""></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=+31534836314"></script>
+	<script src="dmxAppConnect/dmxGoogleMaps/dmxGoogleMaps.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<script src="dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+</head>
+
+<body id="modelx" is="dmx-app">
+	<dmx-serverconnect id="del_review" url="api/remove_review/delete_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)"></dmx-serverconnect>
+	<div class="container wappler-block pb-0">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
+						<h4 class="text-center font-weight-light">Error!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<dmx-value id="name"></dmx-value>
+	<dmx-serverconnect id="post_review" url="api/insert/insert_review" noload="noload" dmx-param:id="var.value" dmx-param:author="session.data.username" dmx-param:text="text.value" dmx-param:title="title.value"
+		dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-on:error="modalerror.show()">
+	</dmx-serverconnect>
+	<dmx-value id="var"></dmx-value>
+	<div is="dmx-browser" id="redirect"></div>
+	<dmx-session-manager id="session"></dmx-session-manager>
+
+	<div class="row">
+		<div class="col text-center pb-1 border-bottom">
+			<img id="logo" src="assets/img/koenigsegg-agera-symbol.jpg" width="120" height="61" class="img-fluid">
+		</div>
+	</div>
+
+
+
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<button id="models" class="btn btn-sm ok" dmx-on:click="redirect.goto('http://localhost:8100/all_models')"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
+		<button id="service" class="btn btn-sm ok" dmx-on:click="redirect.goto('http://localhost:8100/service')"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="login" class="btn btn-sm ok" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;<i class="fa fa-sign-in"></i></b></button>
+
+		<button id="account" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>My Account&nbsp;<i class="fa fa-user"></i></b></button>
+		<button id="logout" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+	</nav>
+
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col border-bottom">
+				<h3 dmx-text="serverconnect.data.query1[0].make+' - '+serverconnect.data.query1[0].model">Fancy display heading</h3>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block mt-5">
+
+
+		<div class="row">
+			<div class="col-md-6 mr-xl-n2 col-6">
+				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid">
+			</div>
+
+		</div>
+
+		<div class="row mt-2">
+			<div class="col-md-6 align-self-stretch col-6 bg-white">
+
+				<div class="row text-center">
+
+
+					<div class="col-12 mt-5 text-center mt-lg-2">
+						<div class="row">
+							<div class="col text-left text-body">
+								<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light text-left font-weight-bold" id="specs">Fancy display heading</h4>
+								<h4 dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'" class="font-weight-light text-left" id="price">Fancy display heading</h4>
+								<h4 dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year" class="font-weight-light text-left" id="year">Fancy display heading</h4>
+								<h4 class="text-left font-weight-light" id="top_speed" dmx-text="'Top speed:&nbsp;'+serverconnect.data.query2[0].topspeed+'&nbsp;km/h'">Fancy display heading</h4>
+								<h4 class="font-weight-light text-left" id="hp" dmx-text="'HP:&nbsp;'+serverconnect.data.query2[0].hp">Fancy display heading</h4>
+								<h4 class="text-xl-left font-weight-light text-left" id="torque" dmx-text="'Torque:&nbsp;'+serverconnect.data.query2[0].torque+'&nbsp;Nm'">Fancy display heading</h4>
+								<h4 class="text-lg-left font-weight-light" dmx-text="'Seats:&nbsp;'+serverconnect.data.query2[0].seats" id="seats">Fancy display heading</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container mt-5">
+
+
+
+
+
+
+		<div class="row mt-0">
+			<div class="col border-bottom mb-3">
+				<h2>Gallery</h2>
+			</div>
+		</div>
+		<div class="row row-cols-2" id="gallery_display" is="dmx-repeat" dmx-bind:repeat="serverconnect.data.custom1">
+			<div class="col">
+				<img dmx-bind:src="image" class="img-fluid">
+			</div>
+		</div>
+
+		<div class="row mt-4 mb-2">
+			<div class="col border-bottom">
+				<h2>Reviews</h2>
+			</div>
+		</div>
+		<div class="row mb-2 row-cols-1" is="dmx-repeat" id="reviews" dmx-bind:repeat="serverconnect.data.custom2">
+			<div class="col mt-2 border rounded-lg border-warning">
+
+
+				<p dmx-text="'Author:&nbsp;'+author+'\t\t Date:&nbsp;'+date" id="author_and_date" class="mt-2 mb-0 pb-1">Author:&nbsp;Martin Date:&nbsp;19.09.2020</p>
+				<h6 dmx-text="title" class="mt-0 mb-3 font-weight-bold">
+					Fancy display heading</h6>
+
+				<p id="review_text" class="mt-n2" dmx-text="text">A nice paragraph</p>
+				<button id="remove" class="btn btn-outline-danger mb-2" dmx-show="author.contains(session.data.username)" dmx-text="'Remove'" dmx-on:click="del_review.load({username: session.data.username})">Button</button>
+
+			</div>
+		</div>
+		<div class="row" id="post_review">
+			<div class="col border">
+
+
+
+
+
+				<h5 class="mt-2">Write a review</h5>
+				<div class="row mb-2">
+
+					<div class="col-1 text-center">
+						<h6 class="flex-shrink-1 mt-2">Title</h6>
+					</div>
+					<div class="col-5"><input id="title" name="text1" type="text" class="form-control pb-0" data-msg-required="" minlength="2"></div>
+				</div><textarea id="text" class="form-control" name="text" data-msg-required="" minlength="2"></textarea><button id="submit" class="btn btn-outline-primary mt-2 mb-2" type="submit"
+					dmx-on:click="run({condition:{if:`session.data.on.contains(\'on\')`,then:{steps:{run:{action:`post_review.load({id: var.value, author: name.value, text: text.value, title: title.value})`,name:'load_review'}}},else:{steps:[{'f7.dialog.alert':{title:'ERROR',text:'Please login to post reviews.'}},{alert:{message:'Please log in to post reviews.'}}]}}})">Post</button>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col border-bottom">
+				<h2>Car Configurator</h2>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-xl-2 mt-4">
+
+		<div class="row text-lg-center">
+			<div class="col border-bottom">
+				<h2 class="text-left" dmx-text="'Nearest&nbsp;'+serverconnect.data.query1[0].make+'&nbsp;dealership'">Nearest seller</h2>
+			</div>
+
+		</div>
+		<div class="row mt-1">
+			<div class="col">
+				<dmx-google-maps id="maps1"></dmx-google-maps>
+			</div>
+		</div>
+	</div>
+	<dmx-query-manager id="query1"></dmx-query-manager>
+	<dmx-serverconnect id="serverconnect" url="api/Data/details" dmx-param:id="query.id" dmx-on:success="var.setValue(serverconnect.data.query1[0].id)">
+	</dmx-serverconnect>
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

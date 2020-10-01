@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "number",
+        "name": "car_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "specs",
+                "column": "topspeed"
+              },
+              {
+                "table": "specs",
+                "column": "hp"
+              },
+              {
+                "table": "specs",
+                "column": "torque"
+              },
+              {
+                "table": "specs",
+                "column": "seats"
+              },
+              {
+                "table": "specs",
+                "column": "id"
+              }
+            ],
+            "table": {
+              "name": "specs"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "specs.id",
+                  "field": "specs.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.car_id}}",
+                  "data": {
+                    "table": "specs",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT topspeed, hp, torque, seats, id\nFROM specs\nWHERE id = :P1 /* {{$_GET.car_id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.car_id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "topspeed",
+            "type": "text"
+          },
+          {
+            "name": "hp",
+            "type": "text"
+          },
+          {
+            "name": "torque",
+            "type": "text"
+          },
+          {
+            "name": "seats",
+            "type": "text"
+          },
+          {
+            "name": "id",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

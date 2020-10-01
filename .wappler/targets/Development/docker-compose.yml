@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    volumes:
+      - '../../../app:/opt/node_app/app'
+      - '../../../lib:/opt/node_app/lib'
+      - '../../../views:/opt/node_app/views'
+      - '../../../public:/opt/node_app/public'
+    ports:
+      - '8100:3000'
+    restart: always
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+    build:
+      context: ../../../
+      dockerfile: .wappler/targets/Development/web/Dockerfile
+  db:
+    image: 'postgres:11.1'
+    environment:
+      POSTGRES_PASSWORD: qObCnb2F
+      POSTGRES_USER: db_user
+      POSTGRES_DB: trial_project
+    volumes:
+      - './db_init:/docker-entrypoint-initdb.d'
+    ports:
+      - '9906:5432'
+    restart: always

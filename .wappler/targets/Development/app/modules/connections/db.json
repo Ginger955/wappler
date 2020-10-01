@@ -1,0 +1,15 @@
+{
+  "name": "db",
+  "module": "dbconnector",
+  "action": "connect",
+  "options": {
+    "client": "postgres",
+    "connection": {
+      "host": "db",
+      "port": 5432,
+      "user": "db_user",
+      "password": "qObCnb2F",
+      "database": "trial_project"
+    }
+  }
+}

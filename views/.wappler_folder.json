@@ -1,0 +1,38 @@
+{
+  "login.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "signup.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "account.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "modelx.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "all_models.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "service.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "community.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "leasing.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "acc.ejs": {
+    "layoutPage": "",
+    "description": ""
+  }
+}

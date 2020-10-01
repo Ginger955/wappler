@@ -1,0 +1,72 @@
+{
+  "name": "query1",
+  "module": "dbconnector",
+  "action": "select",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "SELECT",
+      "columns": [
+        {
+          "table": "cars",
+          "column": "id"
+        },
+        {
+          "table": "cars",
+          "column": "make"
+        },
+        {
+          "table": "cars",
+          "column": "model"
+        },
+        {
+          "table": "cars",
+          "column": "year"
+        },
+        {
+          "table": "cars",
+          "column": "price"
+        },
+        {
+          "table": "cars",
+          "column": "image"
+        }
+      ],
+      "table": {
+        "name": "cars"
+      },
+      "joins": [],
+      "orders": [],
+      "query": "SELECT id, make, model, year, price, image\nFROM cars",
+      "params": []
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "name": "id",
+      "type": "text"
+    },
+    {
+      "name": "make",
+      "type": "text"
+    },
+    {
+      "name": "model",
+      "type": "text"
+    },
+    {
+      "name": "year",
+      "type": "text"
+    },
+    {
+      "name": "price",
+      "type": "text"
+    },
+    {
+      "name": "image",
+      "type": "text"
+    }
+  ],
+  "outputType": "array"
+}

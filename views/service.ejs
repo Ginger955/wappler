@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/service">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Service</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<link rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.css" />
+	<script src="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.js"></script>
+	<script src="https://unpkg.com/@fullcalendar/core@4.4.2/locales-all.min.js"></script>
+	<script src="https://unpkg.com/@fullcalendar/interaction@4.4.2/main.min.js"></script>
+	<script src="https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.js"></script>
+	<script src="dmxAppConnect/dmxCalendar/dmxCalendar.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/daterangepicker.min.css" />
+	<script src="dmxAppConnect/dmxDatePicker/daterangepicker.min.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/dmxDatePicker.css" />
+	<script src="dmxAppConnect/dmxDatePicker/dmxDatePicker.js" defer=""></script>
+
+</head>
+
+<body is="dmx-app" id="service">
+
+
+
+
+
+
+
+
+	<dmx-serverconnect id="serverconnect" url="api/ownerProducts/get_products"></dmx-serverconnect>
+
+
+	<dmx-serverconnect id="logout" url="api/Logout/logout"></dmx-serverconnect>
+	<div is="dmx-browser" id="redirect"></div>
+	<dmx-session-manager id="session"></dmx-session-manager>
+
+	<div class="row">
+		<div class="col pb-1 border-bottom text-center">
+			<img src="assets/img/koenigsegg-agera-symbol.jpg" width="120" height="61" class="img-fluid">
+		</div>
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<button id="models" class="btn btn-sm ok"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
+		<button id="service" class="btn btn-sm ok"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="login" class="btn btn-sm ok" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;</b><i class="fa fa-sign-in"></i></button>
+		<button id="account" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')"><b>My Account&nbsp;</b><i class="fa fa-user"></i></button>
+		<button id="logout" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+	</nav>
+	<div class="row mt-2">
+		<div class="col border-bottom">
+			<h3 class="mb-3 pl-5">Your vehicles</h3>
+		</div>
+	</div>
+	<div class="row row-cols-3 mt-2 mb-4" is="dmx-repeat" id="repeat1" dmx-bind:repeat="serverconnect.data.custom3">
+		<div class="col">
+			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
+			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>
+			<img class="img-fluid" dmx-bind:src="image" dmx-on:click="">
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h3 class="mb-4 pl-0 ok23" id="service_title">Service</h3>
+				<div class="row mt-2">
+					<div class="col">
+						<dmx-calendar id="calendar" views="dayGridMonth,dayGridWeek,dayGridDay" business-hours="true" selectable="true" hide-non-current-dates="true"></dmx-calendar>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col"></div>
+		</div>
+	</div>
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

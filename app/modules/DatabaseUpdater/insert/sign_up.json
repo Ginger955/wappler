@@ -1,0 +1,50 @@
+{
+  "name": "sign_up",
+  "module": "dbupdater",
+  "action": "insert",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "insert",
+      "values": [
+        {
+          "table": "users",
+          "column": "email",
+          "type": "text",
+          "value": "{{$_POST.email}}"
+        },
+        {
+          "table": "users",
+          "column": "password",
+          "type": "text",
+          "value": "{{$_POST.password}}"
+        }
+      ],
+      "table": "users",
+      "returning": "id",
+      "query": "INSERT INTO users\n(email, password) VALUES (:P1 /* {{$_POST.email}} */, :P2 /* {{$_POST.password}} */)",
+      "params": [
+        {
+          "name": ":P1",
+          "type": "expression",
+          "value": "{{$_POST.email}}"
+        },
+        {
+          "name": ":P2",
+          "type": "expression",
+          "value": "{{$_POST.password}}"
+        }
+      ]
+    }
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    },
+    {
+      "name": "affected",
+      "type": "number"
+    }
+  ]
+}

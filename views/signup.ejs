@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/signup">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Sign Up</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<script src="dmxAppConnect/dmxValidatorUnicode/dmxValidatorUnicode.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js"></script>
+</head>
+
+<body is="dmx-app" id="signup">
+	<div class="text-center container text-lg-center mt-5">
+		<form id="signup" method="post" is="dmx-serverconnect-form" action="api/Signup/singup" dmx-on:error="modalerror.show()" dmx-on:success="redirect.goto('http://localhost:8100/login')">
+			<div class="row align-items-lg-center justify-content-lg-center row-cols-lg-2">
+				<div class="col-12 col-md-8 col-xl-5 text-left col-lg">
+					<div class="row text-center">
+						<div class="col text-center">
+							<h1 class="text-center">Sign Up</h1>
+							<p class="text-h3 text-center">Enter your details below.</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col mt-4">
+							<input type="text" id="email" name="email" class="form-control" placeholder="Email" data-rule-email="" data-msg-pattern="" required="" data-rule-nowhitespace="" data-msg-alphanumeric="">
+						</div>
+					</div>
+					<div class="row mt-4">
+						<div class="col">
+							<input type="password" id="password" name="password" class="form-control" placeholder="Password" required="" data-rule-nowhitespace="" data-msg-unicodelettersonly="" data-msg-alphanumeric="">
+						</div>
+					</div>
+					<div class="row mt-4">
+						<div class="col text-center">
+							<button id="signup_submit" class="btn pl-0 text-info font-weight-bold" type="submit">Submit</button>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+		</form>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
+						<h4 class="text-center font-weight-light">Error!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div is="dmx-browser" id="redirect"></div>
+
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,550 @@
+dmx.config({
+  "index": {
+    "api1": [
+      {
+        "type": "object",
+        "name": "data"
+      },
+      {
+        "type": "object",
+        "name": "headers",
+        "sub": [
+          {
+            "type": "text",
+            "name": "alt-svc"
+          },
+          {
+            "type": "text",
+            "name": "cache-control"
+          },
+          {
+            "type": "text",
+            "name": "content-encoding"
+          },
+          {
+            "type": "text",
+            "name": "content-type"
+          },
+          {
+            "type": "text",
+            "name": "date"
+          },
+          {
+            "type": "text",
+            "name": "expires"
+          },
+          {
+            "type": "text",
+            "name": "server"
+          },
+          {
+            "type": "text",
+            "name": "status"
+          },
+          {
+            "type": "text",
+            "name": "strict-transport-security"
+          },
+          {
+            "type": "text",
+            "name": "x-content-type-options"
+          },
+          {
+            "type": "text",
+            "name": "x-frame-options"
+          },
+          {
+            "type": "text",
+            "name": "x-xss-protection"
+          }
+        ]
+      }
+    ],
+    "c": {
+      "meta": [],
+      "outputType": "object"
+    },
+    "repeat1": {
+      "meta": [
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat2": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "repeat": {
+      "meta": [
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "logged_in": {
+      "outputType": "number"
+    },
+    "query": [
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ],
+    "id": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "ide": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      }
+    ]
+  },
+  "login": {
+    "var1": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "password": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "value",
+          "type": "text"
+        }
+      ],
+      "outputType": "object"
+    },
+    "remember": {
+      "meta": null,
+      "outputType": "boolean"
+    },
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      }
+    ]
+  },
+  "modelx": {
+    "car_id": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "query": [
+      {
+        "type": "number",
+        "name": "car_id"
+      }
+    ],
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      }
+    ],
+    "gallery_display": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        },
+        {
+          "name": "image_of",
+          "type": "number"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "number"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "class",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "car_ide": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "data_view": {
+      "meta": [
+        {
+          "name": "1",
+          "type": "object",
+          "sub": [
+            {
+              "name": "image",
+              "type": "array",
+              "sub": [
+                {
+                  "name": "$value",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2",
+          "type": "object",
+          "sub": [
+            {
+              "name": "make",
+              "type": "text"
+            },
+            {
+              "name": "model",
+              "type": "text"
+            },
+            {
+              "name": "year",
+              "type": "number"
+            },
+            {
+              "name": "price",
+              "type": "number"
+            },
+            {
+              "name": "image",
+              "type": "text"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    },
+    "id": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "var1": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "arr1": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "repeat1": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "text",
+          "type": "text"
+        },
+        {
+          "name": "author",
+          "type": "text"
+        },
+        {
+          "name": "review_for",
+          "type": "number"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "number"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        },
+        {
+          "name": "class",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "cookies": [
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ],
+    "var": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "reviews": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "text",
+          "type": "text"
+        },
+        {
+          "name": "author",
+          "type": "text"
+        },
+        {
+          "name": "review_for",
+          "type": "number"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "number"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        },
+        {
+          "name": "class",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
+  },
+  "models": {
+    "repeat1": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "query": [
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ],
+    "ide": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      }
+    ],
+    "data_view1": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
+  },
+  "service": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      }
+    ],
+    "repeat": {
+      "meta": [
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat1": {
+      "meta": [
+        {
+          "name": "image",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "makE": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "modeL": {
+      "meta": null,
+      "outputType": "text"
+    }
+  },
+  "leasing": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      }
+    ]
+  }
+});

@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Car Showroom</title>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxSlideshow/dmxSlideshow.css" />
+	<script src="dmxAppConnect/dmxSlideshow/dmxSlideshow.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxSlideshow/themes/compact.css" />
+	<script src="dmxAppConnect/dmxBootstrap4Collapse/dmxBootstrap4Collapse.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxAnimateCSS/animate.min.css" />
+	<script src="dmxAppConnect/dmxAnimateCSS/dmxAnimateCSS.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="dmxAppConnect/dmxSlideshow3DTransitions/dmxSlideshow3DTransitions.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBackgroundVideo/dmxBackgroundVideo.js" defer=""></script>
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxVideo/dmxVideo.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="index">
+
+	<dmx-session-manager id="session"></dmx-session-manager>
+
+	<div class="row text-md-center text-lg-center text-sm-center text-center border-bottom">
+		<div class="col-lg-12 text-lg-center col style1 pb-1">
+			<img src="assets/img/koenigsegg-agera-symbol.jpg" width="120" height="100" id="logo" class="img-fluid">
+
+		</div>
+	</div>
+	<nav class="navbar navbar-light bg-white text-xl-center">
+		<button id="btn1" class="btn">Button</button>
+
+
+
+
+
+		<button id="model" class="btn flex-lg-grow-1 btn-text-dark-flex-lg-grow-1-btn-sm-font-weight-bold font-weight-bold btn-sm" dmx-on:click="browser1.goto('http://localhost:8100/all_models')">Models
+			<i class="fa fa-car"></i></button>
+
+
+		</button><button id="service" class="btn flex-xl-grow-1 text-xl-center font-weight-bold flex-lg-grow-1 btn-flex-xl-grow-1-btn-sm-text-xl-center-font-weight-bold-flex-lg-grow-1 btn-sm"
+			dmx-on:click="browser1.goto('http://localhost:8100/service')">Service
+			<i class="fa fa-wrench"></i></button><button id="login" class="btn flex-lg-grow-1 text-lg-center font-weight-bold hover btn-text-dark-flex-lg-grow-1-text-lg-center-btn-sm-font-weight-bold-hover"
+			dmx-on:click="browser1.goto('http://localhost:8100/login')" dmx-hide="session.data.on.contains('on')">Log in
+			<i class="fa fa-sign-in"></i></button></button>
+
+
+		<button id="account" class="btn text-center font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold" data-toggle="button" dmx-show="session.data.on.contains('on')"
+			dmx-on:click="browser1.goto('http://localhost:8100/account')">&nbsp;My Account&nbsp;<i class="fa fa-user"></i></button>
+
+		<button id="logout" class="btn text-lg-center flex-lg-grow-1 font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold" dmx-on:click="logging_out.load();session.set('on','off');session.remove('username')"
+			dmx-show="session.data.on.contains('on')">Log
+			out&nbsp;<i class="fa fa-sign-out"></i></button></nav>
+	<dmx-query-manager id="query1"></dmx-query-manager>
+	<dmx-serverconnect id="logging_out" noload="noload" url="api/Logout/logout" dmx-on:success="browser1.goto('http://localhost:8100')"></dmx-serverconnect>
+
+
+
+
+
+	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" dmx-on:success="session.set('username',userDetails.data.query1[0].username)"></dmx-serverconnect>
+	<dmx-serverconnect id="query_images" url="api/Retrieve_images/query_images"></dmx-serverconnect>
+	<div is="dmx-browser" id="browser1"></div>
+
+
+	<div class="container">
+		<div class="row mb-lg-2 row-cols-1 h-50 w-auto">
+
+
+			<div class="col-lg col mt-2">
+
+				<dmx-slideshow id="slideshow1" show-nav="true" delay="5000" show-paging="true" class="slideshow1">
+					<dmx-slide url="assets/slideshow_images/unspl2.jpg" thumb="resized_images/thumbs/01-overview_M.png"></dmx-slide>
+					<dmx-slide url="assets/slideshow_images/ye-massa-JNpUte7dFl4-unsplash.jpg" thumb="resized_images/thumbs/alfieri-1569609760.png"></dmx-slide>
+					<dmx-slide url="assets/img/koe.jpg" thumb="resized_images/thumbs/cx-5-2020-teaser-mrt20.png"></dmx-slide>
+					<dmx-slide url="resized_images/renault-brands-megane.jpg" thumb="resized_images/thumbs/renault-brands-megane.png"></dmx-slide>
+				</dmx-slideshow>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-md-4 mt-lg-5 mb-3" id="models">
+
+
+		<h2 class="text-lg-center font-weight-bold pt-md-0 text-md-center">Top Models</h2>
+
+	</div>
+	<div class="row ml-4 row-ml-4-row-ml-4 row-cols-1" is="dmx-repeat" id="repeat" dmx-bind:repeat="query_images.data.query1">
+		<div class="col-md text-left col">
+			<div class="card mw-100 mh-100 flex-grow-1 card-mw-100-mh-100-flex-grow-1">
+				<img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
+				<div class="card-body mw-100 mh-100">
+					<dmx-value id="ide" dmx-bind:value="id"></dmx-value>
+					<h6 class="card-title" dmx-text="make+' - '+model">{{serverconnect1.data.query1[0].make+" "+serverconnect1.data.query1[0].model}}</h6>
+					<p class="card-text" dmx-text="price+'€'">{{serverconnect1.data.query1[0].year+" "+serverconnect1.data.query1[0].price}}</p>
+					<a class="btn btn-primary text-white" dmx-on:click="browser1.goto('http://localhost:8100/modelx?id='+ide.value)"><i class="fa fa-search"></i>&nbsp;Details</a>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>

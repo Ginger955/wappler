@@ -1,0 +1,51 @@
+{
+  "projectName": "trial_project",
+  "styleFile": "/css/style.css",
+  "assetsFolder": "/assets",
+  "designFramework": "bootstrap4",
+  "frameworks": [
+    {
+      "name": "jquery_slim_33",
+      "type": "cdn"
+    },
+    {
+      "name": "fontawesome_4",
+      "type": "cdn"
+    },
+    {
+      "name": "bootstrap4",
+      "type": "local"
+    },
+    {
+      "name": "appConnect",
+      "type": "local"
+    }
+  ],
+  "hostingType": "docker",
+  "projectServerModel": "node",
+  "webRootFolder": "/public",
+  "useRouting": true,
+  "addBase": true,
+  "routingHandler": "node",
+  "targets": [
+    {
+      "name": "Development",
+      "remoteURL": "http://localhost:8100",
+      "webServerPort": 8100,
+      "webServerLang": "node",
+      "targetType": "docker",
+      "webServer": "node",
+      "NodeVersion": "12",
+      "databaseType": "postgres",
+      "databasePort": 9906,
+      "postgresVersion": "11.1.x",
+      "postgres_rootName": "db_user",
+      "postgres_rootPassword": "qObCnb2F",
+      "postgres_databaseName": "trial_project",
+      "dockerBuild": true
+    }
+  ],
+  "activeTarget": "Development",
+  "projectType": "web",
+  "npmInstall": true
+}

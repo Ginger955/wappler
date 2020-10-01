@@ -1,0 +1,277 @@
+{
+  "direct": true,
+  "type": "postgres",
+  "connection": {
+    "host": "localhost",
+    "port": 9906,
+    "user": "db_user",
+    "password": "qObCnb2F",
+    "database": "trial_project"
+  },
+  "schema": {
+    "tables": {
+      "gallery": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "images": {
+            "db": {
+              "type": "json",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "cars": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "make": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 10,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "model": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 12,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "year": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "price": {
+            "db": {
+              "type": "integer",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "image": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "class": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "countries": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "country_code": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 2,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "country_name": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 38,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "images": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "image": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 30,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 20,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "category": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 12,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "author": {
+            "db": {
+              "type": "string",
+              "default": "",
+              "maxLength": 18,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "date": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "users": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "email": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "password": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "specs": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "topspeed": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "hp": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "torque": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "seats": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "cars",
+                "column": "id"
+              },
+              {
+                "table": "cars",
+                "column": "make"
+              },
+              {
+                "table": "cars",
+                "column": "model"
+              },
+              {
+                "table": "cars",
+                "column": "year"
+              },
+              {
+                "table": "cars",
+                "column": "price"
+              },
+              {
+                "table": "cars",
+                "column": "image"
+              },
+              {
+                "table": "cars",
+                "column": "class"
+              }
+            ],
+            "table": {
+              "name": "cars"
+            },
+            "joins": [],
+            "query": "SELECT id, make, model, year, price, image, class\nFROM cars",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "make",
+            "type": "text"
+          },
+          {
+            "name": "model",
+            "type": "text"
+          },
+          {
+            "name": "year",
+            "type": "text"
+          },
+          {
+            "name": "price",
+            "type": "text"
+          },
+          {
+            "name": "image",
+            "type": "text"
+          },
+          {
+            "name": "class",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

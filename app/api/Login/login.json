@@ -1,0 +1,19 @@
+{
+  "exec": {
+    "steps": [
+      "connections/db",
+      "SecurityProviders/security",
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "login",
+        "options": {
+          "provider": "security1",
+          "username": "{{$_POST.email}}"
+        },
+        "output": true,
+        "meta": []
+      }
+    ]
+  }
+}

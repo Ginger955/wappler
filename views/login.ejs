@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta name="ac:route" content="/login">
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js"></script>
+</head>
+
+<body is="dmx-app" id="login">
+	<dmx-session-manager id="session"></dmx-session-manager>
+	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert" closable="true">
+		<p>This is a nice alert!</p>
+	</div>
+	<dmx-value id="remember" dmx-bind:value="form1.input1.checked"></dmx-value>
+	<dmx-value id="password" dmx-bind:value="value"></dmx-value>
+	<dmx-value id="email" dmx-bind:value="form1.email.value"></dmx-value>
+	<div is="dmx-browser" id="browser1"></div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog" dmx-on:click="modalerror.hide()">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
+						<h4 class="text-center font-weight-light">Error!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="row">
+			<div class="col-12 col-xl-4 offset-xl-4 text-center bg-light col-md-8 offset-md-2 pt-5 pb-2 pl-5 pr-5">
+				<img class="wappler-type-user rounded-circle mb-4" width="240" height="240" src="assets/img/architecture-1.jpg">
+				<form id="form1" method="post" is="dmx-serverconnect-form" action="api/Login/login" dmx-on:success="session.set('on','on');browser1.goto('http://localhost:8100')" dmx-on:unauthorized="modalerror.show()">
+
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="text" class="form-control" id="email" name="email" placeholder="Email" required="" data-rule-email="" data-rule-nowhitespace="" data-msg-alphanumeric="" data-msg-letterswithbasicpunc="">
+					</div>
+					<div class="form-group mt-n2 mb-3">
+						<label for="password" class="pt-0">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password" data-msg-required="" required="" data-rule-nowhitespace="" data-msg-alphanumeric="" data-msg-letterswithbasicpunc="">
+					</div>
+					<div class="form-check">
+						<input class="form-check-input mt-lg-2" type="checkbox" value="" id="remember" name="remember">
+						<label class="form-check-label" for="remember" id="remember">Remember me</label>
+					</div><button class="btn btn-primary mt-lg-2" type="submit">Log in</button>
+					<div class="row">
+						<div class="col">
+
+							<h6 class="pt-4">
+								Don't have an account?</h6>
+							<button id="btn1" class="btn text-info" dmx-on:click="browser1.goto('http://localhost:8100/signup')">Sign up</button>
+						</div>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="bootstrap/4/js/popper.min.js"></script>
+	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+</body>
+
+</html>
