@@ -1,3 +1,110 @@
 {
-  "exec": {}
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "car_id"
+      },
+      {
+        "type": "text",
+        "name": "title"
+      },
+      {
+        "type": "text",
+        "name": "text"
+      },
+      {
+        "type": "text",
+        "name": "author"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert1",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "reviews",
+                "column": "review_for_car",
+                "type": "text",
+                "value": "{{$_GET.car_id}}"
+              },
+              {
+                "table": "reviews",
+                "column": "title",
+                "type": "text",
+                "value": "{{$_GET.title}}"
+              },
+              {
+                "table": "reviews",
+                "column": "text",
+                "type": "text",
+                "value": "{{$_GET.text}}"
+              },
+              {
+                "table": "reviews",
+                "column": "author",
+                "type": "text",
+                "value": "{{$_GET.author}}"
+              },
+              {
+                "table": "reviews",
+                "column": "date",
+                "type": "text",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "reviews",
+            "returning": "id",
+            "query": "INSERT INTO reviews\n(review_for_car, title, text, author, date) VALUES (:P1 /* {{$_GET.car_id}} */, :P2 /* {{$_GET.title}} */, :P3 /* {{$_GET.text}} */, :P4 /* {{$_GET.author}} */, :P5 /* {{NOW}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.car_id}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.title}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_GET.text}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_GET.author}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{NOW}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
 }

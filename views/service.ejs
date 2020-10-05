@@ -39,7 +39,7 @@
 
 
 
-	<dmx-serverconnect id="serverconnect" url="api/ownerProducts/get_products"></dmx-serverconnect>
+	<dmx-serverconnect id="serverconnect" url="api/ownerProducts/get_products" dmx-param:user_id="session.data.user_id"></dmx-serverconnect>
 
 
 	<dmx-serverconnect id="logout" url="api/Logout/logout"></dmx-serverconnect>
@@ -63,7 +63,7 @@
 			<h3 class="mb-3 pl-5">Your vehicles</h3>
 		</div>
 	</div>
-	<div class="row row-cols-3 mt-2 mb-4" is="dmx-repeat" id="repeat1" dmx-bind:repeat="serverconnect.data.custom3">
+	<div class="row row-cols-3 mt-2 mb-4" is="dmx-repeat" id="products" dmx-bind:repeat="serverconnect.data.products">
 		<div class="col">
 			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
 			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>

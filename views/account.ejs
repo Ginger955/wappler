@@ -15,17 +15,19 @@
 	<link rel="stylesheet" href="css/style.css" />
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="account">
+	<dmx-session-manager id="session"></dmx-session-manager>
 	<div is="dmx-browser" id="redirect"></div>
-	<dmx-serverconnect id="userDetails" url="api/Login/userDetails"></dmx-serverconnect>
+	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
 
 
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<h1 class="text-center mt-4 font-weight-light" dmx-text="'Hello,&nbsp;'+userDetails.data.query1[0].username">{{'Hello,&nbsp;'+userDetails.data.query1[0].username}}</h1>
+				<h1 class="text-center mt-4 font-weight-light" dmx-text="'Hello,&nbsp;'+session.data.username">{{'Hello,&nbsp;'+userDetails.data.query1[0].username}}</h1>
 			</div>
 		</div>
 	</div>

@@ -116,6 +116,70 @@
           }
         ],
         "outputType": "array"
+      },
+      {
+        "name": "reviews",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT reviews.title, reviews.text, reviews.author, reviews.date\nFROM reviews\nWHERE reviews.review_for_car = :P1",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{query1[0].id}}",
+                "test": "1"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "title",
+            "type": "text"
+          },
+          {
+            "name": "text",
+            "type": "text"
+          },
+          {
+            "name": "author",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "gallery",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT gallery.images\nFROM gallery\nWHERE gallery.image_for_car = :P1",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{query1[0].id}}",
+                "test": "1"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "images",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
       }
     ]
   }

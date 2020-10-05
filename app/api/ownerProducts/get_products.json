@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "user_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "products",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT cars.image\nFROM cars, owned_products\nWHERE owned_products.car_id = cars.id AND owned_products.owned_by = :P1",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.user_id}}",
+                "test": "33"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "image",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

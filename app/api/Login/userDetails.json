@@ -20,7 +20,10 @@
         "module": "auth",
         "action": "restrict",
         "options": {
-          "provider": "security1"
+          "provider": "security1",
+          "permissions": [
+            "Logged In"
+          ]
         }
       },
       {

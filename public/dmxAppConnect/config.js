@@ -143,6 +143,10 @@ dmx.config({
       {
         "type": "text",
         "name": "username"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ]
   },
@@ -203,36 +207,32 @@ dmx.config({
     "gallery_display": {
       "meta": [
         {
-          "name": "id",
-          "type": "number"
-        },
-        {
-          "name": "image",
-          "type": "text"
-        },
-        {
-          "name": "image_of",
-          "type": "number"
-        },
-        {
-          "name": "make",
-          "type": "text"
-        },
-        {
-          "name": "model",
-          "type": "text"
-        },
-        {
-          "name": "year",
-          "type": "number"
-        },
-        {
-          "name": "price",
-          "type": "text"
-        },
-        {
-          "name": "class",
-          "type": "text"
+          "name": "images",
+          "type": "object",
+          "sub": [
+            {
+              "name": "$index",
+              "type": "number"
+            },
+            {
+              "name": "$key",
+              "type": "text"
+            },
+            {
+              "name": "$value",
+              "type": "object"
+            },
+            {
+              "name": "image",
+              "type": "array",
+              "sub": [
+                {
+                  "name": "$value",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
         }
       ],
       "outputType": "array"
@@ -361,13 +361,13 @@ dmx.config({
     ],
     "var": {
       "meta": null,
-      "outputType": "number"
+      "outputType": "text"
     },
     "reviews": {
       "meta": [
         {
-          "name": "id",
-          "type": "number"
+          "name": "title",
+          "type": "text"
         },
         {
           "name": "text",
@@ -378,43 +378,15 @@ dmx.config({
           "type": "text"
         },
         {
-          "name": "review_for",
-          "type": "number"
-        },
-        {
           "name": "date",
-          "type": "text"
-        },
-        {
-          "name": "title",
-          "type": "text"
-        },
-        {
-          "name": "make",
-          "type": "text"
-        },
-        {
-          "name": "model",
-          "type": "text"
-        },
-        {
-          "name": "year",
-          "type": "number"
-        },
-        {
-          "name": "price",
-          "type": "text"
-        },
-        {
-          "name": "image",
-          "type": "text"
-        },
-        {
-          "name": "class",
           "type": "text"
         }
       ],
       "outputType": "array"
+    },
+    "name": {
+      "meta": null,
+      "outputType": "text"
     }
   },
   "models": {
@@ -461,6 +433,14 @@ dmx.config({
       {
         "type": "text",
         "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ],
     "data_view1": {
@@ -502,6 +482,10 @@ dmx.config({
       {
         "type": "text",
         "name": "username"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ],
     "repeat": {
@@ -537,10 +521,47 @@ dmx.config({
     "modeL": {
       "meta": null,
       "outputType": "text"
+    },
+    "products": {
+      "meta": [
+        {
+          "name": "$index",
+          "type": "number"
+        },
+        {
+          "name": "$key",
+          "type": "text"
+        },
+        {
+          "name": "$value",
+          "type": "object"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "leasing": {
     "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      }
+    ]
+  },
+  "account": {
+    "sessionStorage": [
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      },
       {
         "type": "text",
         "name": "on"

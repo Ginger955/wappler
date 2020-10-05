@@ -12,7 +12,13 @@
       "username": "email",
       "password": "password"
     },
-    "permissions": {}
+    "permissions": {
+      "Logged In": {
+        "table": "users",
+        "identity": "id",
+        "conditions": []
+      }
+    }
   },
   "meta": [
     {

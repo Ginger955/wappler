@@ -91,7 +91,7 @@
           },
           "images": {
             "db": {
-              "type": "json",
+              "type": "string",
               "maxLength": 255,
               "primary": false,
               "nullable": true
@@ -165,15 +165,6 @@
               "inTable": "cars"
             }
           },
-          "review_by_user": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "users"
-            }
-          },
           "title": {
             "db": {
               "type": "string",
@@ -183,6 +174,21 @@
             }
           },
           "text": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "date": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "author": {
             "db": {
               "type": "string",
               "maxLength": 255,
@@ -247,6 +253,40 @@
               "type": "date",
               "primary": false,
               "nullable": true
+            }
+          }
+        }
+      },
+      "owned_products": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "car_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "cars"
+            }
+          },
+          "owned_by": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "users"
             }
           }
         }

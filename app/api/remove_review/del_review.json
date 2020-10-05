@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "author"
+      },
+      {
+        "type": "number",
+        "name": "car_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "delete1",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "reviews",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "review_for_car",
+                  "field": "review_for_car",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.car_id}}",
+                  "data": {
+                    "column": "review_for_car"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "author",
+                  "field": "author",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.author}}",
+                  "data": {
+                    "column": "author"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM reviews\nWHERE review_for_car = :P1 /* {{$_GET.car_id}} */ AND author = :P2 /* {{$_GET.author}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.car_id}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.author}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

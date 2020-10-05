@@ -27,7 +27,8 @@
 </head>
 
 <body id="modelx" is="dmx-app">
-	<dmx-serverconnect id="del_review" url="api/remove_review/delete_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)"></dmx-serverconnect>
+	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-param:author="session.data.username"
+		dmx-param:car_id="serverconnect.data.query1[0].id"></dmx-serverconnect>
 	<div class="container wappler-block pb-0">
 		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
@@ -43,11 +44,10 @@
 			</div>
 		</div>
 	</div>
-	<dmx-value id="name"></dmx-value>
 	<dmx-serverconnect id="post_review" url="api/insert/insert_review" noload="noload" dmx-param:id="var.value" dmx-param:author="session.data.username" dmx-param:text="text.value" dmx-param:title="title.value"
-		dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-on:error="modalerror.show()">
+		dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-on:error="modalerror.show()" dmx-param:car_id="serverconnect.data.query1[0].id">
 	</dmx-serverconnect>
-	<dmx-value id="var"></dmx-value>
+	<dmx-value id="var" dmx-bind:value="serverconnect.data.query1[0].id"></dmx-value>
 	<div is="dmx-browser" id="redirect"></div>
 	<dmx-session-manager id="session"></dmx-session-manager>
 
@@ -79,38 +79,27 @@
 
 
 		<div class="row">
-			<div class="col-md-6 mr-xl-n2 col-6">
+			<div class="col-md-6 mr-xl-n2 col">
 				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid">
 			</div>
 
 		</div>
 
-		<div class="row mt-2">
-			<div class="col-md-6 align-self-stretch col-6 bg-white">
-
-				<div class="row text-center">
-
-
-					<div class="col-12 mt-5 text-center mt-lg-2">
-						<div class="row">
-							<div class="col text-left text-body">
-								<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light" id="specs">Fancy display heading</h4>
-								<h4 dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'" class="font-weight-light text-left" id="price">Fancy display heading</h4>
-								<h4 dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year" class="font-weight-light text-left" id="year">Fancy display heading</h4>
-								<h4 class="text-left font-weight-light" id="top_speed" dmx-text="'Top speed:&nbsp;'+serverconnect.data.query2[0].topspeed+'&nbsp;km/h'">Fancy display heading</h4>
-								<h4 class="font-weight-light text-left" id="hp" dmx-text="'HP:&nbsp;'+serverconnect.data.query2[0].hp">Fancy display heading</h4>
-								<h4 class="text-xl-left font-weight-light text-left" id="torque" dmx-text="'Torque:&nbsp;'+serverconnect.data.query2[0].torque+'&nbsp;Nm'">Fancy display heading</h4>
-								<h4 class="text-lg-left font-weight-light" dmx-text="'Seats:&nbsp;'+serverconnect.data.query2[0].seats" id="seats">Fancy display heading</h4>
-							</div>
-						</div>
-					</div>
-				</div>
+		<div class="row mt-4">
+			<div class="text-left text-body col-12">
+				<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light" id="specs">Fancy display heading</h4>
+				<h4 dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'" class="font-weight-light text-left" id="price">Fancy display heading</h4>
+				<h4 dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year" class="font-weight-light text-left" id="year">Fancy display heading</h4>
+				<h4 class="text-left font-weight-light" id="top_speed" dmx-text="'Top speed:&nbsp;'+serverconnect.data.query2[0].topspeed+'&nbsp;km/h'">Fancy display heading</h4>
+				<h4 class="font-weight-light text-left" id="hp" dmx-text="'HP:&nbsp;'+serverconnect.data.query2[0].hp">Fancy display heading</h4>
+				<h4 class="text-xl-left font-weight-light text-left" id="torque" dmx-text="'Torque:&nbsp;'+serverconnect.data.query2[0].torque+'&nbsp;Nm'">Fancy display heading</h4>
+				<h4 class="text-lg-left font-weight-light" dmx-text="'Seats:&nbsp;'+serverconnect.data.query2[0].seats" id="seats">Fancy display heading</h4>
 			</div>
 		</div>
 	</div>
 
 
-	<div class="container mt-5">
+	<div class="container mt-3">
 
 
 
@@ -122,9 +111,9 @@
 				<h2>Gallery</h2>
 			</div>
 		</div>
-		<div class="row row-cols-2" id="gallery_display" is="dmx-repeat" dmx-bind:repeat="serverconnect.data.custom1">
+		<div class="row row-cols-2" id="gallery_display" is="dmx-repeat" dmx-bind:repeat="serverconnect.data.gallery">
 			<div class="col">
-				<img dmx-bind:src="image" class="img-fluid">
+				<img dmx-bind:src="images" class="img-fluid">
 			</div>
 		</div>
 
@@ -133,7 +122,7 @@
 				<h2>Reviews</h2>
 			</div>
 		</div>
-		<div class="row mb-2 row-cols-1" is="dmx-repeat" id="reviews" dmx-bind:repeat="serverconnect.data.custom2">
+		<div class="row mb-2 row-cols-1" is="dmx-repeat" id="reviews" dmx-bind:repeat="serverconnect.data.reviews">
 			<div class="col mt-2 border rounded-lg border-warning">
 
 
