@@ -10,6 +10,30 @@
   },
   "schema": {
     "tables": {
+      "gallery": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "images": {
+            "db": {
+              "type": "json",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "cars": {
         "db": {
           "schema": "public",
@@ -75,39 +99,6 @@
           }
         }
       },
-      "gallery": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "images": {
-            "db": {
-              "type": "json",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "image_for_car": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "cars"
-            }
-          }
-        }
-      },
       "countries": {
         "db": {
           "schema": "public",
@@ -136,56 +127,6 @@
               "type": "string",
               "default": "",
               "maxLength": 38,
-              "primary": false,
-              "nullable": true
-            }
-          }
-        }
-      },
-      "reviews": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "review_for_car": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "cars"
-            }
-          },
-          "review_by_user": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "users"
-            }
-          },
-          "title": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "text": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
               "primary": false,
               "nullable": true
             }
@@ -280,14 +221,6 @@
               "primary": false,
               "nullable": true
             }
-          },
-          "username": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
           }
         }
       },
@@ -335,15 +268,6 @@
               "maxLength": 255,
               "primary": false,
               "nullable": true
-            }
-          },
-          "specs_for_car": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "cars"
             }
           }
         }

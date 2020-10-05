@@ -60,12 +60,12 @@
 
 
 	<nav class="navbar navbar-expand-lg navbar-light">
-		<button id="models" class="btn btn-sm ok" dmx-on:click="redirect.goto('http://localhost:8100/all_models')"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
-		<button id="service" class="btn btn-sm ok" dmx-on:click="redirect.goto('http://localhost:8100/service')"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
-		<button id="login" class="btn btn-sm ok" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;<i class="fa fa-sign-in"></i></b></button>
+		<button id="models" class="btn btn-sm ok flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/all_models')"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
+		<button id="service" class="btn btn-sm ok flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/service')"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="login" class="btn btn-sm ok flex-grow-1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;<i class="fa fa-sign-in"></i></b></button>
 
-		<button id="account" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>My Account&nbsp;<i class="fa fa-user"></i></b></button>
-		<button id="logout" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+		<button id="account" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>My Account&nbsp;<i class="fa fa-user"></i></b></button>
+		<button id="logout" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
 	</nav>
 
 	<div class="container mt-3">
@@ -94,7 +94,7 @@
 					<div class="col-12 mt-5 text-center mt-lg-2">
 						<div class="row">
 							<div class="col text-left text-body">
-								<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light text-left font-weight-bold" id="specs">Fancy display heading</h4>
+								<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light" id="specs">Fancy display heading</h4>
 								<h4 dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'" class="font-weight-light text-left" id="price">Fancy display heading</h4>
 								<h4 dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year" class="font-weight-light text-left" id="year">Fancy display heading</h4>
 								<h4 class="text-left font-weight-light" id="top_speed" dmx-text="'Top speed:&nbsp;'+serverconnect.data.query2[0].topspeed+'&nbsp;km/h'">Fancy display heading</h4>

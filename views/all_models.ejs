@@ -36,7 +36,7 @@
 		</div>
 	</div>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-white">
+	<nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-start">
 		<button id="models" class="btn btn-sm font-weight-bold ok1 w-auto">Models&nbsp;<i class="fa fa-car"></i></button>
 		<button id="service" class="btn btn-sm font-weight-bold ok1" dmx-on:click="redirect.goto('http://localhost:8100/service')">Service&nbsp;<i class="fa fa-wrench"></i></button>
 		<button id="login" class="btn font-weight-bold btn-sm ok1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')">Log in&nbsp;<i class="fa fa-sign-in"></i></button>

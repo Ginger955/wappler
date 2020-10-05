@@ -52,11 +52,11 @@
 		</div>
 	</div>
 	<nav class="navbar navbar-expand-lg navbar-light">
-		<button id="models" class="btn btn-sm ok"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
-		<button id="service" class="btn btn-sm ok"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
-		<button id="login" class="btn btn-sm ok" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;</b><i class="fa fa-sign-in"></i></button>
-		<button id="account" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')"><b>My Account&nbsp;</b><i class="fa fa-user"></i></button>
-		<button id="logout" class="btn btn-sm ok" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+		<button id="models" class="btn btn-sm ok flex-grow-1"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
+		<button id="service" class="btn btn-sm ok flex-grow-1"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="login" class="btn btn-sm ok flex-grow-1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;</b><i class="fa fa-sign-in"></i></button>
+		<button id="account" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')"><b>My Account&nbsp;</b><i class="fa fa-user"></i></button>
+		<button id="logout" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
 	</nav>
 	<div class="row mt-2">
 		<div class="col border-bottom">
