@@ -43,9 +43,26 @@
         "module": "dbupdater",
         "action": "custom",
         "options": {
-          "connection": "db"
+          "connection": "db",
+          "sql": {
+            "query": "SELECT service_duration.duration\nFROM service_duration\nWHERE service_duration.service_type_id = :P1",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{get_all_types[0].id}}",
+                "test": "2"
+              }
+            ]
+          }
         },
-        "output": true
+        "output": true,
+        "meta": [
+          {
+            "name": "duration",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
       }
     ]
   }

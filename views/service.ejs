@@ -28,9 +28,14 @@
 	<link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/dmxDatePicker.css" />
 	<script src="dmxAppConnect/dmxDatePicker/dmxDatePicker.js" defer=""></script>
 
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="service">
+	<dmx-value id="date"></dmx-value>
+	<dmx-serverconnect id="get_available_timeframes" noload url="api/Service/get_available_timeframes" dmx-param:date="date.value"></dmx-serverconnect>
 	<dmx-serverconnect id="service_types" url="api/Service/get_service_types"></dmx-serverconnect>
 
 
@@ -74,18 +79,6 @@
 	</div>
 
 
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<h3 class="ok23 mb-4" id="service_title">Service date</h3>
-				<div class="row mt-2">
-					<div class="col">
-						<dmx-calendar id="calendar" views="dayGridMonth,dayGridWeek,dayGridDay" business-hours="true" selectable="true" hide-non-current-dates="true"></dmx-calendar>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="container mt-4">
 
 		<div class="row">
@@ -96,15 +89,37 @@
 		<div class="row row-cols-1 pl-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="service_types.data.get_all_types">
 
 			<div class="form-check">
-				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" dmx-bind:name="">
+				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" data-msg-minitems="">
 				<label class="form-check-label" for="type" dmx-text="rev_type">Default checkbox</label>
 			</div>
 		</div>
 	</div>
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col">
+				<h3 class="ok23 mb-4" id="service_title">Service date</h3>
+				<div class="row mt-2">
+					<div class="col">
+						<dmx-calendar id="calendar" views="dayGridMonth,dayGridWeek,dayGridDay" business-hours="true" selectable="true" hide-non-current-dates="true"
+							dmx-on:dateclick="date.setValue($event.date);get_available_timeframes.load({date: $event.date})">
+						</dmx-calendar>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="container mt-4">
+
 		<div class="row">
 			<div class="col">
 				<h3 class="ok23">Available timeframes</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<select id="select1" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe">
+				</select>
 			</div>
 		</div>
 	</div>

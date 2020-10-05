@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "date",
+        "name": "date"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "available_timeframes",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT service_hours.timeframe\nFROM service_hours\nWHERE service_hours.date = :P1 AND service_hours.taken = False\nORDER BY service_hours.timeframe",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}",
+                "test": "8/5/2020"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "timeframe",
+            "type": "time"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

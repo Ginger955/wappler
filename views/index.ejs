@@ -53,15 +53,15 @@
 
 		</button><button id="service" class="btn flex-xl-grow-1 text-xl-center font-weight-bold flex-lg-grow-1 btn-flex-xl-grow-1-btn-sm-text-xl-center-font-weight-bold-flex-lg-grow-1 btn-sm flex-grow-1"
 			dmx-on:click="browser1.goto('http://localhost:8100/service')">Service
-			<i class="fa fa-wrench"></i></button><button id="login" class="btn flex-lg-grow-1 text-lg-center font-weight-bold hover btn-text-dark-flex-lg-grow-1-text-lg-center-btn-sm-font-weight-bold-hover flex-grow-1"
+			<i class="fa fa-wrench"></i></button><button id="login" class="btn flex-lg-grow-1 text-lg-center font-weight-bold hover btn-text-dark-flex-lg-grow-1-text-lg-center-btn-sm-font-weight-bold-hover flex-grow-1 btn-sm"
 			dmx-on:click="browser1.goto('http://localhost:8100/login')" dmx-hide="session.data.on.contains('on')">Log in
 			<i class="fa fa-sign-in"></i></button></button>
 
 
-		<button id="account" class="btn text-center font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1" data-toggle="button" dmx-show="session.data.on.contains('on')"
+		<button id="account" class="btn text-center font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1 btn-sm" data-toggle="button" dmx-show="session.data.on.contains('on')"
 			dmx-on:click="browser1.goto('http://localhost:8100/account')">&nbsp;My Account&nbsp;<i class="fa fa-user"></i></button>
 
-		<button id="logout" class="btn text-lg-center flex-lg-grow-1 font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1"
+		<button id="logout" class="btn text-lg-center flex-lg-grow-1 font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1 btn-sm"
 			dmx-on:click="logging_out.load();session.set('on','off');session.remove('username');session.remove('user_id')" dmx-show="session.data.on.contains('on')">Log
 			out&nbsp;<i class="fa fa-sign-out"></i></button></nav>
 	<dmx-query-manager id="query1"></dmx-query-manager>

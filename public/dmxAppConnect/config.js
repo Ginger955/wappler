@@ -500,23 +500,7 @@ dmx.config({
     "repeat1": {
       "meta": [
         {
-          "name": "$index",
-          "type": "number"
-        },
-        {
-          "name": "$key",
-          "type": "text"
-        },
-        {
-          "name": "$value",
-          "type": "object"
-        },
-        {
-          "name": "rev_type",
-          "type": "text"
-        },
-        {
-          "name": "id",
+          "name": "duration",
           "type": "number"
         }
       ],
@@ -547,6 +531,19 @@ dmx.config({
         {
           "name": "image",
           "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "service_types": {
+      "meta": [
+        {
+          "name": "rev_type",
+          "type": "text"
+        },
+        {
+          "name": "id",
+          "type": "number"
         }
       ],
       "outputType": "array"

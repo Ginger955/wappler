@@ -323,6 +323,56 @@
           }
         }
       },
+      "service_appointments": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "date": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "for_user": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "users"
+            }
+          },
+          "service_type": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_types"
+            }
+          },
+          "service_duration": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_duration"
+            }
+          }
+        }
+      },
       "users": {
         "db": {
           "schema": "public",
@@ -357,6 +407,44 @@
             "db": {
               "type": "string",
               "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "service_hours": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "timeframe": {
+            "db": {
+              "type": "time",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "taken": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "date": {
+            "db": {
+              "type": "date",
               "primary": false,
               "nullable": true
             }
