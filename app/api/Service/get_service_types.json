@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "get_all_types",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT *\nFROM service_types",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "rev_type",
+            "type": "text"
+          },
+          {
+            "name": "id",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "get_type_duration",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db"
+        },
+        "output": true
+      }
+    ]
+  }
+}

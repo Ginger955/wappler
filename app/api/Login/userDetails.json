@@ -38,6 +38,10 @@
               {
                 "table": "users",
                 "column": "username"
+              },
+              {
+                "table": "users",
+                "column": "id"
               }
             ],
             "table": {
@@ -64,7 +68,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT username\nFROM users\nWHERE id = :P1 /* {{security1.identity}} */",
+            "query": "SELECT username, id\nFROM users\nWHERE id = :P1 /* {{security1.identity}} */",
             "params": [
               {
                 "operator": "equal",
@@ -79,6 +83,10 @@
         "meta": [
           {
             "name": "username",
+            "type": "text"
+          },
+          {
+            "name": "id",
             "type": "text"
           }
         ],

@@ -108,6 +108,38 @@
           }
         }
       },
+      "service_duration": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "service_type_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_types"
+            }
+          },
+          "duration": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "countries": {
         "db": {
           "schema": "public",
@@ -327,6 +359,30 @@
               "maxLength": 255,
               "primary": false,
               "nullable": true
+            }
+          }
+        }
+      },
+      "service_types": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "rev_type": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
             }
           }
         }

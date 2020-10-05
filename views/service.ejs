@@ -31,6 +31,8 @@
 </head>
 
 <body is="dmx-app" id="service">
+	<dmx-serverconnect id="service_types" url="api/Service/get_service_types"></dmx-serverconnect>
+
 
 
 
@@ -63,8 +65,8 @@
 			<h3 class="mb-3 pl-5">Your vehicles</h3>
 		</div>
 	</div>
-	<div class="row row-cols-3 mt-2 mb-4" is="dmx-repeat" id="products" dmx-bind:repeat="serverconnect.data.products">
-		<div class="col">
+	<div class="row row-cols-3 mt-2 mb-4 pl-0" is="dmx-repeat" id="products" dmx-bind:repeat="serverconnect.data.products">
+		<div class="col pl-2">
 			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
 			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>
 			<img class="img-fluid" dmx-bind:src="image" dmx-on:click="">
@@ -75,7 +77,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<h3 class="mb-4 pl-0 ok23" id="service_title">Service</h3>
+				<h3 class="ok23 mb-4" id="service_title">Service date</h3>
 				<div class="row mt-2">
 					<div class="col">
 						<dmx-calendar id="calendar" views="dayGridMonth,dayGridWeek,dayGridDay" business-hours="true" selectable="true" hide-non-current-dates="true"></dmx-calendar>
@@ -85,8 +87,25 @@
 		</div>
 	</div>
 	<div class="container mt-4">
+
 		<div class="row">
-			<div class="col"></div>
+			<div class="col">
+				<h3 class="ok23">Service type</h3>
+			</div>
+		</div>
+		<div class="row row-cols-1 pl-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="service_types.data.get_all_types">
+
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" dmx-bind:name="">
+				<label class="form-check-label" for="type" dmx-text="rev_type">Default checkbox</label>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+				<h3 class="ok23">Available timeframes</h3>
+			</div>
 		</div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>

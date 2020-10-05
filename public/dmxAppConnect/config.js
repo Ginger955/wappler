@@ -145,7 +145,7 @@ dmx.config({
         "name": "username"
       },
       {
-        "type": "number",
+        "type": "text",
         "name": "user_id"
       }
     ]
@@ -484,7 +484,7 @@ dmx.config({
         "name": "username"
       },
       {
-        "type": "number",
+        "type": "text",
         "name": "user_id"
       }
     ],
@@ -500,16 +500,24 @@ dmx.config({
     "repeat1": {
       "meta": [
         {
-          "name": "image",
+          "name": "$index",
+          "type": "number"
+        },
+        {
+          "name": "$key",
           "type": "text"
         },
         {
-          "name": "make",
+          "name": "$value",
+          "type": "object"
+        },
+        {
+          "name": "rev_type",
           "type": "text"
         },
         {
-          "name": "model",
-          "type": "text"
+          "name": "id",
+          "type": "number"
         }
       ],
       "outputType": "array"

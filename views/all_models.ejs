@@ -41,7 +41,8 @@
 		<button id="service" class="btn btn-sm font-weight-bold ok1 flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/service')">Service&nbsp;<i class="fa fa-wrench"></i></button>
 		<button id="login" class="btn font-weight-bold btn-sm ok1 flex-grow-1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')">Log in&nbsp;<i class="fa fa-sign-in"></i></button>
 		<button id="account" class="btn btn-sm font-weight-bold ok1 flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')">My Account&nbsp;<i class="fa fa-user"></i></button>
-		<button id="logout" class="btn font-weight-bold btn-sm ok1 flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="logout.load();session.set('on','off')">Log out&nbsp;<i class="fa fa-sign-out"></i></button>
+		<button id="logout" class="btn font-weight-bold btn-sm ok1 flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="logout.load();session.set('on','off');session.remove('username');session.remove('user_id')">Log out&nbsp;<i
+				class="fa fa-sign-out"></i></button>
 	</nav>
 	<div class="row mt-2 ml-5">
 
