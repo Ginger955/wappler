@@ -31,9 +31,15 @@
 	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxSmoothScroll/dmxSmoothScroll.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="service">
+	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
+		<p>This is a nice alert!</p>
+	</div>
+	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
 	<dmx-value id="date"></dmx-value>
 	<dmx-serverconnect id="get_available_timeframes" noload url="api/Service/get_available_timeframes" dmx-param:date="date.value"></dmx-serverconnect>
 	<dmx-serverconnect id="service_types" url="api/Service/get_service_types"></dmx-serverconnect>
@@ -81,16 +87,57 @@
 
 	<div class="container mt-4">
 
+
 		<div class="row">
 			<div class="col">
 				<h3 class="ok23">Service type</h3>
 			</div>
 		</div>
 		<div class="row row-cols-1 pl-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="service_types.data.get_all_types">
+			<script is="dmx-flow" id="updater" type="text/dmx-flow">{
+  meta: {
+    $param: [
+      {type: "number", name: "sw"},
+      {type: "number", name: "drr"}
+    ]
+  },
+  exec: {
+    steps: {
+      condition: {
+        if: "{{(switch.value == 0)}}",
+        then: {
+          steps: {
+            run: {
+              action: "{{total_duration.setValue(total_duration.value +duration);alert1.show();alert1.setTextContent('added,'+total_duration.value);switch.setValue(1)}}",
+              name: "add"
+            }
+          }
+        },
+        else: {
+          steps: {
+            run: {
+              action: "{{total_duration.setValue(total_duration.value - duration);alert1.show();alert1.setTextContent('sub');switch.setValue(0)}}",
+              name: "sub"
+            }
+          }
+        }
+      }
+    }
+  }
+}</script>
+			<dmx-value id="switch" dmx-bind:value="0"></dmx-value>
+			<dmx-value id="duratioN" dmx-bind:value="duration"></dmx-value>
+			<h1 dmx-text="duration">Title</h1>
 
 			<div class="form-check">
-				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" data-msg-minitems="">
+				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" data-msg-minitems=""
+					dmx-on:changed="run({run:{action:`alert1.show();alert1.setTextContent(\'running\');updater.run({sw: repeat1[0].switch.value, drr: repeat1[0].duratioN.value})`,name:'k'}})">
 				<label class="form-check-label" for="type" dmx-text="rev_type">Default checkbox</label>
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<h6 dmx-text="'Service duration ~'+total_duration.value+'&nbsp;hours'">Service duration ~ x hours</h6>
 			</div>
 		</div>
 	</div>
@@ -113,12 +160,12 @@
 
 		<div class="row">
 			<div class="col">
-				<h3 class="ok23">Available timeframes</h3>
+				<h3 class="ok23">Preferred starting time</h3>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<select id="select1" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe">
+				<select id="timeframes" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe">
 				</select>
 			</div>
 		</div>

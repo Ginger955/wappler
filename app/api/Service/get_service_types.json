@@ -21,7 +21,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT *\nFROM service_types",
+            "query": "SELECT *\nFROM service_types, service_duration\nWHERE service_types.id = service_duration.service_type_id\n",
             "params": []
           }
         },
@@ -33,6 +33,14 @@
           },
           {
             "name": "id",
+            "type": "number"
+          },
+          {
+            "name": "service_type_id",
+            "type": "number"
+          },
+          {
+            "name": "duration",
             "type": "number"
           }
         ],

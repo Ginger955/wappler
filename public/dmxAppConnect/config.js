@@ -500,6 +500,18 @@ dmx.config({
     "repeat1": {
       "meta": [
         {
+          "name": "rev_type",
+          "type": "text"
+        },
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "service_type_id",
+          "type": "number"
+        },
+        {
           "name": "duration",
           "type": "number"
         }
@@ -547,7 +559,62 @@ dmx.config({
         }
       ],
       "outputType": "array"
-    }
+    },
+    "duration": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "duratioN": {
+      "meta": null,
+      "outputType": "number"
+    },
+    "total_duration": {
+      "outputType": "number"
+    },
+    "duration_updateer": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "number",
+            "name": "adder"
+          }
+        ]
+      }
+    ],
+    "duration_adder": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "number",
+            "name": "adder"
+          },
+          {
+            "type": "text",
+            "name": "switch"
+          }
+        ]
+      }
+    ],
+    "updater": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "number",
+            "name": "sw"
+          },
+          {
+            "type": "number",
+            "name": "drr"
+          }
+        ]
+      }
+    ]
   },
   "leasing": {
     "sessionStorage": [
