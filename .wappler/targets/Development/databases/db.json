@@ -337,13 +337,6 @@
               "nullable": false
             }
           },
-          "date": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": true
-            }
-          },
           "for_user": {
             "db": {
               "type": "reference",
@@ -445,6 +438,14 @@
           "date": {
             "db": {
               "type": "date",
+              "primary": false,
+              "nullable": true,
+              "useTz": true
+            }
+          },
+          "no_appointments": {
+            "db": {
+              "type": "integer",
               "primary": false,
               "nullable": true
             }

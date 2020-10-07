@@ -17,12 +17,12 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT service_hours.timeframe\nFROM service_hours\nWHERE service_hours.date = :P1 AND service_hours.taken = False\nORDER BY service_hours.timeframe",
+            "query": "SELECT service_hours.timeframe\nFROM service_hours\nWHERE service_hours.date = :P1 AND service_hours.no_appointments < 2\nORDER BY service_hours.timeframe",
             "params": [
               {
                 "name": ":P1",
                 "value": "{{$_GET.date}}",
-                "test": "8/5/2020"
+                "test": "10/5/2020"
               }
             ]
           }

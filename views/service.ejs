@@ -36,9 +36,8 @@
 </head>
 
 <body is="dmx-app" id="service">
-	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
-		<p>This is a nice alert!</p>
-	</div>
+	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment"></dmx-serverconnect>
+
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
 	<dmx-value id="date"></dmx-value>
 	<dmx-serverconnect id="get_available_timeframes" noload url="api/Service/get_available_timeframes" dmx-param:date="date.value"></dmx-serverconnect>
@@ -108,7 +107,7 @@
         then: {
           steps: {
             run: {
-              action: "{{total_duration.setValue(total_duration.value +duration);alert1.show();alert1.setTextContent('added,'+total_duration.value);switch.setValue(1)}}",
+              action: "{{total_duration.setValue(total_duration.value +duration);switch.setValue(1)}}",
               name: "add"
             }
           }
@@ -116,7 +115,7 @@
         else: {
           steps: {
             run: {
-              action: "{{total_duration.setValue(total_duration.value - duration);alert1.show();alert1.setTextContent('sub');switch.setValue(0)}}",
+              action: "{{total_duration.setValue(total_duration.value - duration);switch.setValue(0)}}",
               name: "sub"
             }
           }
@@ -126,18 +125,11 @@
   }
 }</script>
 			<dmx-value id="switch" dmx-bind:value="0"></dmx-value>
-			<dmx-value id="duratioN" dmx-bind:value="duration"></dmx-value>
-			<h1 dmx-text="duration">Title</h1>
 
 			<div class="form-check">
 				<input class="form-check-input" type="checkbox" value="" id="type" name="input1" data-msg-minitems=""
 					dmx-on:changed="run({run:{action:`alert1.show();alert1.setTextContent(\'running\');updater.run({sw: repeat1[0].switch.value, drr: repeat1[0].duratioN.value})`,name:'k'}})">
 				<label class="form-check-label" for="type" dmx-text="rev_type">Default checkbox</label>
-			</div>
-		</div>
-		<div class="row mt-2">
-			<div class="col">
-				<h6 dmx-text="'Service duration ~'+total_duration.value+'&nbsp;hours'">Service duration ~ x hours</h6>
 			</div>
 		</div>
 	</div>
@@ -160,13 +152,20 @@
 
 		<div class="row">
 			<div class="col">
-				<h3 class="ok23">Preferred starting time</h3>
+				<h5 class="ok23" dmx-text="'Preferred starting time. Service duration ~&nbsp;'+total_duration.value+'&nbsp;hours'">Preferred starting time</h5>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
 				<select id="timeframes" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe">
 				</select>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row text-left">
+			<div class="col">
+				<button id="submit" class="btn btn-lg btn-outline-success" dmx-on:click="insertAppointment.load()">Submit</button>
 			</div>
 		</div>
 	</div>
