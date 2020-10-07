@@ -631,6 +631,10 @@ dmx.config({
           {
             "type": "array",
             "name": "duration"
+          },
+          {
+            "type": "number",
+            "name": "user"
           }
         ]
       }

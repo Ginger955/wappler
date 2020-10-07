@@ -16,18 +16,6 @@
       {
         "type": "time",
         "name": "end_time"
-      },
-      {
-        "type": "number",
-        "name": "user_id"
-      },
-      {
-        "type": "array",
-        "name": "services"
-      },
-      {
-        "type": "array",
-        "name": "durations"
       }
     ]
   },
@@ -119,15 +107,6 @@
         "output": true,
         "meta": [],
         "outputType": "array"
-      },
-      {
-        "name": "update_appointments",
-        "module": "dbupdater",
-        "action": "custom",
-        "options": {
-          "connection": "db"
-        },
-        "output": true
       }
     ]
   }

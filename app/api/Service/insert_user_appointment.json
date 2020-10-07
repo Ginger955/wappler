@@ -23,9 +23,31 @@
         "module": "dbupdater",
         "action": "custom",
         "options": {
-          "connection": "db"
+          "connection": "db",
+          "sql": {
+            "query": "INSERT INTO service_appointments (for_user, type, duration)\nVALUES (:P1, :P2, :P3)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.userid}}",
+                "test": "33"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.service_type}}",
+                "test": "General revision"
+              },
+              {
+                "name": ":P3",
+                "value": "{{$_GET.service_type_duration}}",
+                "test": "3"
+              }
+            ]
+          }
         },
-        "output": true
+        "output": true,
+        "meta": [],
+        "outputType": "array"
       }
     ]
   }
