@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "userid"
+      },
+      {
+        "type": "text",
+        "name": "service_type"
+      },
+      {
+        "type": "number",
+        "name": "service_type_duration"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "user_appointment",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db"
+        },
+        "output": true
+      }
+    ]
+  }
+}

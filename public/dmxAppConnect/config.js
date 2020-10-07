@@ -145,7 +145,7 @@ dmx.config({
         "name": "username"
       },
       {
-        "type": "text",
+        "type": "number",
         "name": "user_id"
       }
     ]
@@ -484,7 +484,7 @@ dmx.config({
         "name": "username"
       },
       {
-        "type": "text",
+        "type": "number",
         "name": "user_id"
       }
     ],
@@ -611,6 +611,26 @@ dmx.config({
           {
             "type": "number",
             "name": "drr"
+          },
+          {
+            "type": "text",
+            "name": "serv_type"
+          }
+        ]
+      }
+    ],
+    "insert_user_appointments": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "array",
+            "name": "service"
+          },
+          {
+            "type": "array",
+            "name": "duration"
           }
         ]
       }

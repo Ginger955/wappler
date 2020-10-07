@@ -1,3 +1,134 @@
 {
-  "exec": {}
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "time",
+        "name": "end_time"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "array",
+        "name": "services"
+      },
+      {
+        "type": "array",
+        "name": "durations"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "get_no_appointments",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "no_appointments",
+                "aggregate": ""
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.date",
+                  "field": "service_hours.date",
+                  "type": "date",
+                  "operator": "equal",
+                  "value": "{{$_GET.date}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "date",
+                    "type": "date"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT no_appointments\nFROM service_hours\nWHERE date = :P1 /* {{$_GET.date}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.date}}"
+              }
+            ],
+            "orders": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "no_appointments",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "update_service_hours",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND timeframe <= :P2",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}",
+                "test": "2020-10-05"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.end_time}}",
+                "test": "12:00:00"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "update_appointments",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db"
+        },
+        "output": true
+      }
+    ]
+  }
 }

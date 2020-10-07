@@ -346,22 +346,20 @@
               "inTable": "users"
             }
           },
-          "service_type": {
+          "type": {
             "db": {
-              "type": "reference",
+              "type": "string",
+              "maxLength": 255,
               "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "service_types"
+              "nullable": true
             }
           },
-          "service_duration": {
+          "duration": {
             "db": {
-              "type": "reference",
+              "type": "string",
+              "maxLength": 255,
               "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "service_duration"
+              "nullable": true
             }
           }
         }
@@ -444,6 +442,13 @@
             }
           },
           "no_appointments": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "max_appointments": {
             "db": {
               "type": "integer",
               "primary": false,

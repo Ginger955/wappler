@@ -17,7 +17,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT service_hours.timeframe\nFROM service_hours\nWHERE service_hours.date = :P1 AND service_hours.no_appointments < 2\nORDER BY service_hours.timeframe",
+            "query": "SELECT service_hours.timeframe\nFROM service_hours\nWHERE service_hours.date = :P1 AND service_hours.no_appointments < service_hours.max_appointments\nORDER BY service_hours.timeframe",
             "params": [
               {
                 "name": ":P1",
