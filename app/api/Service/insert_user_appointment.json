@@ -16,6 +16,10 @@
       {
         "type": "number",
         "name": "carid"
+      },
+      {
+        "type": "number",
+        "name": "serv_hours_id"
       }
     ]
   },
@@ -29,7 +33,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "INSERT INTO service_appointments (for_user, type, duration, total_duration, for_car)\nVALUES (:P1, :P2, :P3, :P4, :P5)",
+            "query": "INSERT INTO service_appointments (for_user, type, duration, for_car, serv_hours_refk)\nVALUES (:P1, :P2, :P3, :P5, :P6)",
             "params": [
               {
                 "name": ":P1",
@@ -47,13 +51,13 @@
                 "test": "3"
               },
               {
-                "name": ":P4",
-                "value": "{{$_GET.service_type_duration.sum($_GET.service_type_duration)}}",
-                "test": "10"
-              },
-              {
                 "name": ":P5",
                 "value": "{{$_GET.carid}}",
+                "test": "1"
+              },
+              {
+                "name": ":P6",
+                "value": "{{$_GET.serv_hours_id}}",
                 "test": "1"
               }
             ]

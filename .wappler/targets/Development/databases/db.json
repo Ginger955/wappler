@@ -362,13 +362,6 @@
               "nullable": true
             }
           },
-          "total_duration": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
           "for_car": {
             "db": {
               "type": "reference",
@@ -376,6 +369,15 @@
               "nullable": true,
               "references": "id",
               "inTable": "cars"
+            }
+          },
+          "serv_hours_refk": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_hours"
             }
           }
         }
@@ -438,13 +440,6 @@
             "db": {
               "type": "time",
               "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "taken": {
-            "db": {
-              "type": "boolean",
               "primary": false,
               "nullable": true
             }

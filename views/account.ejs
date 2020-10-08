@@ -19,43 +19,80 @@
 </head>
 
 <body is="dmx-app" id="account">
+	<dmx-serverconnect id="past_appointments"></dmx-serverconnect>
+	<dmx-serverconnect id="upcoming_appointments" url="api/Data/fetch_upcoming_appointments"></dmx-serverconnect>
+	<dmx-datetime id="today" interval="hours"></dmx-datetime>
 
 	<dmx-session-manager id="session"></dmx-session-manager>
 	<div is="dmx-browser" id="redirect"></div>
 	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
 
 
-	<div class="container">
+	<div class="container" id="greeting">
 		<div class="row">
 			<div class="col">
 				<h1 class="text-center mt-4 font-weight-light" dmx-text="'Hello,&nbsp;'+session.data.username">{{'Hello,&nbsp;'+userDetails.data.query1[0].username}}</h1>
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container mt-2">
 		<div class="row border-bottom">
 			<div class="col">
 				<h3 class="text-left font-weight-light">General Settings</h3>
 			</div>
 		</div>
 	</div>
-	<div class="container mt-2">
-		<div class="row">
+	<div class="container mt-3" id="settings">
 
-			<div class="col-7">
-				<ul class="list-group">
-					<li class="list-group-item user" dmx-text="'Username: '+session.data.username">Username</li>
-					<li class="list-group-item" dmx-text="'E-mail:&nbsp;'+userDetails.data.query1[0].email">E-mail</li>
-					<li class="list-group-item">Email</li>
-				</ul>
+
+
+		<div class="row mt-0" id="username_details">
+
+
+			<div class="text-left border col align-self-center">
+				<h5 dmx-text="'Username:&nbsp;'+session.data.username" class="ok font-weight-light mb-0">A nice paragraph</h5>
 			</div>
 
 
-			<div class="col"></div>
+			<div class="col">
+				<button id="edit_username" class="btn btn-outline-primary btn-sm w-auto">Edit</button>
+			</div>
 		</div>
 
+		<div class="row mt-2 style3" id="username_input">
+			<div class="col"><input id="userName" name="text1" type="text" class="form-control style4"></div>
+
+		</div>
+		<div class="row mt-2" id="email_details">
+			<div class="col-6 border">
+				<h5 dmx-text="'E-mail:&nbsp;'+userDetails.data.query1[0].email" class="font-weight-light mb-0">Fancy display heading</h5>
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<button id="btn1" class="btn btn-outline-primary ml-n3 mr-0 btn-sm">Change Password</button>
+			</div>
+		</div>
 	</div>
-	<div class="container"></div>
+	<div class="container mt-3">
+
+
+		<div class="row">
+			<div class="col border-bottom">
+				<h3 class="font-weight-light" dmx-text="today.datetime">Appointments</h3>
+			</div>
+		</div>
+		<div class="row mt-2" id="upcoming">
+			<div class="col">
+				<h4 class="font-weight-light">Upcoming</h4>
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<h4 class="font-weight-light">Previous</h4>
+			</div>
+		</div>
+	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 </body>

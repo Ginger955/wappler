@@ -20,6 +20,10 @@
       {
         "type": "text",
         "name": "userid"
+      },
+      {
+        "type": "time",
+        "name": "start_time"
       }
     ]
   },
@@ -33,7 +37,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND timeframe <= :P2 AND no_appointments < 2",
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND (timeframe >= :P4 AND timeframe <= :P2) AND no_appointments < 2",
             "params": [
               {
                 "name": ":P1",
@@ -49,12 +53,48 @@
                 "name": ":P3",
                 "value": "{{$_GET.userid}}",
                 "test": "33"
+              },
+              {
+                "name": ":P4",
+                "value": "{{$_GET.start_time}}",
+                "test": "09:00:00"
               }
             ]
           }
         },
         "output": true,
         "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "get",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT id\nFROM service_hours\nWHERE date = :P1 AND timeframe = :P2",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}",
+                "test": "10/5/2020"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.start_time}}",
+                "test": "9:00:00"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "number"
+          }
+        ],
         "outputType": "array"
       }
     ]

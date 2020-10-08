@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 	<script src="dmxAppConnect/dmxValidatorUnicode/dmxValidatorUnicode.js" defer=""></script>
-	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js"></script>
+	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="signup">
@@ -31,19 +31,25 @@
 							<p class="text-h3 text-center">Enter your details below.</p>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" id="user">
+						<div class="col mt-4">
+							<input type="text" id="username" name="email1" class="form-control" placeholder="Username" data-msg-pattern="" required="" data-rule-nowhitespace="" data-msg-alphanumeric="" data-msg-email="">
+						</div>
+					</div>
+					<div class="row" id="mail">
 						<div class="col mt-4">
 							<input type="text" id="email" name="email" class="form-control" placeholder="Email" data-rule-email="" data-msg-pattern="" required="" data-rule-nowhitespace="" data-msg-alphanumeric="">
 						</div>
 					</div>
-					<div class="row mt-4">
+
+					<div class="row mt-4" id="pass">
 						<div class="col">
 							<input type="password" id="password" name="password" class="form-control" placeholder="Password" required="" data-rule-nowhitespace="" data-msg-unicodelettersonly="" data-msg-alphanumeric="">
 						</div>
 					</div>
 					<div class="row mt-4">
 						<div class="col text-center">
-							<button id="signup_submit" class="btn pl-0 text-info font-weight-bold" type="submit">Submit</button>
+							<button id="signup_submit" class="btn btn-outline-primary font-weight-light" type="submit">Submit</button>
 						</div>
 					</div>
 				</div>

@@ -36,14 +36,18 @@
 </head>
 
 <body is="dmx-app" id="service">
-	<script is="dmx-flow" id="change_style" type="text/dmx-flow"></script>
+	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
+		<p>This is a nice alert!</p>
+	</div>
+	<dmx-value id="serv_hour_id" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
+	<dmx-value id="startTime" dmx-bind:value="'00:00:00'" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 	<div class="container wappler-block pt-3 pb-3 ok122">
 		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
 						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Something went wrong!</h4>
+						<h4 class="text-center font-weight-light" dmx-text="serv_hour_id.value+' '+startTime.value">Something went wrong!</h4>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -73,11 +77,13 @@
 		</div>
 	</div>
 	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
-		dmx-param:carid="selected_vehicle.value"></dmx-serverconnect>
+		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="modalsuccess.show()" dmx-on:error="modalerror.show()"></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
-	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="date.value" dmx-param:end_time="timeframes.value.addHours(total_duration.value)" noload dmx-on:success="modalsuccess.show()"
-		dmx-on:error="modalerror.show()" dmx-param:userid="session.data.user_id"></dmx-serverconnect>
+	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="date.value" dmx-param:end_time="timeframes.value.addHours(total_duration.value)" noload dmx-param:userid="session.data.user_id"
+		dmx-param:start_time="startTime.value"
+		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: insertAppointment.data.get[0].id})">
+	</dmx-serverconnect>
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
 	<dmx-value id="date"></dmx-value>
@@ -199,7 +205,7 @@
 		</div>
 		<div class="row" id="time_options">
 			<div class="col">
-				<select id="timeframes" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe" dmx-on:changed="hide_submit.setValue(false)">
+				<select id="timeframes" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe" dmx-on:changed="hide_submit.setValue(false);startTime.setValue(value)">
 				</select>
 			</div>
 		</div>
@@ -209,7 +215,7 @@
 			<div class="col">
 				<h1 dmx-text="'End time:&nbsp;'+timeframes.value.addHours(total_duration.value)" class="inv">Fancy display heading</h1>
 				<button id="submit" class="btn btn-lg btn-outline-primary"
-					dmx-on:click="insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value});insertAppointment.load({date: date.value, end_time: timeframes.value.addHours(total_duration.value), user_id: session.data.user_id, services: services.items, durations: durations.items, userid: session.data.user_id})">Submit</button>
+					dmx-on:click="insertAppointment.load({date: date.value, end_time: timeframes.value.addHours(total_duration.value), user_id: session.data.user_id, services: services.items, durations: durations.items, userid: session.data.user_id, start_time: startTime.value})">Submit</button>
 			</div>
 		</div>
 	</div>

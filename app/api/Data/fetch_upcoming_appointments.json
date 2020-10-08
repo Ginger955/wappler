@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "fetch",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_appointments",
+                "column": "type"
+              },
+              {
+                "table": "service_appointments",
+                "column": "duration"
+              },
+              {
+                "table": "service_appointments",
+                "column": "for_car"
+              }
+            ],
+            "table": {
+              "name": "service_appointments"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_appointments.for_user",
+                  "field": "service_appointments.for_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "table": "service_appointments",
+                    "column": "for_user",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "orders": [],
+            "query": "SELECT type, duration, for_car\nFROM service_appointments\nWHERE for_user = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "duration",
+            "type": "text"
+          },
+          {
+            "name": "for_car",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}
