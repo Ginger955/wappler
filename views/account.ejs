@@ -19,6 +19,7 @@
 </head>
 
 <body is="dmx-app" id="account">
+
 	<dmx-session-manager id="session"></dmx-session-manager>
 	<div is="dmx-browser" id="redirect"></div>
 	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
@@ -40,52 +41,21 @@
 	</div>
 	<div class="container mt-2">
 		<div class="row">
-			<div class="col">
-				<ul class="list-group w-25">
-					<li class="list-group-item">Username</li>
-					<li class="list-group-item">E-mail</li>
+
+			<div class="col-7">
+				<ul class="list-group">
+					<li class="list-group-item user" dmx-text="'Username: '+session.data.username">Username</li>
+					<li class="list-group-item" dmx-text="'E-mail:&nbsp;'+userDetails.data.query1[0].email">E-mail</li>
 					<li class="list-group-item">Email</li>
 				</ul>
 			</div>
 
 
+			<div class="col"></div>
 		</div>
 
 	</div>
-	<div class="container wappler-block pt-3 pb-3">
-		<form id="form1" method="post">
-			<div class="row">
-				<div class="col-md order-md-2 col">
-					<div class="form-group" id="input4_group" is="dmx-checkbox-group">
-						<legend class="col-6 col-form-label">Settings</legend>
-						<div class="custom-control custom-switch">
-							<input class="custom-control-input" type="checkbox" value="" id="option1" name="option1">
-							<label class="custom-control-label" for="option1">First switch</label>
-						</div>
-						<div class="custom-control custom-switch">
-							<input class="custom-control-input" type="checkbox" value="" id="option2" name="option2">
-							<label class="custom-control-label" for="option2">Second switch</label>
-						</div>
-						<div class="custom-control custom-switch">
-							<input class="custom-control-input" type="checkbox" value="" id="option3" name="option3">
-							<label class="custom-control-label" for="option3">Third switch</label>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md order-md-1">
-					<div class="form-group">
-						<label for="lastname">Last Name</label>
-						<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter some text">
-					</div>
-					<div class="form-group">
-						<label for="email">Email</label>
-						<input type="text" class="form-control" id="email" name="email" placeholder="Enter some text">
-					</div>
-					<button class="btn btn-primary" type="submit">Submit</button>
-				</div>
-			</div>
-		</form>
-	</div>
+	<div class="container"></div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 </body>

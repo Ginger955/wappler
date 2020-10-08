@@ -14,9 +14,6 @@
 }
 .list-group-item {}
 .list-group-item {}
-.list-group-item:hover {
-    background-color: #1e6de8
-}
 .btn-text-dark-flex-lg-grow-1-btn-sm-font-weight-bold {
     background-size: auto;
     -webkit-box-pack: start;
@@ -118,3 +115,8 @@
     border: 4px solid #343a40
 }
 .some2 {}
+.list-group-item.user {}
+.list-group-item.user:hover {
+    color: #f8f9fa;
+    background-color: #1e6de8
+}
