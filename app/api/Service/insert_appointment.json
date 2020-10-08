@@ -16,6 +16,10 @@
       {
         "type": "time",
         "name": "end_time"
+      },
+      {
+        "type": "text",
+        "name": "userid"
       }
     ]
   },
@@ -23,73 +27,13 @@
     "steps": [
       "connections/db",
       {
-        "name": "get_no_appointments",
-        "module": "dbconnector",
-        "action": "select",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "service_hours",
-                "column": "no_appointments",
-                "aggregate": ""
-              }
-            ],
-            "table": {
-              "name": "service_hours"
-            },
-            "joins": [],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "service_hours.date",
-                  "field": "service_hours.date",
-                  "type": "date",
-                  "operator": "equal",
-                  "value": "{{$_GET.date}}",
-                  "data": {
-                    "table": "service_hours",
-                    "column": "date",
-                    "type": "date"
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "SELECT no_appointments\nFROM service_hours\nWHERE date = :P1 /* {{$_GET.date}} */",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_GET.date}}"
-              }
-            ],
-            "orders": []
-          }
-        },
-        "output": true,
-        "meta": [
-          {
-            "name": "no_appointments",
-            "type": "text"
-          }
-        ],
-        "outputType": "array"
-      },
-      {
         "name": "update_service_hours",
         "module": "dbupdater",
         "action": "custom",
         "options": {
           "connection": "db",
           "sql": {
-            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND timeframe <= :P2",
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND timeframe <= :P2 AND no_appointments < 2",
             "params": [
               {
                 "name": ":P1",
@@ -100,6 +44,11 @@
                 "name": ":P2",
                 "value": "{{$_GET.end_time}}",
                 "test": "12:00:00"
+              },
+              {
+                "name": ":P3",
+                "value": "{{$_GET.userid}}",
+                "test": "33"
               }
             ]
           }

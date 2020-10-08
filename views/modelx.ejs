@@ -15,7 +15,7 @@
 	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
 	<link rel="stylesheet" href="css/style.css" />
 	<script src="dmxAppConnect/dmxMasonry/dmxMasonry.js" defer=""></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=+31534836314"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=no"></script>
 	<script src="dmxAppConnect/dmxGoogleMaps/dmxGoogleMaps.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
@@ -153,7 +153,7 @@
 					dmx-on:click="run({condition:{if:`session.data.on.contains(\'on\')`,then:{steps:{run:{action:`post_review.load({id: var.value, author: name.value, text: text.value, title: title.value})`,name:'load_review'}}},else:{steps:[{'f7.dialog.alert':{title:'ERROR',text:'Please login to post reviews.'}},{alert:{message:'Please log in to post reviews.'}}]}}})">Post</button>
 			</div>
 		</div>
-		<div class="row mt-4">
+		<div class="row mt-4 ss">
 			<div class="col border-bottom">
 				<h2>Car Configurator</h2>
 			</div>

@@ -17,7 +17,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT cars.image\nFROM cars, owned_products\nWHERE owned_products.car_id = cars.id AND owned_products.owned_by = :P1",
+            "query": "SELECT cars.image, cars.id\nFROM cars, owned_products\nWHERE owned_products.car_id = cars.id AND owned_products.owned_by = :P1",
             "params": [
               {
                 "name": ":P1",
@@ -32,6 +32,10 @@
           {
             "name": "image",
             "type": "text"
+          },
+          {
+            "name": "id",
+            "type": "number"
           }
         ],
         "outputType": "array"

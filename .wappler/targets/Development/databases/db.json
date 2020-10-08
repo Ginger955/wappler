@@ -361,6 +361,22 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "total_duration": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "for_car": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "cars"
+            }
           }
         }
       },
@@ -451,6 +467,14 @@
           "max_appointments": {
             "db": {
               "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "for_users_ids": {
+            "db": {
+              "type": "text",
+              "maxLength": 255,
               "primary": false,
               "nullable": true
             }

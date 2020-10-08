@@ -529,18 +529,6 @@ dmx.config({
     "products": {
       "meta": [
         {
-          "name": "$index",
-          "type": "number"
-        },
-        {
-          "name": "$key",
-          "type": "text"
-        },
-        {
-          "name": "$value",
-          "type": "object"
-        },
-        {
           "name": "image",
           "type": "text"
         }
@@ -638,7 +626,11 @@ dmx.config({
           }
         ]
       }
-    ]
+    ],
+    "ID": {
+      "meta": null,
+      "outputType": "number"
+    }
   },
   "leasing": {
     "sessionStorage": [
