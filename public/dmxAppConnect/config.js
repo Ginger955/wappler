@@ -654,6 +654,52 @@ dmx.config({
         "type": "text",
         "name": "on"
       }
-    ]
+    ],
+    "repeat1": {
+      "meta": [
+        {
+          "name": "timeframe",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat2": {
+      "meta": [
+        {
+          "name": "for_user",
+          "type": "text"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "duration",
+          "type": "text"
+        },
+        {
+          "name": "for_car",
+          "type": "text"
+        },
+        {
+          "name": "serv_hours_refk",
+          "type": "text"
+        },
+        {
+          "name": "timeframe",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

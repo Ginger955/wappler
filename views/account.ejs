@@ -11,16 +11,41 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
 	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
 	<link rel="stylesheet" href="css/style.css" />
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
 	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/daterangepicker.min.css" />
+	<script src="dmxAppConnect/dmxDatePicker/daterangepicker.min.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/dmxDatePicker.css" />
+	<script src="dmxAppConnect/dmxDatePicker/dmxDatePicker.js" defer=""></script>
+
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="account">
-	<dmx-serverconnect id="past_appointments"></dmx-serverconnect>
-	<dmx-serverconnect id="upcoming_appointments" url="api/Data/fetch_upcoming_appointments"></dmx-serverconnect>
+	<dmx-serverconnect id="delete_account"></dmx-serverconnect>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="modal-warning" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-warning"><i class="fa fa-exclamation-triangle fa-3x"></i></p>
+						<h5 class="text-center font-weight-light">Are you sure you want to delete your account?</h5>
+					</div>
+					<div class="modal-footer">
+						<button id="del" class="btn btn-outline-danger style5">Delete</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
+	<dmx-serverconnect id="upcoming_appointments" url="api/Data/fetch_upcoming_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
 	<dmx-datetime id="today" interval="hours"></dmx-datetime>
 
 	<dmx-session-manager id="session"></dmx-session-manager>
@@ -50,7 +75,7 @@
 
 
 			<div class="text-left border col align-self-center">
-				<h5 dmx-text="'Username:&nbsp;'+session.data.username" class="ok font-weight-light mb-0">A nice paragraph</h5>
+				<h5 dmx-text="'Username:&nbsp;'+session.data.username" class="font-weight-light mb-0">A nice paragraph</h5>
 			</div>
 
 
@@ -69,17 +94,20 @@
 			</div>
 		</div>
 		<div class="row mt-2">
-			<div class="col">
-				<button id="btn1" class="btn btn-outline-primary ml-n3 mr-0 btn-sm">Change Password</button>
-			</div>
+			<div class="col-6">
+
+				<button id="change_pass" class="btn btn-outline-primary ml-n3 mr-0 btn-sm flex-grow-1">Change Password</button>
+				<button id="del" class="btn btn-outline-danger btn-sm flex-grow-1">Delete Account</button></div>
 		</div>
 	</div>
 	<div class="container mt-3">
 
 
+
+
 		<div class="row">
 			<div class="col border-bottom">
-				<h3 class="font-weight-light" dmx-text="today.datetime">Appointments</h3>
+				<h3 class="font-weight-light">Appointments</h3>
 			</div>
 		</div>
 		<div class="row mt-2" id="upcoming">
@@ -87,9 +115,19 @@
 				<h4 class="font-weight-light">Upcoming</h4>
 			</div>
 		</div>
-		<div class="row mt-2">
+		<div class="row" is="dmx-repeat" id="repeat1">
+			<div class="col">
+				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
+			</div>
+		</div>
+		<div class="row mt-2" id="previous">
 			<div class="col">
 				<h4 class="font-weight-light">Previous</h4>
+			</div>
+		</div>
+		<div class="row" is="dmx-repeat" id="repeat2" dmx-bind:repeat="past_appointments.data.fetch_all_details_from_app">
+			<div class="col border">
+				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
 			</div>
 		</div>
 	</div>

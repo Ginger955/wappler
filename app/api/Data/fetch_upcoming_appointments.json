@@ -23,7 +23,7 @@
     "steps": [
       "connections/db",
       {
-        "name": "fetch",
+        "name": "fetch_all_details_from_appointments_table",
         "module": "dbconnector",
         "action": "select",
         "options": {
@@ -31,6 +31,14 @@
           "sql": {
             "type": "SELECT",
             "columns": [
+              {
+                "table": "service_appointments",
+                "column": "id"
+              },
+              {
+                "table": "service_appointments",
+                "column": "for_user"
+              },
               {
                 "table": "service_appointments",
                 "column": "type"
@@ -42,6 +50,10 @@
               {
                 "table": "service_appointments",
                 "column": "for_car"
+              },
+              {
+                "table": "service_appointments",
+                "column": "serv_hours_refk"
               }
             ],
             "table": {
@@ -69,7 +81,7 @@
               "valid": true
             },
             "orders": [],
-            "query": "SELECT type, duration, for_car\nFROM service_appointments\nWHERE for_user = :P1 /* {{$_GET.id}} */",
+            "query": "SELECT id, for_user, type, duration, for_car, serv_hours_refk\nFROM service_appointments\nWHERE for_user = :P1 /* {{$_GET.id}} */",
             "params": [
               {
                 "operator": "equal",
@@ -83,6 +95,14 @@
         "output": true,
         "meta": [
           {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "for_user",
+            "type": "text"
+          },
+          {
             "name": "type",
             "type": "text"
           },
@@ -92,6 +112,95 @@
           },
           {
             "name": "for_car",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_refk",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "fetch_hours_details",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{fetch_all_details_from_appointments_table[0].serv_hours_refk}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "service_hours.date",
+                  "field": "service_hours.date",
+                  "type": "date",
+                  "operator": "greater",
+                  "value": "{{$_GET.date}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "date",
+                    "type": "date"
+                  },
+                  "operation": ">"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{fetch_all_details_from_appointments_table[0].serv_hours_refk}} */ AND date > :P2 /* {{$_GET.date}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{fetch_all_details_from_appointments_table[0].serv_hours_refk}}"
+              },
+              {
+                "operator": "greater",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.date}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
             "type": "text"
           }
         ],

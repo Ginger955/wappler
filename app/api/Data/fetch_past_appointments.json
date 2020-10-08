@@ -1,3 +1,240 @@
 {
-  "exec": {}
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "fetch_all_details_from_app",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_appointments",
+                "column": "for_user"
+              },
+              {
+                "table": "service_appointments",
+                "column": "type"
+              },
+              {
+                "table": "service_appointments",
+                "column": "duration"
+              },
+              {
+                "table": "service_appointments",
+                "column": "for_car"
+              },
+              {
+                "table": "service_appointments",
+                "column": "serv_hours_refk"
+              },
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_appointments"
+            },
+            "joins": [
+              {
+                "table": "service_hours",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "service_hours",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "service_appointments",
+                        "column": "serv_hours_refk"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_appointments.for_user",
+                  "field": "service_appointments.for_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "table": "service_appointments",
+                    "column": "for_user",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT service_appointments.for_user, service_appointments.type, service_appointments.duration, service_appointments.for_car, service_appointments.serv_hours_refk, service_hours.timeframe, service_hours.date\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.for_user = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ],
+            "distinct": false
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "for_user",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "duration",
+            "type": "text"
+          },
+          {
+            "name": "for_car",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_refk",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "get_serv_hours_details",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{fetch_all_details_from_app[0].serv_hours_refk}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "service_hours.date",
+                  "field": "service_hours.date",
+                  "type": "date",
+                  "operator": "less",
+                  "value": "{{$_GET.date}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "date",
+                    "type": "date"
+                  },
+                  "operation": "<"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{fetch_all_details_from_app[0].serv_hours_refk}} */ AND date < :P2 /* {{$_GET.date}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{fetch_all_details_from_app[0].serv_hours_refk}}"
+              },
+              {
+                "operator": "less",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.date}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
 }
