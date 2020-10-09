@@ -18,11 +18,17 @@
           "column": "password",
           "type": "text",
           "value": "{{$_POST.password}}"
+        },
+        {
+          "table": "users",
+          "column": "username",
+          "type": "text",
+          "value": "{{$_POST.userName}}"
         }
       ],
       "table": "users",
       "returning": "id",
-      "query": "INSERT INTO users\n(email, password) VALUES (:P1 /* {{$_POST.email}} */, :P2 /* {{$_POST.password}} */)",
+      "query": "INSERT INTO users\n(email, password, username) VALUES (:P1 /* {{$_POST.email}} */, :P2 /* {{$_POST.password}} */, :P3 /* {{$_POST.userName}} */)",
       "params": [
         {
           "name": ":P1",
@@ -33,6 +39,11 @@
           "name": ":P2",
           "type": "expression",
           "value": "{{$_POST.password}}"
+        },
+        {
+          "name": ":P3",
+          "type": "expression",
+          "value": "{{$_POST.userName}}"
         }
       ]
     }

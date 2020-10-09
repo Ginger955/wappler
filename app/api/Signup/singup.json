@@ -8,6 +8,10 @@
       {
         "type": "text",
         "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "userName"
       }
     ]
   },
