@@ -36,53 +36,22 @@
 </head>
 
 <body is="dmx-app" id="service">
-	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
-		<p>This is a nice alert!</p>
-	</div>
 	<dmx-value id="serv_hour_id" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 	<dmx-value id="startTime" dmx-bind:value="'00:00:00'" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
-	<div class="container wappler-block pt-3 pb-3 ok122">
-		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Something went wrong!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<dmx-value id="hide_submit" dmx-bind:value="true"></dmx-value>
 	<dmx-value id="hide_duration" dmx-bind:value="true"></dmx-value>
 	<dmx-value id="hide_calendar" dmx-bind:value="true"></dmx-value>
 	<dmx-value id="hide_type" dmx-bind:value="true"></dmx-value>
 	<dmx-value id="selected_vehicle"></dmx-value>
-	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="modal-success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-success"><i class="fa fa-check"></i></p>
-						<h4 class="text-center font-weight-light">Appointment created!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
 		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="modalsuccess.show()" dmx-on:error="modalerror.show()"></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
 	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="date.value" dmx-param:end_time="timeframes.value.addHours(total_duration.value)" noload dmx-param:userid="session.data.user_id"
 		dmx-param:start_time="startTime.value"
-		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: insertAppointment.data.get[0].id})">
+		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: insertAppointment.data.get[0].id, total_time_for_service: total_duration.value})">
 	</dmx-serverconnect>
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
@@ -126,7 +95,7 @@
 		<div class="col pl-2">
 			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
 			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>
-			<img class="img-fluid some ok122" dmx-bind:src="image" dmx-on:click="selected_vehicle.setValue(id);hide_type.setValue(false)">
+			<img class="img-fluid some" dmx-bind:src="image" dmx-on:click="selected_vehicle.setValue(id);hide_type.setValue(false)">
 		</div>
 	</div>
 
@@ -216,6 +185,36 @@
 				<h1 dmx-text="'End time:&nbsp;'+timeframes.value.addHours(total_duration.value)" class="inv">Fancy display heading</h1>
 				<button id="submit" class="btn btn-lg btn-outline-primary"
 					dmx-on:click="insertAppointment.load({date: date.value, end_time: timeframes.value.addHours(total_duration.value), user_id: session.data.user_id, services: services.items, durations: durations.items, userid: session.data.user_id, start_time: startTime.value})">Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3 style6">
+		<div class="modal" id="modal-success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-success"><i class="fa fa-check"></i></p>
+						<h4 class="text-center font-weight-light">Appointment created!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3 ok122">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
+						<h4 class="text-center font-weight-light">Something went wrong!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

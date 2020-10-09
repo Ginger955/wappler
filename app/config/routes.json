@@ -32,6 +32,10 @@
     {
       "path": "/leasing",
       "page": "leasing"
+    },
+    {
+      "path": "/admin",
+      "page": "admin"
     }
   ]
 }

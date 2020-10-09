@@ -20,6 +20,10 @@
       {
         "type": "number",
         "name": "serv_hours_id"
+      },
+      {
+        "type": "number",
+        "name": "total_time_for_service"
       }
     ]
   },
@@ -47,7 +51,7 @@
               },
               {
                 "name": ":P3",
-                "value": "{{$_GET.service_type_duration}}",
+                "value": "{{$_GET.total_time_for_service}}",
                 "test": "3"
               },
               {

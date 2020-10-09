@@ -34,5 +34,9 @@
   "acc.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "admin.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }

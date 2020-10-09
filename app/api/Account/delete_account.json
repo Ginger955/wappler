@@ -1,13 +1,319 @@
 {
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
   "exec": {
     "steps": [
       "connections/db",
       {
-        "name": "delete1",
+        "name": "fetch",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "users",
+                "column": "id"
+              },
+              {
+                "table": "service_appointments",
+                "column": "id"
+              },
+              {
+                "table": "service_appointments",
+                "column": "serv_hours_refk"
+              },
+              {
+                "table": "service_appointments",
+                "column": "duration"
+              },
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "joins": [
+              {
+                "table": "service_appointments",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "service_appointments",
+                      "column": "for_user",
+                      "operator": "equal",
+                      "value": {
+                        "table": "users",
+                        "column": "id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              },
+              {
+                "table": "service_hours",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "service_hours",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "service_appointments",
+                        "column": "serv_hours_refk"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "query": "SELECT users.id, service_appointments.id, service_appointments.serv_hours_refk, service_appointments.duration, service_hours.timeframe, service_hours.date\nFROM users\nINNER JOIN service_appointments ON (service_appointments.for_user = users.id) INNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE users.id = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id",
+                  "field": "users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_refk",
+            "type": "text"
+          },
+          {
+            "name": "duration",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "delete_owned_products",
         "module": "dbupdater",
         "action": "delete",
         "options": {
-          "connection": "db"
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "owned_products",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "owned_by",
+                  "field": "owned_by",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "column": "owned_by"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM owned_products\nWHERE owned_by = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "disabled": true
+      },
+      {
+        "name": "update_serv_hours",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{fetch[0].date}}",
+                "test": "5/10/2020"
+              },
+              {
+                "name": ":P2",
+                "value": "{{fetch[0].timeframe}}",
+                "test": "8:00:00"
+              },
+              {
+                "name": ":P3",
+                "value": "{{fetch[0].timeframe.dateAdd('hours', fetch[0].duration)}}",
+                "test": "12:00:00"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array",
+        "disabled": true
+      },
+      {
+        "name": "delete_user_appointments",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "service_appointments",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "for_user",
+                  "field": "for_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "column": "for_user"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM service_appointments\nWHERE for_user = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "disabled": true
+      },
+      {
+        "name": "delete_account",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM users\nWHERE id = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
         },
         "meta": [
           {
