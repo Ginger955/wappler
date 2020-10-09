@@ -140,40 +140,6 @@
           }
         }
       },
-      "countries": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "country_code": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 2,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "country_name": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 38,
-              "primary": false,
-              "nullable": true
-            }
-          }
-        }
-      },
       "reviews": {
         "db": {
           "schema": "public",
