@@ -100,18 +100,37 @@
                     "type": "text"
                   },
                   "operation": "="
+                },
+                {
+                  "id": "service_hours.date",
+                  "field": "service_hours.date",
+                  "type": "date",
+                  "operator": "less",
+                  "value": "{{$_GET.date}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "date",
+                    "type": "date"
+                  },
+                  "operation": "<"
                 }
               ],
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT service_appointments.for_user, service_appointments.type, service_appointments.duration, service_appointments.for_car, service_appointments.serv_hours_refk, service_hours.timeframe, service_hours.date\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.for_user = :P1 /* {{$_GET.id}} */",
+            "query": "SELECT service_appointments.for_user, service_appointments.type, service_appointments.duration, service_appointments.for_car, service_appointments.serv_hours_refk, service_hours.timeframe, service_hours.date\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.for_user = :P1 /* {{$_GET.id}} */ AND service_hours.date < :P2 /* {{$_GET.date}} */",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_GET.id}}"
+              },
+              {
+                "operator": "less",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.date}}"
               }
             ],
             "distinct": false

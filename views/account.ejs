@@ -27,6 +27,10 @@
 </head>
 
 <body is="dmx-app" id="account">
+
+
+	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="modalsuccess.show()" dmx-on:error="modalerror.show()" dmx-param:app_id="" dmx-param:start_time="" dmx-param:durr="" dmx-param:date="">
+	</dmx-serverconnect>
 	<div is="dmx-browser" id="redirect"></div>
 
 
@@ -103,9 +107,13 @@
 				<h4 class="font-weight-light">Upcoming</h4>
 			</div>
 		</div>
-		<div class="row" is="dmx-repeat" id="repeat1">
+		<div class="row" is="dmx-repeat" id="repeat1" dmx-bind:repeat="upcoming_appointments.data.fetch_all_details_from_appointments_table">
 			<div class="col">
-				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
+
+				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe.formatDate('HH:mm')+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
+				<button id="cancel_appointment" class="btn btn-outline-danger" dmx-on:click="cancel_app.load({app_id: id, start_time: timeframe, durr: timeframe.addHours(duration.toNumber()).formatDate('HH:mm:ss'), date: date})"
+					dmx-text="'Cancel'">Button</button>
+
 			</div>
 		</div>
 		<div class="row mt-2" id="previous">
@@ -157,6 +165,36 @@
 					<div class="modal-body">
 						<p class="text-center text-success"><i class="fa fa-check"></i></p>
 						<h5 class="text-center font-weight-light">Account has been deleted! Redirecting to home page.</h5>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3" id="cancel_success">
+		<div class="modal" id="modal-success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-success"><i class="fa fa-check"></i></p>
+						<h4 class="text-center font-weight-light">Appointment has been cancelled.</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3" id="cancel_error">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
+						<h4 class="text-center font-weight-light">Could not cancel appointment.</h4>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

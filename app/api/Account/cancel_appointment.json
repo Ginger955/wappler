@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "app_id"
+      },
+      {
+        "type": "time",
+        "name": "start_time"
+      },
+      {
+        "type": "number",
+        "name": "durr"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}",
+                "test": "10/12/2020"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.start_time}}",
+                "test": "9:00:00"
+              },
+              {
+                "name": ":P3",
+                "value": "{{$_GET.durr}}",
+                "test": "11:00:00"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "del",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "DELETE\nFROM service_appointments\nWHERE service_appointments.id = :P1",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.app_id}}",
+                "test": "1"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      }
+    ]
+  }
+}

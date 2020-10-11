@@ -658,6 +658,30 @@ dmx.config({
     "repeat1": {
       "meta": [
         {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "for_user",
+          "type": "text"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "duration",
+          "type": "text"
+        },
+        {
+          "name": "for_car",
+          "type": "text"
+        },
+        {
+          "name": "serv_hours_refk",
+          "type": "text"
+        },
+        {
           "name": "timeframe",
           "type": "text"
         },
@@ -700,6 +724,17 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "id": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "ID": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "d": {
+      "outputType": "text"
     }
   }
 });
