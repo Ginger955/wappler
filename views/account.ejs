@@ -29,12 +29,14 @@
 <body is="dmx-app" id="account">
 
 
-	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="modalsuccess.show()" dmx-on:error="modalerror.show()" dmx-param:app_id="" dmx-param:start_time="" dmx-param:durr="" dmx-param:date="">
+	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="modalsuccess.show();redirect.goto('http://localhost:8100/account')" dmx-on:error="modalerror.show()" dmx-param:app_id="" dmx-param:start_time=""
+		dmx-param:durr="" dmx-param:date="">
 	</dmx-serverconnect>
 	<div is="dmx-browser" id="redirect"></div>
 
 
-	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="modalsuccess.show();redirect.goto('http://localhost:8100/')" dmx-on:error="modalerror.show()"></dmx-serverconnect>
+	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="modal_success.show();redirect.goto('http://localhost:8100/')" dmx-on:error="modal_error.show()">
+	</dmx-serverconnect>
 
 	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
 	<dmx-serverconnect id="upcoming_appointments" url="api/Data/fetch_upcoming_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
@@ -144,7 +146,7 @@
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3" id="error">
-		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+		<div class="modal" id="modal_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
@@ -159,7 +161,7 @@
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3" id="success">
-		<div class="modal" id="modal-success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+		<div class="modal" id="modal_success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">

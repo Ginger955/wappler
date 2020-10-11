@@ -18,6 +18,15 @@
   "exec": {
     "steps": [
       "connections/db",
+      "SecurityProviders/security1",
+      {
+        "name": "",
+        "module": "auth",
+        "action": "logout",
+        "options": {
+          "provider": "security1"
+        }
+      },
       {
         "name": "fetch",
         "module": "dbconnector",
