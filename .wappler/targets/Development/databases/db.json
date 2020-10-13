@@ -221,65 +221,6 @@
           }
         }
       },
-      "images": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "image": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 30,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "description": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 20,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "category": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 12,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "author": {
-            "db": {
-              "type": "string",
-              "default": "",
-              "maxLength": 18,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "date": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        }
-      },
       "owned_products": {
         "db": {
           "schema": "public",

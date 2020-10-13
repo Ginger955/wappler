@@ -16,9 +16,13 @@
 	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
 </head>
 
 <body id="admin">
+	<dmx-serverconnect id="add_moderator" url="api/Manager/add_new_moderator" noload dmx-on:success="moderator_added.show()" dmx-on:error="moderator_error.show()"></dmx-serverconnect>
+
+
 	<div is="dmx-browser" id="redirect"></div>
 	<script is="dmx-flow" id="flow" type="text/dmx-flow">{
   condition: {
@@ -58,12 +62,59 @@
 
 		<div class="col-auto col-5">
 
-			<button id="add_mod" class="btn btn-outline-primary">Add New Moderator</button>
-			<div class="row mt-2 ml-0">
-				<div class="col ml-n3"><input id="text1" name="text1" type="text" class="form-control" placeholder="E-mail"></div>
+			<button id="add_mod" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">Add New
+				Moderator</button>
+			<div class="row mt-2 ml-0" id="input_0" dmx-show="show.value==1">
+				<dmx-value id="show" dmx-bind:value="0"></dmx-value>
+				<div class="col ml-n3"><input id="text" name="text1" type="text" class="form-control" placeholder="E-mail"></div>
 
 
-				<button id="btn1" class="btn btn-outline-success">Submit</button>
+				<button id="sub" class="btn btn-outline-success" dmx-on:click="add_moderator.load({email: text.value})">Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-2 ml-4">
+
+		<div class="col-auto col-5">
+
+			<button id="add_mod1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">Add New
+				Moderator</button>
+			<div class="row mt-2 ml-0" id="input_1" dmx-show="show.value==1">
+				<dmx-value id="show1" dmx-bind:value="0"></dmx-value>
+				<div class="col ml-n3"><input id="text1" name="text2" type="text" class="form-control" placeholder="E-mail"></div>
+
+
+				<button id="btn2" class="btn btn-outline-success">Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="moderator_added" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-success"><i class="fa fa-check"></i></p>
+						<h4 class="text-center font-weight-light">Success!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="moderator_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
+						<h4 class="text-center font-weight-light">Error!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
