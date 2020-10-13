@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_types",
+                "column": "rev_type"
+              }
+            ],
+            "table": {
+              "name": "service_types"
+            },
+            "joins": [],
+            "query": "SELECT rev_type\nFROM service_types",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "rev_type",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

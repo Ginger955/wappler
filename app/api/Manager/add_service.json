@@ -1,0 +1,174 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "type_duration"
+      },
+      {
+        "type": "text",
+        "name": "type_name"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "service_types",
+                "column": "rev_type",
+                "type": "text",
+                "value": "{{$_GET.type_name}}"
+              }
+            ],
+            "table": "service_types",
+            "returning": "id",
+            "query": "INSERT INTO service_types\n(rev_type) VALUES (:P1 /* {{$_GET.type_name}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.type_name}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_types",
+                "column": "id"
+              }
+            ],
+            "table": {
+              "name": "service_types"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_types.rev_type",
+                  "field": "service_types.rev_type",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.type_name}}",
+                  "data": {
+                    "table": "service_types",
+                    "column": "rev_type",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id\nFROM service_types\nWHERE rev_type = :P1 /* {{$_GET.type_name}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.type_name}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "insert_duration",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "service_duration",
+                "column": "service_type_id",
+                "type": "text",
+                "value": "{{query[0].id}}"
+              },
+              {
+                "table": "service_duration",
+                "column": "duration",
+                "type": "number",
+                "value": "{{$_GET.type_duration}}"
+              }
+            ],
+            "table": "service_duration",
+            "returning": "id",
+            "query": "INSERT INTO service_duration\n(service_type_id, duration) VALUES (:P1 /* {{query[0].id}} */, :P2 /* {{$_GET.type_duration}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{query[0].id}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.type_duration}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

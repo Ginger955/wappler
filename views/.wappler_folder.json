@@ -38,5 +38,9 @@
   "admin.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "modelx_admin.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }

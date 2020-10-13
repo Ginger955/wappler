@@ -29,21 +29,7 @@
 <body id="modelx" is="dmx-app">
 	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-param:author="session.data.username"
 		dmx-param:car_id="serverconnect.data.query1[0].id"></dmx-serverconnect>
-	<div class="container wappler-block pb-0">
-		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
-						<h4 class="text-center font-weight-light">Error!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
 	<dmx-serverconnect id="post_review" url="api/insert/insert_review" noload="noload" dmx-param:id="var.value" dmx-param:author="session.data.username" dmx-param:text="text.value" dmx-param:title="title.value"
 		dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-on:error="modalerror.show()" dmx-param:car_id="serverconnect.data.query1[0].id">
 	</dmx-serverconnect>
@@ -176,6 +162,21 @@
 	<dmx-query-manager id="query1"></dmx-query-manager>
 	<dmx-serverconnect id="serverconnect" url="api/Data/details" dmx-param:id="query.id" dmx-on:success="var.setValue(serverconnect.data.query1[0].id)">
 	</dmx-serverconnect>
+	<div class="container wappler-block pb-0">
+		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
+						<h4 class="text-center font-weight-light">Error!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 </body>

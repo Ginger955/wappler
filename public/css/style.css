@@ -128,3 +128,7 @@
 .style5 {}
 .style6 {
 }
+.style7 {
+    border-bottom: 1px solid;
+    border-color: #343a40
+}

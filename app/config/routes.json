@@ -36,6 +36,10 @@
     {
       "path": "/admin",
       "page": "admin"
+    },
+    {
+      "path": "/modelx_admin",
+      "page": "modelx_admin"
     }
   ]
 }

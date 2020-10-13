@@ -17,9 +17,16 @@
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 </head>
 
 <body id="admin">
+	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload></dmx-serverconnect>
+	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
+	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
+
 	<dmx-serverconnect id="add_moderator" url="api/Manager/add_new_moderator" noload dmx-on:success="moderator_added.show()" dmx-on:error="moderator_error.show()"></dmx-serverconnect>
 
 
@@ -29,7 +36,7 @@
     if: "{{ok.value.inRange(0, 10000)}}",
     then: {
       steps: {
-        run: {name: "k"}
+        run: {name: "k", disabled: true}
       }
     },
     else: {
@@ -58,34 +65,90 @@
 			<h3 class="font-weight-light">Actions</h3>
 		</div>
 	</div>
+
 	<div class="row mt-2 ml-4">
+
 
 		<div class="col-auto col-5">
 
 			<button id="add_mod" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">Add New
 				Moderator</button>
+			<button id="add_mod1" class="btn btn-outline-primary ml-1" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">View
+				Moderators</button>
 			<div class="row mt-2 ml-0" id="input_0" dmx-show="show.value==1">
 				<dmx-value id="show" dmx-bind:value="0"></dmx-value>
-				<div class="col ml-n3"><input id="text" name="text1" type="text" class="form-control" placeholder="E-mail"></div>
+				<div class="ml-n3 col-7"><input id="text" name="text1" type="text" class="form-control" placeholder="E-mail" required=""></div>
 
 
 				<button id="sub" class="btn btn-outline-success" dmx-on:click="add_moderator.load({email: text.value})">Submit</button>
 			</div>
 		</div>
+		<div class="col" id="id1000">
+
+			<h3 class="font-weight-light style7 w-25">Moderators</h3>
+			<div class="row">
+				<div class="col">
+
+					<h6>Fancy display heading<button id="btn1" class="btn ml-2 btn-outline-danger btn-sm"><i class="fa fa-times"></i></button></h6>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row mt-2 ml-4">
+		<dmx-value id="show_1001" dmx-bind:value="0"></dmx-value>
+
 
 		<div class="col-auto col-5">
 
-			<button id="add_mod1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">Add New
-				Moderator</button>
-			<div class="row mt-2 ml-0" id="input_1" dmx-show="show.value==1">
-				<dmx-value id="show1" dmx-bind:value="0"></dmx-value>
-				<div class="col ml-n3"><input id="text1" name="text2" type="text" class="form-control" placeholder="E-mail"></div>
+
+			<button id="add_serv_type" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`serv.value==0`,then:{steps:{run:{action:`serv.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`serv.setValue(0)`,name:'sw_0'}}}}})">Add New
+				Service Type</button>
+			<button id="view_serv_types" class="btn btn-outline-primary ml-1"
+				dmx-on:click="run({condition:{if:`show_1001.value==0`,then:{steps:[{run:{action:`view_service_types.load({})`}},{run:{action:`show_1001.setValue(1)`,name:'k'}}]},else:{steps:{run:{action:`show_1001.setValue(0)`,name:'hide'}}}}})">View
+				Service Types</button>
+			<div class="row mt-2 ml-0" id="input_1" dmx-show="serv.value==1">
+				<dmx-value id="serv" dmx-bind:value="0"></dmx-value>
+				<div class="ml-n3 col-5"><input id="serv_name" name="text2" type="text" class="form-control" placeholder="Service name" required="">
+				</div>
+				<div class="col-3 pl-1"><input id="serv_durr" name="text3" type="text" class="form-control" placeholder="Duration" required="">
+				</div>
 
 
-				<button id="btn2" class="btn btn-outline-success">Submit</button>
+				<button id="btn2" class="btn btn-outline-success" dmx-on:click="add_service_type.load({type_duration: serv_durr.value.toNumber(), type_name: serv_name.value})">Submit</button>
 			</div>
+		</div>
+		<div class="col ml-n5 pr-0" id="id1001" dmx-show="show_1001.value==1">
+
+			<h3 class="font-weight-light style7 w-25">Services</h3>
+			<div class="row row-cols-1" is="dmx-repeat" id="repeat2" dmx-bind:repeat="view_service_types.data.query">
+
+				<div class="col-3">
+
+					<h6 dmx-text="rev_type">Fancy display heading</h6>
+
+				</div>
+				<div class="col-2">
+					<button id="btn3" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3 pl-5">
+		<div class="col text-left border-bottom ml-0">
+
+			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({})" wappler-command="editContent">Load cars</button></h3>
+		</div>
+	</div>
+	<div class="row mt-3 pl-5 row-cols-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="cars.data.query1">
+		<div class="text-left ml-0 col">
+			<div class="card mb-3">
+				<img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
+				<div class="card-body">
+					<h4 class="card-title" dmx-text="make+' - '+model">Card title</h4>
+					<a href="#" class="btn btn-primary">Edit&nbsp;<i class="fa fa-search-plus"></i></a>
+				</div>
+			</div>
+
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3">

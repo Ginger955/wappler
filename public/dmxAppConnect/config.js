@@ -763,6 +763,48 @@ dmx.config({
         "type": "text",
         "name": "email"
       }
-    ]
+    ],
+    "repeat1": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "type": "text"
+        },
+        {
+          "name": "class",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat2": {
+      "meta": [
+        {
+          "name": "rev_type",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });
