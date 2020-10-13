@@ -44,7 +44,7 @@
 
 	<dmx-session-manager id="session"></dmx-session-manager>
 	<div is="dmx-browser" id="redirect"></div>
-	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
+	<dmx-serverconnect id="userDetails" url="api/Login/userDetails"></dmx-serverconnect>
 
 
 	<div class="container" id="greeting">
@@ -84,7 +84,7 @@
 		</div>
 		<div class="row mt-2" id="email_details">
 			<div class="col-6 border">
-				<h5 dmx-text="'E-mail:&nbsp;'+userDetails.data.query1[0].email" class="font-weight-light mb-0">Fancy display heading</h5>
+				<h5 dmx-text="'E-mail:&nbsp;'+session.data.email" class="font-weight-light mb-0">Fancy display heading</h5>
 			</div>
 		</div>
 		<div class="row mt-2">

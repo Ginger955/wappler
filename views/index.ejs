@@ -71,7 +71,8 @@
 
 
 
-	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" dmx-on:success="session.set('username',userDetails.data.query1[0].username);session.set('user_id',userDetails.data.query1[0].id)"></dmx-serverconnect>
+	<dmx-serverconnect id="userDetails" url="api/Login/userDetails"
+		dmx-on:success="session.set('username',userDetails.data.query1[0].username);session.set('user_id',userDetails.data.query1[0].id);session.set('email',userDetails.data.query1[0].email)"></dmx-serverconnect>
 	<dmx-serverconnect id="query_images" url="api/Retrieve_images/query_images"></dmx-serverconnect>
 	<div is="dmx-browser" id="browser1"></div>
 

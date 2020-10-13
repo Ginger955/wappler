@@ -147,6 +147,10 @@ dmx.config({
       {
         "type": "number",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "email"
       }
     ]
   },
@@ -653,6 +657,10 @@ dmx.config({
       {
         "type": "text",
         "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "email"
       }
     ],
     "repeat1": {
@@ -736,5 +744,25 @@ dmx.config({
     "d": {
       "outputType": "text"
     }
+  },
+  "admin": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      }
+    ]
   }
 });
