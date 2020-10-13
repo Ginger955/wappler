@@ -1,4 +1,51 @@
 {
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "form1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:email": {
+              "param": ""
+            },
+            "core:nowhitespace": {
+              "param": ""
+            }
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": ""
+            },
+            "core:nowhitespace": {
+              "param": ""
+            }
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "fieldName": "remember",
+        "name": "remember"
+      }
+    ]
+  },
   "exec": {
     "steps": [
       "connections/db",
@@ -9,7 +56,8 @@
         "action": "login",
         "options": {
           "provider": "security1",
-          "username": "{{$_POST.email}}"
+          "username": "{{$_POST.email}}",
+          "password": "{{$_POST.password.sha512($_POST.password)}}"
         },
         "output": true,
         "meta": []
