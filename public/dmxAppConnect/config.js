@@ -833,6 +833,19 @@ dmx.config({
     "status": {
       "meta": null,
       "outputType": "text"
+    },
+    "repeat3": {
+      "meta": [
+        {
+          "name": "rev_type",
+          "type": "text"
+        },
+        {
+          "name": "duration",
+          "type": "number"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

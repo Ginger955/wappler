@@ -75,31 +75,6 @@
           }
         }
       },
-      "moderators": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "user_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "users"
-            }
-          }
-        }
-      },
       "gallery": {
         "db": {
           "schema": "public",

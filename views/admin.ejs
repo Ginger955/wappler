@@ -25,10 +25,16 @@
 </head>
 
 <body id="admin">
+
+
+	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
+	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="service_delete_ok.show();redirect.goto('http://localhost:8100/admin')" dmx-on:error="service_delete_error.show()"></dmx-serverconnect>
+
+	<dmx-serverconnect id="loadServices" url="api/Manager/get_all_services" noload></dmx-serverconnect>
 	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
-	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload></dmx-serverconnect>
+	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="service_type_added.show();redirect.goto('http://localhost:8100/admin')" dmx-on:error="service_type_add_error.show()"></dmx-serverconnect>
 	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
 	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
 
@@ -130,7 +136,51 @@
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
 
-			<h3 class="font-weight-light">Manage users<button id="load_users1" class="btn ml-4 btn-outline-primary" dmx-on:click="loadUsers.load()">Load users</button></h3>
+			<h3 class="font-weight-light">Manage services<button id="load_users1" class="btn ml-4 btn-outline-primary" dmx-on:click="loadServices.load({})" wappler-command="editContent">Load services</button></h3>
+		</div>
+	</div>
+	<div class="row row-cols-2 mt-2 mb-2 pl-5" is="dmx-repeat" id="repeat3" dmx-bind:repeat="loadServices.data.custom">
+
+		<div class="col-5">
+			<h5 class="font-weight-light" dmx-text="rev_type+', aprox. duration: '+duration">Fancy display heading</h5>
+		</div>
+		<div class="col mb-2">
+
+
+			<button id="btn3" class="btn btn-outline-primary"
+				dmx-on:click="run({condition:{if:`show_popup_editing.value==0`,then:{steps:{run:{action:`show_popup_editing.setValue(1)`,name:'ok'}}},else:{steps:{run:{action:`show_popup_editing.setValue(0)`}}}}})">Edit</button>
+			<button id="btn4" class="btn btn-outline-danger" dmx-on:click="deleteService.load({type: rev_type})">Delete</button>
+			<dmx-value id="show_popup_editing" dmx-bind:value="0"></dmx-value>
+			<div class="row row-cols-3 mt-2" id="editing_popup" dmx-show="show_popup_editing.value==1">
+
+
+
+				<div class="col-6">
+
+					<input id="service_name_edit" name="text1" type="text" class="form-control" placeholder="Service name" required="">
+					<button id="submit_service_edit" class="btn btn-outline-success mt-2 mb-0" dmx-on:click="updateService.load({name: rev_type, new_name: service_name_edit.value, new_duration: service_duration_edit.value})">Submit</button></div>
+				<div class="col-4 pl-0">
+
+					<input id="service_duration_edit" name="text1" type="text" class="form-control" placeholder="Duration" required=""></div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3 pl-5">
+		<div class="text-left col-12">
+			<dmx-value id="show_add_service" dmx-bind:value="0"></dmx-value>
+
+
+			<button id="add_new_service" class="btn btn-outline-primary" wappler-command="editContent"
+				dmx-on:click="run({condition:{if:`show_add_service.value==0`,then:{steps:{run:{action:`show_add_service.setValue(1)`}}},else:{steps:{run:{action:`show_add_service.setValue(0)`}}}}})">Add New</button>
+			<div class="row mt-1" dmx-show="show_add_service.value==1">
+				<div class="col-3">
+
+					<input id="add_service_name" name="text1" type="text" class="form-control mt-2" placeholder="Service name" required="">
+					<button id="btn5" class="btn mt-2 btn-outline-success" dmx-on:click="add_service_type.load({type_duration: add_service_duration.value, type_name: add_service_name.value})">Submit</button></div>
+				<div class="col-2 pl-0">
+					<input id="add_service_duration" name="text1" type="text" class="form-control mt-2" placeholder="Duration" required="">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="row mt-3 pl-5">
@@ -139,6 +189,7 @@
 			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({})" wappler-command="editContent">Load cars</button></h3>
 		</div>
 	</div>
+
 	<div class="row mt-3 pl-5 row-cols-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="cars.data.query1">
 		<div class="text-left ml-0 col">
 			<div class="card mb-3">
@@ -152,12 +203,12 @@
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="moderator_added" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+		<div class="modal" id="service_type_added" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
 						<p class="text-center text-success"><i class="fa fa-check"></i></p>
-						<h4 class="text-center font-weight-light">Success!</h4>
+						<h4 class="text-center font-weight-light">Service has been added!</h4>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -167,12 +218,42 @@
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="moderator_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+		<div class="modal" id="service_type_add_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-body">
 						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Error!</h4>
+						<h4 class="text-center font-weight-light">Could not add the service!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="service_delete_ok" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-success"><i class="fa fa-check"></i></p>
+						<h4 class="text-center font-weight-light">Service has been deleted!</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal" id="service_delete_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
+						<h4 class="text-center font-weight-light">Could not delete the service! Please try again</h4>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

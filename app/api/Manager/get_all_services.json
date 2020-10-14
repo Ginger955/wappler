@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "custom",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT service_types.rev_type, service_duration.duration\nFROM service_types\nINNER JOIN service_duration ON (service_duration.service_type_id = service_types.id)",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "rev_type",
+            "type": "text"
+          },
+          {
+            "name": "duration",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}
