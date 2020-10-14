@@ -26,24 +26,29 @@
           "connection": "db",
           "sql": {
             "type": "SELECT",
-            "columns": [],
+            "columns": [
+              {
+                "table": "users",
+                "column": "role"
+              }
+            ],
             "table": {
-              "name": "moderators"
+              "name": "users"
             },
             "joins": [],
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "moderators.user_id",
-                  "field": "moderators.user_id",
-                  "type": "string",
+                  "id": "users.id",
+                  "field": "users.id",
+                  "type": "double",
                   "operator": "equal",
                   "value": "{{$_GET.id}}",
                   "data": {
-                    "table": "moderators",
-                    "column": "user_id",
-                    "type": "text"
+                    "table": "users",
+                    "column": "id",
+                    "type": "number"
                   },
                   "operation": "="
                 }
@@ -51,7 +56,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT *\nFROM moderators\nWHERE user_id = :P1 /* {{$_GET.id}} */",
+            "query": "SELECT role\nFROM users\nWHERE id = :P1 /* {{$_GET.id}} */",
             "params": [
               {
                 "operator": "equal",
@@ -65,11 +70,7 @@
         "output": true,
         "meta": [
           {
-            "name": "id",
-            "type": "text"
-          },
-          {
-            "name": "user_id",
+            "name": "role",
             "type": "text"
           }
         ],

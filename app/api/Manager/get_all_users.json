@@ -1,0 +1,39 @@
+{
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "custom",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT id, email, username, role\nFROM users",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "number"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "username",
+            "type": "text"
+          },
+          {
+            "name": "role",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

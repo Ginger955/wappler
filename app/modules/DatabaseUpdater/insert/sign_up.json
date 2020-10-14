@@ -24,11 +24,17 @@
           "column": "username",
           "type": "text",
           "value": "{{$_POST.userName}}"
+        },
+        {
+          "table": "users",
+          "column": "role",
+          "type": "text",
+          "value": "user"
         }
       ],
       "table": "users",
       "returning": "id",
-      "query": "INSERT INTO users\n(email, password, username) VALUES (:P1 /* {{$_POST.email}} */, :P2 /* {{$_POST.password.sha512($_POST.password)}} */, :P3 /* {{$_POST.userName}} */)",
+      "query": "INSERT INTO users\n(email, password, username, role) VALUES (:P1 /* {{$_POST.email}} */, :P2 /* {{$_POST.password.sha512($_POST.password)}} */, :P3 /* {{$_POST.userName}} */, 'user')",
       "params": [
         {
           "name": ":P1",

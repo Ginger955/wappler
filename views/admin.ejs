@@ -20,9 +20,14 @@
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
 </head>
 
 <body id="admin">
+	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
+
+	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
 	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload></dmx-serverconnect>
 	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
 	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
@@ -32,105 +37,100 @@
 
 	<div is="dmx-browser" id="redirect"></div>
 	<script is="dmx-flow" id="flow" type="text/dmx-flow">{
-  condition: {
-    if: "{{ok.value.inRange(0, 10000)}}",
-    then: {
-      steps: {
-        run: {name: "k", disabled: true}
-      }
-    },
-    else: {
-      steps: {
-        run: {action: "{{redirect.goto('http://localhost:8100/')}}", name: "red"}
+  meta: {
+    $param: [
+      {type: "text", name: "ROLE"}
+    ]
+  },
+  exec: {
+    steps: {
+      condition: {
+        if: "{{$param.ROLE=='Moderator'}}",
+        then: {
+          steps: {
+            run: {name: "k", disabled: true}
+          }
+        },
+        else: {
+          steps: {
+            run: {action: "{{redirect.goto('http://localhost:8100/')}}", name: "red"}
+          }
+        }
       }
     }
   }
 }</script>
 	<dmx-value id="ok" dmx-bind:value="-1"></dmx-value>
 	<dmx-session-manager id="session"></dmx-session-manager>
-	<dmx-serverconnect id="restrict_access" url="api/Data/restrict" dmx-param:id="session.data.user_id" dmx-on:success="ok.setValue(restrict_access.data.query[0].user_id);flow.run()"></dmx-serverconnect>
+	<dmx-serverconnect id="restrict_access" url="api/Data/restrict" dmx-param:id="session.data.user_id" dmx-on:success="flow.run({ROLE: restrict_access.data.query[0].role})" dmx-on:error="redirect.goto('http://localhost:8100/')"></dmx-serverconnect>
 
 
 
 	<div class="container">
 		<div class="row">
 			<div class="col text-center mt-3">
-				<h1 class="font-weight-light">Database manager</h1>
+				<h1 class="font-weight-light">Moderator View</h1>
 			</div>
 		</div>
 
 	</div>
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
-			<h3 class="font-weight-light">Manage users</h3>
+
+			<h3 class="font-weight-light">Manage users<button id="load_users" class="btn ml-4 btn-outline-primary" dmx-on:click="loadUsers.load()">Load users</button></h3>
 		</div>
 	</div>
 
-	<div class="row mt-2 ml-4">
 
+	<div class="row mt-2 pl-5 row-cols-3" is="dmx-repeat" id="repeat2" dmx-bind:repeat="loadUsers.data.custom">
 
-		<div class="col-auto col-5">
-
-			<button id="add_mod" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">Add New
-				Moderator</button>
-			<button id="add_mod1" class="btn btn-outline-primary ml-1" dmx-on:click="run({condition:{if:`show.value==0`,then:{steps:{run:{action:`show.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`show.setValue(0)`,name:'sw_0'}}}}})">View
-				Moderators</button>
-			<div class="row mt-2 ml-0" id="input_0" dmx-show="show.value==1">
-				<dmx-value id="show" dmx-bind:value="0"></dmx-value>
-				<div class="ml-n3 col-7"><input id="text" name="text1" type="text" class="form-control" placeholder="E-mail" required=""></div>
-
-
-				<button id="sub" class="btn btn-outline-success" dmx-on:click="add_moderator.load({email: text.value})">Submit</button>
-			</div>
+		<div class="col-2 border-dark border border-right-0 mb-1">
+			<h5 class="font-weight-light" id="number" dmx-text="id">Fancy display heading</h5>
 		</div>
-		<div class="col" id="id1000">
+		<div class="border border-right-0 border-left-0 border-dark mb-1 col-3">
+			<h5 class="font-weight-light" dmx-text="email">Fancy display heading</h5>
+		</div>
+		<div class="border border-right-0 border-left-0 border-dark mb-1 col-2">
+			<h5 class="font-weight-light" dmx-text="username">Fancy display heading</h5>
+		</div>
+		<div class="col border border-left-0 border-dark mb-1">
+			<dmx-value id="make_opposite"></dmx-value>
+			<dmx-value id="status" dmx-on:updated="flow1.run()" dmx-bind:value="role"></dmx-value>
+			<div class="row row-cols-3">
+				<script is="dmx-flow" id="flow1" type="text/dmx-flow" autorun>{
+  condition: {
+    if: "{{role=='Moderator'}}",
+    then: {
+      steps: {
+        run: {action: "{{make_opposite.setValue('User')}}"}
+      }
+    },
+    else: {
+      steps: {
+        run: {action: "{{make_opposite.setValue('Moderator')}}"}
+      }
+    }
+  }
+}</script>
 
-			<h3 class="font-weight-light style7 w-25">Moderators</h3>
-			<div class="row">
+
 				<div class="col">
-
-					<h6>Fancy display heading<button id="btn1" class="btn ml-2 btn-outline-danger btn-sm"><i class="fa fa-times"></i></button></h6>
+					<h5 class="font-weight-light" dmx-text="role" id="role">Fancy display heading</h5>
+				</div>
+				<div class="col-5"><button id="btn1" class="btn btn-sm btn-outline-primary" dmx-text="'Make&nbsp;'+make_opposite.value" dmx-on:click="changeUserRole.load({email: email, role: make_opposite.value})">Button
+					</button></div>
+				<div class="col-3">
+					<button id="btn2" class="btn btn-outline-danger btn-sm">Delete</button>
 				</div>
 			</div>
+
+
 		</div>
 	</div>
-	<div class="row mt-2 ml-4">
-		<dmx-value id="show_1001" dmx-bind:value="0"></dmx-value>
+	<div class="row mt-3 pl-5">
+		<div class="col text-left border-bottom ml-0">
 
-
-		<div class="col-auto col-5">
-
-
-			<button id="add_serv_type" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`serv.value==0`,then:{steps:{run:{action:`serv.setValue(1)`,name:'sw_1'}}},else:{steps:{run:{action:`serv.setValue(0)`,name:'sw_0'}}}}})">Add New
-				Service Type</button>
-			<button id="view_serv_types" class="btn btn-outline-primary ml-1"
-				dmx-on:click="run({condition:{if:`show_1001.value==0`,then:{steps:[{run:{action:`view_service_types.load({})`}},{run:{action:`show_1001.setValue(1)`,name:'k'}}]},else:{steps:{run:{action:`show_1001.setValue(0)`,name:'hide'}}}}})">View
-				Service Types</button>
-			<div class="row mt-2 ml-0" id="input_1" dmx-show="serv.value==1">
-				<dmx-value id="serv" dmx-bind:value="0"></dmx-value>
-				<div class="ml-n3 col-5"><input id="serv_name" name="text2" type="text" class="form-control" placeholder="Service name" required="">
-				</div>
-				<div class="col-3 pl-1"><input id="serv_durr" name="text3" type="text" class="form-control" placeholder="Duration" required="">
-				</div>
-
-
-				<button id="btn2" class="btn btn-outline-success" dmx-on:click="add_service_type.load({type_duration: serv_durr.value.toNumber(), type_name: serv_name.value})">Submit</button>
-			</div>
-		</div>
-		<div class="col ml-n5 pr-0" id="id1001" dmx-show="show_1001.value==1">
-
-			<h3 class="font-weight-light style7 w-25">Services</h3>
-			<div class="row row-cols-1" is="dmx-repeat" id="repeat2" dmx-bind:repeat="view_service_types.data.query">
-
-				<div class="col-3">
-
-					<h6 dmx-text="rev_type">Fancy display heading</h6>
-
-				</div>
-				<div class="col-2">
-					<button id="btn3" class="btn btn-outline-danger btn-sm"><i class="fa fa-times"></i></button>
-				</div>
-			</div>
+			<h3 class="font-weight-light">Manage users<button id="load_users1" class="btn ml-4 btn-outline-primary" dmx-on:click="loadUsers.load()">Load users</button></h3>
 		</div>
 	</div>
 	<div class="row mt-3 pl-5">

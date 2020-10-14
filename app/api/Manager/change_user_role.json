@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "users",
+                "column": "role",
+                "type": "text",
+                "value": "{{$_GET.role}}"
+              }
+            ],
+            "table": "users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "email",
+                  "field": "email",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.email}}",
+                  "data": {
+                    "column": "email"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "UPDATE users\nSET role = :P1 /* {{$_GET.role}} */\nWHERE email = :P2 /* {{$_GET.email}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.role}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.email}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

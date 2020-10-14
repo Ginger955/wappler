@@ -800,11 +800,39 @@ dmx.config({
     "repeat2": {
       "meta": [
         {
-          "name": "rev_type",
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "email",
+          "type": "text"
+        },
+        {
+          "name": "username",
+          "type": "text"
+        },
+        {
+          "name": "role",
           "type": "text"
         }
       ],
       "outputType": "array"
+    },
+    "flow": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "text",
+            "name": "ROLE"
+          }
+        ]
+      }
+    ],
+    "status": {
+      "meta": null,
+      "outputType": "text"
     }
   }
 });
