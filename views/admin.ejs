@@ -25,6 +25,7 @@
 </head>
 
 <body id="admin">
+	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload></dmx-serverconnect>
 
 
 	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
@@ -90,16 +91,16 @@
 
 	<div class="row mt-2 pl-5 row-cols-3" is="dmx-repeat" id="repeat2" dmx-bind:repeat="loadUsers.data.custom">
 
-		<div class="col-2 border-dark border border-right-0 mb-1">
+		<div class="col-2 border-dark mb-1">
 			<h5 class="font-weight-light" id="number" dmx-text="id">Fancy display heading</h5>
 		</div>
-		<div class="border border-right-0 border-left-0 border-dark mb-1 col-3">
+		<div class="border-dark mb-1 col-3">
 			<h5 class="font-weight-light" dmx-text="email">Fancy display heading</h5>
 		</div>
-		<div class="border border-right-0 border-left-0 border-dark mb-1 col-2">
+		<div class="border-dark mb-1 col-2">
 			<h5 class="font-weight-light" dmx-text="username">Fancy display heading</h5>
 		</div>
-		<div class="col border border-left-0 border-dark mb-1">
+		<div class="col border-dark mb-1">
 			<dmx-value id="make_opposite"></dmx-value>
 			<dmx-value id="status" dmx-on:updated="flow1.run()" dmx-bind:value="role"></dmx-value>
 			<div class="row row-cols-3">
@@ -136,13 +137,13 @@
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
 
-			<h3 class="font-weight-light">Manage services<button id="load_users1" class="btn ml-4 btn-outline-primary" dmx-on:click="loadServices.load({})" wappler-command="editContent">Load services</button></h3>
+			<h3 class="font-weight-light">Manage services<button id="load_services" class="btn ml-4 btn-outline-primary" dmx-on:click="loadServices.load({})" wappler-command="editContent">Load services</button></h3>
 		</div>
 	</div>
 	<div class="row row-cols-2 mt-2 mb-2 pl-5" is="dmx-repeat" id="repeat3" dmx-bind:repeat="loadServices.data.custom">
 
 		<div class="col-5">
-			<h5 class="font-weight-light" dmx-text="rev_type+', aprox. duration: '+duration">Fancy display heading</h5>
+			<h5 class="font-weight-light" dmx-text="rev_type+', aprox. duration: '+duration+'&nbsp;hours'">Fancy display heading</h5>
 		</div>
 		<div class="col mb-2">
 
@@ -161,7 +162,7 @@
 					<button id="submit_service_edit" class="btn btn-outline-success mt-2 mb-0" dmx-on:click="updateService.load({name: rev_type, new_name: service_name_edit.value, new_duration: service_duration_edit.value})">Submit</button></div>
 				<div class="col-4 pl-0">
 
-					<input id="service_duration_edit" name="text1" type="text" class="form-control" placeholder="Duration" required=""></div>
+					<input id="service_duration_edit" name="text1" type="number" class="form-control" placeholder="Duration" required="" data-rule-number=""></div>
 			</div>
 		</div>
 	</div>
@@ -178,7 +179,7 @@
 					<input id="add_service_name" name="text1" type="text" class="form-control mt-2" placeholder="Service name" required="">
 					<button id="btn5" class="btn mt-2 btn-outline-success" dmx-on:click="add_service_type.load({type_duration: add_service_duration.value, type_name: add_service_name.value})">Submit</button></div>
 				<div class="col-2 pl-0">
-					<input id="add_service_duration" name="text1" type="text" class="form-control mt-2" placeholder="Duration" required="">
+					<input id="add_service_duration" name="text1" type="number" class="form-control mt-2" placeholder="Duration" required="" data-rule-number="">
 				</div>
 			</div>
 		</div>
@@ -191,15 +192,28 @@
 	</div>
 
 	<div class="row mt-3 pl-5 row-cols-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="cars.data.query1">
-		<div class="text-left ml-0 col">
+		<div class="text-left col mb-2">
+
+
 			<div class="card mb-3">
-				<img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
+				<dmx-value id="showing" dmx-bind:value="0"></dmx-value><img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
 				<div class="card-body">
+
 					<h4 class="card-title" dmx-text="make+' - '+model">Card title</h4>
 					<a href="#" class="btn btn-primary">Edit&nbsp;<i class="fa fa-search-plus"></i></a>
+					<button id="bind" class="btn btn-primary style8" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to user</button>
 				</div>
 			</div>
 
+			<div class="row" dmx-show="showing.value==1">
+
+				<div class="col-6">
+					<input id="text1" name="text1" type="number" class="form-control" placeholder="Enter user id" required="" data-rule-number="">
+				</div>
+				<div class="col">
+					<button id="btn6" class="btn btn-outline-success" dmx-on:click="bindProductToUser.load({product_id: id, user_id: text1.value})">Submit</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3">

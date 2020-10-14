@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "product_id"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "owned_products",
+                "column": "car_id",
+                "type": "text",
+                "value": "{{$_GET.product_id}}"
+              },
+              {
+                "table": "owned_products",
+                "column": "owned_by",
+                "type": "text",
+                "value": "{{$_GET.user_id}}"
+              }
+            ],
+            "table": "owned_products",
+            "returning": "id",
+            "query": "INSERT INTO owned_products\n(car_id, owned_by) VALUES (:P1 /* {{$_GET.product_id}} */, :P2 /* {{$_GET.user_id}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.product_id}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.user_id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
