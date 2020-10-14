@@ -263,7 +263,7 @@
           },
           "duration": {
             "db": {
-              "type": "string",
+              "type": "integer",
               "maxLength": 255,
               "primary": false,
               "nullable": true

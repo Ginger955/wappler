@@ -35,7 +35,8 @@
 	<div is="dmx-browser" id="redirect"></div>
 
 
-	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="modal_success.show();redirect.goto('http://localhost:8100/')" dmx-on:error="modal_error.show()">
+	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
+		dmx-on:success="modal_success.show();redirect.goto('http://localhost:8100/');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email')" dmx-on:error="modal_error.show()">
 	</dmx-serverconnect>
 
 	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
@@ -93,7 +94,7 @@
 
 				<button id="change_pass" class="btn btn-outline-primary ml-n3 mr-0 btn-sm flex-grow-1">Change Password</button>
 			</div>
-			<div class="col-2 offset-2"><button id="del" class="btn btn-outline-danger btn-sm flex-grow-1 btn-block ml-3" dmx-on:click="modalwarning.show()">Delete Account</button></div>
+			<div class="col-2 offset-2"><button id="del" class="btn btn-outline-danger btn-sm flex-grow-1 ml-3 btn-block" dmx-on:click="modalwarning.show()">Delete Account</button></div>
 		</div>
 	</div>
 	<div class="container mt-3">

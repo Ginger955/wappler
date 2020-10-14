@@ -205,8 +205,16 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "disabled": true
+        ]
+      },
+      {
+        "name": "time",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{fetch[0].timeframe.addHours(fetch[0].duration.toNumber())}}"
+        },
+        "outputType": "time"
       },
       {
         "name": "update_serv_hours",
@@ -220,7 +228,7 @@
               {
                 "name": ":P1",
                 "value": "{{fetch[0].date}}",
-                "test": "5/10/2020"
+                "test": "9/10/2020"
               },
               {
                 "name": ":P2",
@@ -229,16 +237,15 @@
               },
               {
                 "name": ":P3",
-                "value": "{{fetch[0].timeframe.dateAdd('hours', fetch[0].duration)}}",
+                "value": "{{time}}",
                 "test": "12:00:00"
               }
             ]
           }
         },
-        "output": true,
         "meta": [],
         "outputType": "array",
-        "disabled": true
+        "output": false
       },
       {
         "name": "delete_user_appointments",
@@ -283,8 +290,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "disabled": true
+        ]
       },
       {
         "name": "delete_account",
