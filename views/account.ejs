@@ -115,7 +115,7 @@
 		<div class="row" is="dmx-repeat" id="repeat1" dmx-bind:repeat="upcoming_appointments.data.fetch_all_details_from_appointments_table">
 			<div class="col">
 
-				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe.formatDate('HH:mm')+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
+				<h6 class="font-weight-normal" dmx-text="type+' for about '+duration+' hours, starting from '+timeframe+' on '+date.formatDate('yyyy-MM-dd')">Fancy display heading</h6>
 				<button id="cancel_appointment" class="btn btn-outline-danger" dmx-on:click="cancel_app.load({app_id: id, start_time: timeframe, durr: timeframe.addHours(duration.toNumber()).formatDate('HH:mm:ss'), date: date})"
 					dmx-text="'Cancel'">Button</button>
 

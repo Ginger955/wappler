@@ -25,17 +25,17 @@
 </head>
 
 <body id="admin">
-	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload></dmx-serverconnect>
+	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload dmx-on:success="cars.load({},true)"></dmx-serverconnect>
 
 
-	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
-	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="service_delete_ok.show();redirect.goto('http://localhost:8100/admin')" dmx-on:error="service_delete_error.show()"></dmx-serverconnect>
+	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="loadServices.load({},true)"></dmx-serverconnect>
+	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="service_delete_ok.show();loadServices.load({},true)" dmx-on:error="service_delete_error.show()"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadServices" url="api/Manager/get_all_services" noload></dmx-serverconnect>
-	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="redirect.goto('http://localhost:8100/admin')"></dmx-serverconnect>
+	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="loadUsers.load(true)"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
-	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="service_type_added.show();redirect.goto('http://localhost:8100/admin')" dmx-on:error="service_type_add_error.show()"></dmx-serverconnect>
+	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="service_type_added.show();loadServices.load({},true)" dmx-on:error="service_type_add_error.show()"></dmx-serverconnect>
 	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
 	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
 
@@ -187,7 +187,7 @@
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
 
-			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({})" wappler-command="editContent">Load cars</button></h3>
+			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({},true)" wappler-command="editContent">Load cars</button></h3>
 		</div>
 	</div>
 

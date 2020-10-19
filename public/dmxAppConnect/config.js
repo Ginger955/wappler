@@ -847,5 +847,13 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "modelx_admin": {
+    "query": [
+      {
+        "type": "number",
+        "name": "product_id"
+      }
+    ]
   }
 });
