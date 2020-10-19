@@ -12,11 +12,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="bootstrap/4/css/bootstrap.min.css" />
 	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
-<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="modelx_admin">
-<dmx-session-manager id="session"></dmx-session-manager>
+	<dmx-value id="product"></dmx-value>
+	<dmx-serverconnect id="delete_spec" url="api/ModelAdmin/delete_specification" noload dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
+	<dmx-serverconnect id="edit_spec" noload url="api/ModelAdmin/edit_specification" dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
+
+
+	<dmx-serverconnect id="serverconnect" url="api/Data/details" dmx-param:id="query.product_id" dmx-on:success="product.setValue(serverconnect.data.query1[0].id)"></dmx-serverconnect>
+	<dmx-query-manager id="query1"></dmx-query-manager>
+	<dmx-session-manager id="session"></dmx-session-manager>
 
 
 	<div class="row">
@@ -39,9 +49,91 @@
 	<div class="container mt-3">
 		<div class="row">
 			<div class="col border-bottom">
-<h1>Fancy display heading</h1>
-</div>
+				<h3 dmx-text="serverconnect.data.query1[0].make+'&nbsp;-&nbsp;'+serverconnect.data.query1[0].model">Fancy display heading</h3>
+			</div>
 		</div>
+	</div>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col">
+				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col border-bottom">
+				<h2 class="mt-4" id="specs">Specifications</h2>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col-5">
+				<h4 class="font-weight-light" id="price" dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'">Fancy display heading</h4>
+			</div>
+			<div class="col">
+
+				<button id="edit2" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this2.value == 0`,then:{steps:{run:{action:`show_this2.setValue(1)`}}},else:{steps:{run:{action:`show_this2.setValue(0)`}}}}})">Edit</button>
+				<button id="remove2" class="btn btn-outline-danger ml-2" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<dmx-value id="show_this2" dmx-bind:value="0"></dmx-value>
+				<div class="row mt-2" dmx-show="show_this2.value == 1">
+
+					<div class="col mr-0">
+
+
+						<input id="prop_name2" name="text4" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
+						<button id="subm2" class="btn btn-outline-success mt-2">Submit</button></div>
+					<div class="ml-0 pl-0 col-6"><input id="prop_value2" name="text4" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-2 mb-2">
+			<div class="col-5">
+				<h4 id="year" class="font-weight-light" dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year">Fancy display heading</h4>
+			</div>
+			<div class="col">
+
+				<button id="edit1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this1.value == 0`,then:{steps:{run:{action:`show_this1.setValue(1)`}}},else:{steps:{run:{action:`show_this1.setValue(0)`}}}}})">Edit</button>
+				<button id="remove1" class="btn btn-outline-danger ml-2" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<dmx-value id="show_this1" dmx-bind:value="0"></dmx-value>
+				<div class="row mt-2" dmx-show="show_this1.value == 1">
+
+					<div class="col mr-0">
+
+
+						<input id="prop_name1" name="text3" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
+						<button id="subm1" class="btn btn-outline-success mt-2">Submit</button></div>
+					<div class="ml-0 pl-0 col-6"><input id="prop_value1" name="text3" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
+				</div>
+			</div>
+		</div>
+		<div class="row row-cols-2 mb-2" is="dmx-repeat" id="repeat1" dmx-bind:repeat="serverconnect.data.query2">
+
+			<div class="col-5">
+				<h4 class="font-weight-light" dmx-text="property+':&nbsp;'+value">Fancy display heading</h4>
+			</div>
+			<div class="col mb-2">
+
+				<button id="edit" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this.value == 0`,then:{steps:{run:{action:`show_this.setValue(1)`}}},else:{steps:{run:{action:`show_this.setValue(0)`}}}}})">Edit</button>
+				<button id="remove" class="btn btn-outline-danger ml-2" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<dmx-value id="show_this" dmx-bind:value="0"></dmx-value>
+				<div class="row mt-2" dmx-show="show_this.value == 1">
+
+					<div class="col mr-0">
+
+
+						<input id="prop_name" name="text1" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
+						<button id="subm" class="btn btn-outline-success mt-2" dmx-on:click="edit_spec.load({new_name: prop_name.value, for_car: id, prev_name: property, val: prop_value.value})">Submit</button></div>
+					<div class="ml-0 pl-0 col-6"><input id="prop_value" name="text2" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="container">
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row"></div>
+		<div class="row"></div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>

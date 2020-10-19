@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "prop_name"
+      },
+      {
+        "type": "text",
+        "name": "prop_value"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "specs",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "property",
+                  "field": "property",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.prop_name}}",
+                  "data": {
+                    "column": "property"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM specs\nWHERE property = :P1 /* {{$_GET.prop_name}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.prop_name}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

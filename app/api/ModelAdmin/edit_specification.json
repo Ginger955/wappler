@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "new_name"
+      },
+      {
+        "type": "number",
+        "name": "for_car"
+      },
+      {
+        "type": "text",
+        "name": "prev_name"
+      },
+      {
+        "type": "text",
+        "name": "val"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "update1",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "specs",
+                "column": "property",
+                "type": "text",
+                "value": "{{$_GET.new_name}}"
+              },
+              {
+                "table": "specs",
+                "column": "value",
+                "type": "text",
+                "value": "{{$_GET.val}}"
+              }
+            ],
+            "table": "specs",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "specs_for_car",
+                  "field": "specs_for_car",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.for_car}}",
+                  "data": {
+                    "column": "specs_for_car"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "property",
+                  "field": "property",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.prev_name}}",
+                  "data": {
+                    "column": "property"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "UPDATE specs\nSET property = :P1 /* {{$_GET.new_name}} */, value = :P2 /* {{$_GET.val}} */\nWHERE specs_for_car = :P3 /* {{$_GET.for_car}} */ AND property = :P4 /* {{$_GET.prev_name}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.new_name}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.val}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.for_car}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P4",
+                "value": "{{$_GET.prev_name}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

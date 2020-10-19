@@ -429,38 +429,6 @@
               "nullable": false
             }
           },
-          "topspeed": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "hp": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "torque": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "seats": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
           "specs_for_car": {
             "db": {
               "type": "reference",
@@ -476,6 +444,14 @@
               "maxLength": 255,
               "primary": false,
               "nullable": true
+            }
+          },
+          "value": {
+            "db": {
+              "type": "string",
+              "primary": false,
+              "nullable": true,
+              "maxLength": 255
             }
           }
         }

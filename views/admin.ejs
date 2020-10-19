@@ -199,9 +199,10 @@
 				<dmx-value id="showing" dmx-bind:value="0"></dmx-value><img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
 				<div class="card-body">
 
+
 					<h4 class="card-title" dmx-text="make+' - '+model">Card title</h4>
-					<a href="#" class="btn btn-primary">Edit&nbsp;<i class="fa fa-search-plus"></i></a>
-					<button id="bind" class="btn btn-primary style8" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to user</button>
+					<button id="btn7" class="btn btn-primary mr-3" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind" class="btn btn-primary style8"
+						dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to user</button>
 				</div>
 			</div>
 

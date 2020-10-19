@@ -16,6 +16,10 @@
       {
         "type": "text",
         "name": "author"
+      },
+      {
+        "type": "date",
+        "name": "date"
       }
     ]
   },
@@ -59,12 +63,12 @@
                 "table": "reviews",
                 "column": "date",
                 "type": "text",
-                "value": "{{NOW}}"
+                "value": "{{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}}"
               }
             ],
             "table": "reviews",
             "returning": "id",
-            "query": "INSERT INTO reviews\n(review_for_car, title, text, author, date) VALUES (:P1 /* {{$_GET.car_id}} */, :P2 /* {{$_GET.title}} */, :P3 /* {{$_GET.text}} */, :P4 /* {{$_GET.author}} */, :P5 /* {{NOW}} */)",
+            "query": "INSERT INTO reviews\n(review_for_car, title, text, author, date) VALUES (:P1 /* {{$_GET.car_id}} */, :P2 /* {{$_GET.title}} */, :P3 /* {{$_GET.text}} */, :P4 /* {{$_GET.author}} */, :P5 /* {{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -89,7 +93,7 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{NOW}}"
+                "value": "{{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}}"
               }
             ]
           }

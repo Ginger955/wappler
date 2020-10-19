@@ -118,6 +118,109 @@
         "outputType": "array"
       },
       {
+        "name": "query2",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "specs",
+                "column": "property",
+                "aggregate": ""
+              },
+              {
+                "table": "specs",
+                "column": "value"
+              },
+              {
+                "table": "cars",
+                "column": "id"
+              }
+            ],
+            "table": {
+              "name": "specs"
+            },
+            "joins": [
+              {
+                "table": "cars",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "cars",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "specs",
+                        "column": "specs_for_car"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "specs.specs_for_car",
+                  "field": "specs.specs_for_car",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "table": "specs",
+                    "column": "specs_for_car",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT specs.property, specs.value, cars.id\nFROM specs\nINNER JOIN cars ON (cars.id = specs.specs_for_car)\nWHERE specs.specs_for_car = :P1 /* {{$_GET.id}} */\nORDER BY specs.id ASC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ],
+            "orders": [
+              {
+                "table": "specs",
+                "column": "id",
+                "direction": "ASC"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "property",
+            "type": "text"
+          },
+          {
+            "name": "value",
+            "type": "text"
+          },
+          {
+            "name": "id",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
         "name": "reviews",
         "module": "dbupdater",
         "action": "custom",

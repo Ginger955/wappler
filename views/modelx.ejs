@@ -27,11 +27,13 @@
 </head>
 
 <body id="modelx" is="dmx-app">
-	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-param:author="session.data.username"
+	<dmx-datetime id="dateTime" interval="minutes"></dmx-datetime>
+
+	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="serverconnect.load({id: var.value},true)" dmx-param:author="session.data.username"
 		dmx-param:car_id="serverconnect.data.query1[0].id"></dmx-serverconnect>
 
 	<dmx-serverconnect id="post_review" url="api/insert/insert_review" noload="noload" dmx-param:id="var.value" dmx-param:author="session.data.username" dmx-param:text="text.value" dmx-param:title="title.value"
-		dmx-on:success="redirect.goto('http://localhost:8100/modelx?id='+var.value)" dmx-on:error="modalerror.show()" dmx-param:car_id="serverconnect.data.query1[0].id">
+		dmx-on:success="serverconnect.load({id: var.value},true)" dmx-on:error="modalerror.show()" dmx-param:car_id="serverconnect.data.query1[0].id" dmx-param:date="dateTime.datetime">
 	</dmx-serverconnect>
 	<dmx-value id="var" dmx-bind:value="serverconnect.data.query1[0].id"></dmx-value>
 	<div is="dmx-browser" id="redirect"></div>
@@ -64,6 +66,7 @@
 	<div class="container wappler-block mt-5">
 
 
+
 		<div class="row">
 			<div class="col-md-6 mr-xl-n2 col">
 				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid">
@@ -71,15 +74,21 @@
 
 		</div>
 
+		<div class="row">
+			<div class="col border-bottom">
+				<h2 dmx-text="'Specifications'" class="text-lg-center-font-weight-light mt-4" id="specs">Fancy display heading</h2>
+			</div>
+		</div>
 		<div class="row mt-4">
-			<div class="text-left text-body col-12">
-				<h4 dmx-text="'Specifications'" class="text-lg-center-font-weight-light" id="specs">Fancy display heading</h4>
-				<h4 dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'" class="font-weight-light text-left" id="price">Fancy display heading</h4>
-				<h4 dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year" class="font-weight-light text-left" id="year">Fancy display heading</h4>
-				<h4 class="text-left font-weight-light" id="top_speed" dmx-text="'Top speed:&nbsp;'+serverconnect.data.query2[0].topspeed+'&nbsp;km/h'">Fancy display heading</h4>
-				<h4 class="font-weight-light text-left" id="hp" dmx-text="'HP:&nbsp;'+serverconnect.data.query2[0].hp">Fancy display heading</h4>
-				<h4 class="text-xl-left font-weight-light text-left" id="torque" dmx-text="'Torque:&nbsp;'+serverconnect.data.query2[0].torque+'&nbsp;Nm'">Fancy display heading</h4>
-				<h4 class="text-lg-left font-weight-light" dmx-text="'Seats:&nbsp;'+serverconnect.data.query2[0].seats" id="seats">Fancy display heading</h4>
+			<div class="col">
+				<h4 id="price" class="font-weight-light" dmx-text="'Price:&nbsp;'+serverconnect.data.query1[0].price+'€'">Fancy display heading</h4>
+				<h4 id="year" class="font-weight-light" dmx-text="'Year:&nbsp;'+serverconnect.data.query1[0].year">Fancy display heading</h4>
+			</div>
+		</div>
+		<div class="row row-cols-1" is="dmx-repeat" id="repeat1" dmx-bind:repeat="serverconnect.data.query2">
+			<div class="text-left text-body col">
+
+				<h4 dmx-text="property+': '+value" class="font-weight-light text-left">Fancy display heading</h4>
 			</div>
 		</div>
 	</div>
@@ -112,7 +121,7 @@
 			<div class="col mt-2 border rounded-lg border-warning">
 
 
-				<p dmx-text="'Author:&nbsp;'+author+'\t\t Date:&nbsp;'+date" id="author_and_date" class="mt-2 mb-0 pb-1">Author:&nbsp;Martin Date:&nbsp;19.09.2020</p>
+				<p dmx-text="'Author:&nbsp;'+author+'\t\t Date:&nbsp;'+date.formatDate('yyyy-MM-dd HH:mm')" id="author_and_date" class="mt-2 mb-0 pb-1">Author:&nbsp;Martin Date:&nbsp;19.09.2020</p>
 				<h6 dmx-text="title" class="mt-0 mb-3 font-weight-bold">
 					Fancy display heading</h6>
 
@@ -136,7 +145,7 @@
 					</div>
 					<div class="col-5"><input id="title" name="text1" type="text" class="form-control pb-0" data-msg-required="" minlength="2"></div>
 				</div><textarea id="text" class="form-control" name="text" data-msg-required="" minlength="2"></textarea><button id="submit" class="btn btn-outline-primary mt-2 mb-2" type="submit"
-					dmx-on:click="run({condition:{if:`session.data.on.contains(\'on\')`,then:{steps:{run:{action:`post_review.load({id: var.value, author: name.value, text: text.value, title: title.value})`,name:'load_review'}}},else:{steps:[{'f7.dialog.alert':{title:'ERROR',text:'Please login to post reviews.'}},{alert:{message:'Please log in to post reviews.'}}]}}})">Post</button>
+					dmx-on:click="run({condition:{if:`session.data.on.contains(\'on\')`,then:{steps:{run:{action:`post_review.load({id: var.value, author: name.value, text: text.value, title: title.value, date: dateTime.datetime})`,name:'load_review'}}},else:{steps:[{'f7.dialog.alert':{title:'ERROR',text:'Please login to post reviews.'}},{alert:{message:'Please log in to post reviews.'}}]}}})">Post</button>
 			</div>
 		</div>
 		<div class="row mt-4 ss">
@@ -155,7 +164,6 @@
 		</div>
 		<div class="row mt-1">
 			<div class="col">
-				<dmx-google-maps id="maps1"></dmx-google-maps>
 			</div>
 		</div>
 	</div>

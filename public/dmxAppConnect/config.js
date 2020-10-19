@@ -206,6 +206,10 @@ dmx.config({
       {
         "type": "text",
         "name": "username"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ],
     "gallery_display": {
@@ -307,51 +311,11 @@ dmx.config({
     "repeat1": {
       "meta": [
         {
-          "name": "id",
-          "type": "number"
-        },
-        {
-          "name": "text",
+          "name": "property",
           "type": "text"
         },
         {
-          "name": "author",
-          "type": "text"
-        },
-        {
-          "name": "review_for",
-          "type": "number"
-        },
-        {
-          "name": "date",
-          "type": "text"
-        },
-        {
-          "name": "title",
-          "type": "text"
-        },
-        {
-          "name": "make",
-          "type": "text"
-        },
-        {
-          "name": "model",
-          "type": "text"
-        },
-        {
-          "name": "year",
-          "type": "number"
-        },
-        {
-          "name": "price",
-          "type": "text"
-        },
-        {
-          "name": "image",
-          "type": "text"
-        },
-        {
-          "name": "class",
+          "name": "value",
           "type": "text"
         }
       ],
@@ -853,6 +817,37 @@ dmx.config({
       {
         "type": "number",
         "name": "product_id"
+      }
+    ],
+    "repeat1": {
+      "meta": [
+        {
+          "name": "property",
+          "type": "text"
+        },
+        {
+          "name": "value",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "on"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ]
   }
