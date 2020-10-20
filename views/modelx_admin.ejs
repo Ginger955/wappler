@@ -25,7 +25,7 @@
 </head>
 
 <body is="dmx-app" id="modelx_admin">
-<script is="dmx-flow" id="flow" type="text/dmx-flow"></script>
+	<script is="dmx-flow" id="flow" type="text/dmx-flow"></script>
 	<dmx-serverconnect id="insert_image" noload url="api/ModelAdmin/insert_img" dmx-on:success="notifies.success('Image added');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to add image')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="remove_image" url="api/ModelAdmin/remove_img" noload dmx-on:success="notifies.success('Image deleted');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Error deleting image')">
