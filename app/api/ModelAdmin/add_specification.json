@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "spec_name"
+      },
+      {
+        "type": "text",
+        "name": "spec_value"
+      },
+      {
+        "type": "number",
+        "name": "for_car"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "specs",
+                "column": "specs_for_car",
+                "type": "text",
+                "value": "{{$_GET.for_car}}"
+              },
+              {
+                "table": "specs",
+                "column": "property",
+                "type": "text",
+                "value": "{{$_GET.spec_name}}"
+              },
+              {
+                "table": "specs",
+                "column": "value",
+                "type": "text",
+                "value": "{{$_GET.spec_value}}"
+              }
+            ],
+            "table": "specs",
+            "returning": "id",
+            "query": "INSERT INTO specs\n(specs_for_car, property, value) VALUES (:P1 /* {{$_GET.for_car}} */, :P2 /* {{$_GET.spec_name}} */, :P3 /* {{$_GET.spec_value}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.for_car}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.spec_name}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_GET.spec_value}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

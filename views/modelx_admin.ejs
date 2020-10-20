@@ -19,6 +19,7 @@
 </head>
 
 <body is="dmx-app" id="modelx_admin">
+	<dmx-serverconnect id="add_spec" url="api/ModelAdmin/add_specification" noload dmx-on:success="serverconnect.load({id: product.value},true);var1.setValue(0)"></dmx-serverconnect>
 	<dmx-value id="product"></dmx-value>
 	<dmx-serverconnect id="delete_spec" url="api/ModelAdmin/delete_specification" noload dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
 	<dmx-serverconnect id="edit_spec" noload url="api/ModelAdmin/edit_specification" dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
@@ -54,9 +55,10 @@
 		</div>
 	</div>
 	<div class="container mt-5">
+
 		<div class="row">
 			<div class="col">
-				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid">
+				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid" width="500">
 			</div>
 		</div>
 		<div class="row">
@@ -119,17 +121,49 @@
 					<div class="col mr-0">
 
 
-						<input id="prop_name" name="text1" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
-						<button id="subm" class="btn btn-outline-success mt-2" dmx-on:click="edit_spec.load({new_name: prop_name.value, for_car: id, prev_name: property, val: prop_value.value})">Submit</button></div>
-					<div class="ml-0 pl-0 col-6"><input id="prop_value" name="text2" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
+						<input id="prop_name" name="text1" type="text" class="form-control" placeholder="Spec. name" required="" dmx-bind:value="property" data-msg-lettersonly="">
+						<button id="subm" class="btn btn-outline-success mt-2" dmx-on:click="edit_spec.load({new_name: prop_name.value, for_car: id, prev_name: property, val: prop_value.value});show_this.setValue(0)">Submit</button></div>
+					<div class="ml-0 pl-0 col-6"><input id="prop_value" name="text2" type="text" class="form-control" placeholder="Spec. value" required="" data-msg-number="" dmx-bind:value="value"></div>
 				</div>
 			</div>
 
 		</div>
+		<div class="row mb-3 pr-0">
+			<div class="col-12">
+
+				<dmx-value id="var1" dmx-bind:value="0"></dmx-value>
+				<button id="btn1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`var1.value == 0`,then:{steps:{run:{action:`var1.setValue(1)`}}},else:{steps:{run:{action:`var1.setValue(0)`}}}}})">Add new</button>
+				<div class="row mt-2" dmx-show="var1.value == 1">
+
+					<div class="col-2">
+
+						<input id="text1" name="text1" type="text" class="form-control" placeholder="Spec. name" required="">
+						<button id="btn2" class="btn mt-2 btn-outline-success" dmx-on:click="add_spec.load({spec_name: text1.value, spec_value: text2.value, for_car: product.value})">Submit</button></div>
+					<div class="col-2 ml-0 pl-0">
+						<input id="text2" name="text2" type="text" class="form-control" placeholder="Spec. value" required="">
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="container">
-		<div class="row"></div>
-		<div class="row"></div>
+		<div class="row">
+			<div class="col border-bottom mb-3">
+				<h2 class="mb-3">Gallery</h2>
+			</div>
+		</div>
+		<div class="row row-cols-2" is="dmx-repeat" id="gallery" dmx-bind:repeat="serverconnect.data.gallery">
+			<div class="col">
+
+				<img dmx-bind:src="images" class="img-fluid">
+			<div class="row mt-2">
+<div class="col">
+
+<button id="btn3" class="btn btn-outline-primary">Edit</button>
+<button id="btn4" class="btn btn-outline-danger">Remove
+</button></div>
+</div></div>
+		</div>
 		<div class="row"></div>
 		<div class="row"></div>
 		<div class="row"></div>

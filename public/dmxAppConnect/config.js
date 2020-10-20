@@ -849,6 +849,15 @@ dmx.config({
         "type": "number",
         "name": "user_id"
       }
-    ]
+    ],
+    "repeat2": {
+      "meta": [
+        {
+          "name": "images",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });
