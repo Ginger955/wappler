@@ -22,20 +22,24 @@
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 	<script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
 	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 </head>
 
 <body id="admin">
-	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload dmx-on:success="cars.load({},true)"></dmx-serverconnect>
+
+	<dmx-notifications id="notifies"></dmx-notifications>
+	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload dmx-on:success="cars.load({},true);notifies.success('Product bound to user')" dmx-on:error="notifies.danger('Failed to bind product')"></dmx-serverconnect>
 
 
-	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="loadServices.load({},true)"></dmx-serverconnect>
-	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="service_delete_ok.show();loadServices.load({},true)" dmx-on:error="service_delete_error.show()"></dmx-serverconnect>
+	<dmx-serverconnect id="updateService" url="api/Manager/edit_service" noload dmx-on:success="loadServices.load({},true);notifies.success('Service updated')"></dmx-serverconnect>
+	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="loadServices.load({},true);notifies.success('Service deleted')" dmx-on:error="notifies.danger('Failed to delete service')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadServices" url="api/Manager/get_all_services" noload></dmx-serverconnect>
-	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="loadUsers.load(true)"></dmx-serverconnect>
+	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="loadUsers.load({: true});notifies.success('User role changed')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
-	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="service_type_added.show();loadServices.load({},true)" dmx-on:error="service_type_add_error.show()"></dmx-serverconnect>
+	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="loadServices.load({},true);notifies.success('Service added')" dmx-on:error="notifies.danger('Failed to add service')"></dmx-serverconnect>
 	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
 	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
 
@@ -215,6 +219,11 @@
 					<button id="btn6" class="btn btn-outline-success" dmx-on:click="bindProductToUser.load({product_id: id, user_id: text1.value})">Submit</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row mt-2 pl-5">
+		<div class="col">
+			<button id="btn8" class="btn btn-outline-dark">Add new product</button>
 		</div>
 	</div>
 	<div class="container wappler-block pt-3 pb-3">

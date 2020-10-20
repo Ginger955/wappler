@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "img"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "gallery",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "images",
+                  "field": "images",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.img}}",
+                  "data": {
+                    "column": "images"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "image_for_car",
+                  "field": "image_for_car",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "column": "image_for_car"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM gallery\nWHERE images = :P1 /* {{$_GET.img}} */ AND image_for_car = :P2 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.img}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

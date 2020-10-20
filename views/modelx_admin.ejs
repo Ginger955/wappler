@@ -25,16 +25,18 @@
 </head>
 
 <body is="dmx-app" id="modelx_admin">
-	<dmx-value id="to_copy" dmx-bind:value="'none'"></dmx-value>
-	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
-		<p>This is a nice alert!</p>
-	</div>
+	<dmx-serverconnect id="insert_image" noload url="api/ModelAdmin/insert_img" dmx-on:success="notifies.success('Image added');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to add image')"></dmx-serverconnect>
+
+	<dmx-serverconnect id="remove_image" url="api/ModelAdmin/remove_img" noload dmx-on:success="notifies.success('Image deleted');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Error deleting image')">
+	</dmx-serverconnect>
+	<dmx-serverconnect id="edit_image" noload url="api/ModelAdmin/edit_img" dmx-on:success="notifies.success('Image updated');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to edit image')"></dmx-serverconnect>
+	<dmx-value id="to_copy" dmx-bind:value="'none'" dmx-on:updated="run([{runJS:{function:'copyToClipboard',args:[]}},{run:{action:`notifies.success(\'Path copied to clipboard\')`}}])"></dmx-value>
 	<dmx-serverconnect id="list_folder" noload url="api/ModelAdmin/load_folder_images"></dmx-serverconnect>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
-	<dmx-serverconnect id="add_spec" url="api/ModelAdmin/add_specification" noload dmx-on:success="serverconnect.load({id: product.value},true);var1.setValue(0)"></dmx-serverconnect>
+	<dmx-serverconnect id="add_spec" url="api/ModelAdmin/add_specification" noload dmx-on:success="serverconnect.load({id: product.value},true);var1.setValue(0);notifies.success('Property added')"></dmx-serverconnect>
 	<dmx-value id="product"></dmx-value>
-	<dmx-serverconnect id="delete_spec" url="api/ModelAdmin/delete_specification" noload dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
-	<dmx-serverconnect id="edit_spec" noload url="api/ModelAdmin/edit_specification" dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
+	<dmx-serverconnect id="delete_spec" url="api/ModelAdmin/delete_specification" noload dmx-on:success="serverconnect.load({id: product.value},true);notifies.success('Property deleted')"></dmx-serverconnect>
+	<dmx-serverconnect id="edit_spec" noload url="api/ModelAdmin/edit_specification" dmx-on:success="serverconnect.load({id: product.value},true);notifies.success('Property changed')"></dmx-serverconnect>
 
 
 	<dmx-serverconnect id="serverconnect" url="api/Data/details" dmx-param:id="query.product_id" dmx-on:success="product.setValue(serverconnect.data.query1[0].id)"></dmx-serverconnect>
@@ -174,15 +176,29 @@
 
 
 						<button id="btn3" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`var2.value == 0`,then:{steps:{run:{action:`var2.setValue(1)`}}},else:{steps:{run:{action:`var2.setValue(0)`}}}}})">Edit</button>
-						<button id="btn4" class="btn btn-outline-danger ml-3">Remove
+						<button id="btn4" class="btn btn-outline-danger ml-3" dmx-on:click="remove_image.load({img: images, id: product.value});serverconnect.load({id: product.value},true)">Remove
 						</button>
 						<div class="row mt-2" dmx-show="var2.value == 1">
 							<div class="col-8">
 
 								<input id="text3" name="text3" type="text" class="form-control" placeholder="Image source (/assets/img/[image])">
-								<button id="btn5" class="btn mt-2 btn-outline-success">Submit</button></div>
+								<button id="btn5" class="btn mt-2 btn-outline-success" dmx-on:click="edit_image.load({img: images, new_img: text3.value, prod_id: product.value});serverconnect.load({id: product.value},true)">Submit</button></div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<dmx-value id="var5" dmx-bind:value="0"></dmx-value>
+
+				<button id="btn9" class="btn btn-outline-dark" dmx-on:click="run({condition:{if:`var5.value == 0`,then:{steps:{run:{action:`var5.setValue(1)`}}},else:{steps:{run:{action:`var5.setValue(0)`}}}}})">Add new image</button>
+				<div class="row mt-2" dmx-show="var5.value == 1">
+					<div class="col-4">
+
+						<input id="text4" name="text4" type="text" class="form-control" placeholder="Image source (/assets/img/[image])">
+						<button id="btn10" class="btn btn-outline-success mt-2"
+							dmx-on:click="insert_image.load({img_source: text4.value, id: product.value});serverconnect.load({id: product.value},true);var5.setValue(0);text4.setValue('&nbsp;')">Submit</button></div>
 				</div>
 			</div>
 		</div>
@@ -193,11 +209,13 @@
 
 
 
-				<button id="btn6" class="btn btn-outline-info mb-2" dmx-on:click="run({condition:{if:`var3.value == 0`,then:{steps:{run:{action:`var3.setValue(1)`}}},else:{steps:{run:{action:`var3.setValue(0)`}}}}})">Upload new image(s)</button>
+				<button id="btn6" class="btn btn-outline-info mb-2" dmx-on:click="run({condition:{if:`var3.value == 0`,then:{steps:{run:{action:`var3.setValue(1)`}}},else:{steps:{run:{action:`var3.setValue(0)`}}}}})">Upload new image(s) to
+					folder</button>
 				<div class="row" dmx-show="var3.value == 1">
 					<div class="col-12">
 						<form id="form1" method="post" is="dmx-serverconnect-form" action="api/ModelAdmin/upload_image" dmx-on:success="notifies.success('Image uploaded');form1.reset();list_folder.load(true)"><input type="file" class="form-control"
-								name="input[]" aria-describedby="input1_help" is="dmx-dropzone" multiple="true"><button id="btn7" class="btn mt-2 btn-outline-dark" type="submit">Upload</button></form>
+								name="input[]" aria-describedby="input1_help" is="dmx-dropzone" multiple="true" required="" data-rule-minfiles="1" data-msg-minfiles="Please select at least {1} files."><button id="btn7"
+								class="btn mt-2 btn-outline-dark" type="submit">Upload</button></form>
 
 					</div>
 				</div>
@@ -224,8 +242,7 @@
 								<tbody is="dmx-repeat" dmx-generator="bs4table" dmx-bind:repeat="list_folder.data.folderList1" id="tableRepeat1">
 									<tr>
 										<td dmx-text="name"></td>
-										<td dmx-text="path" dmx-on:click="run([{runJS:{function:'copyToClipboard',args:['`var5.value`']}},{run:{action:`alert1.show();alert1.setTextContent(\'clicked\')`}}])">
-											<dmx-value id="var5" dmx-bind:value="path"></dmx-value>
+										<td dmx-text="path" dmx-on:click="to_copy.setValue(path)">
 										</td>
 										<td dmx-text="created.formatDate('yyyy-MM-dd HH:mm')"></td>
 									</tr>
@@ -242,9 +259,18 @@
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 	<script>
-		function copyToClipboard(data){
-		document.execCommand("copy", true, data);
-		alert("Copied data = ", data);
+		function copyToClipboard(){
+		var a = dmx.parse('to_copy.value');
+		// console.log(a);
+		var textArea = document.createElement("textarea");
+		textArea.value = a.slice(7);
+		document.body.appendChild(textArea);
+		textArea.select();
+		// console.log("Selected text area value", textArea.value);
+		var ok = document.execCommand('copy');
+		document.body.removeChild(textArea);
+		// console.log("Removed text area");
+		// console.log("copied to clip = ", ok);
 	}
 	</script>
 </body>
