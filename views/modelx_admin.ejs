@@ -16,9 +16,21 @@
 	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxDropzone/dmxDropzone.css" />
+	<script src="dmxAppConnect/dmxDropzone/dmxDropzone.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxBootstrap4TableGenerator/dmxBootstrap4TableGenerator.css" />
+	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="modelx_admin">
+	<dmx-value id="to_copy" dmx-bind:value="'none'"></dmx-value>
+	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
+		<p>This is a nice alert!</p>
+	</div>
+	<dmx-serverconnect id="list_folder" noload url="api/ModelAdmin/load_folder_images"></dmx-serverconnect>
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<dmx-serverconnect id="add_spec" url="api/ModelAdmin/add_specification" noload dmx-on:success="serverconnect.load({id: product.value},true);var1.setValue(0)"></dmx-serverconnect>
 	<dmx-value id="product"></dmx-value>
 	<dmx-serverconnect id="delete_spec" url="api/ModelAdmin/delete_specification" noload dmx-on:success="serverconnect.load({id: product.value},true)"></dmx-serverconnect>
@@ -122,7 +134,7 @@
 
 
 						<input id="prop_name" name="text1" type="text" class="form-control" placeholder="Spec. name" required="" dmx-bind:value="property" data-msg-lettersonly="">
-						<button id="subm" class="btn btn-outline-success mt-2" dmx-on:click="edit_spec.load({new_name: prop_name.value, for_car: id, prev_name: property, val: prop_value.value});show_this.setValue(0)">Submit</button></div>
+						<button id="subm" class="btn mt-2 btn-outline-success" dmx-on:click="edit_spec.load({new_name: prop_name.value, for_car: id, prev_name: property, val: prop_value.value});show_this.setValue(0)">Submit</button></div>
 					<div class="ml-0 pl-0 col-6"><input id="prop_value" name="text2" type="text" class="form-control" placeholder="Spec. value" required="" data-msg-number="" dmx-bind:value="value"></div>
 				</div>
 			</div>
@@ -156,21 +168,85 @@
 			<div class="col">
 
 				<img dmx-bind:src="images" class="img-fluid">
-			<div class="row mt-2">
-<div class="col">
+				<div class="row mt-2">
+					<div class="col">
+						<dmx-value id="var2" dmx-bind:value="0"></dmx-value>
 
-<button id="btn3" class="btn btn-outline-primary">Edit</button>
-<button id="btn4" class="btn btn-outline-danger">Remove
-</button></div>
-</div></div>
+
+						<button id="btn3" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`var2.value == 0`,then:{steps:{run:{action:`var2.setValue(1)`}}},else:{steps:{run:{action:`var2.setValue(0)`}}}}})">Edit</button>
+						<button id="btn4" class="btn btn-outline-danger ml-3">Remove
+						</button>
+						<div class="row mt-2" dmx-show="var2.value == 1">
+							<div class="col-8">
+
+								<input id="text3" name="text3" type="text" class="form-control" placeholder="Image source (/assets/img/[image])">
+								<button id="btn5" class="btn mt-2 btn-outline-success">Submit</button></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="row"></div>
-		<div class="row"></div>
+		<div class="row mt-2">
+
+			<div class="col-6">
+				<dmx-value id="var3" dmx-bind:value="0"></dmx-value>
+
+
+
+				<button id="btn6" class="btn btn-outline-info mb-2" dmx-on:click="run({condition:{if:`var3.value == 0`,then:{steps:{run:{action:`var3.setValue(1)`}}},else:{steps:{run:{action:`var3.setValue(0)`}}}}})">Upload new image(s)</button>
+				<div class="row" dmx-show="var3.value == 1">
+					<div class="col-12">
+						<form id="form1" method="post" is="dmx-serverconnect-form" action="api/ModelAdmin/upload_image" dmx-on:success="notifies.success('Image uploaded');form1.reset();list_folder.load(true)"><input type="file" class="form-control"
+								name="input[]" aria-describedby="input1_help" is="dmx-dropzone" multiple="true"><button id="btn7" class="btn mt-2 btn-outline-dark" type="submit">Upload</button></form>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<dmx-value id="var4" dmx-bind:value="0"></dmx-value>
+
+				<button id="btn8" class="btn btn-outline-info"
+					dmx-on:click="run({condition:{if:`var4.value == 0`,then:{steps:[{run:{action:`var4.setValue(1)`}},{run:{action:`list_folder.load(true)`}}]},else:{steps:{run:{action:`var4.setValue(0)`}}}}})">Browse images</button>
+				<div class="row mt-2" dmx-show="var4.value == 1">
+					<div class="col">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Path</th>
+										<th>Created</th>
+									</tr>
+								</thead>
+								<tbody is="dmx-repeat" dmx-generator="bs4table" dmx-bind:repeat="list_folder.data.folderList1" id="tableRepeat1">
+									<tr>
+										<td dmx-text="name"></td>
+										<td dmx-text="path" dmx-on:click="run([{runJS:{function:'copyToClipboard',args:['`var5.value`']}},{run:{action:`alert1.show();alert1.setTextContent(\'clicked\')`}}])">
+											<dmx-value id="var5" dmx-bind:value="path"></dmx-value>
+										</td>
+										<td dmx-text="created.formatDate('yyyy-MM-dd HH:mm')"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row"></div>
 		<div class="row"></div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+	<script>
+		function copyToClipboard(data){
+		document.execCommand("copy", true, data);
+		alert("Copied data = ", data);
+	}
+	</script>
 </body>
 
 </html>

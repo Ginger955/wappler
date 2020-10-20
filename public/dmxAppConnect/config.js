@@ -858,6 +858,10 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "var5": {
+      "meta": null,
+      "outputType": "text"
     }
   }
 });
