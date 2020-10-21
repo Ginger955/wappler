@@ -28,6 +28,7 @@
 
 <body id="admin">
 
+
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload dmx-on:success="cars.load({},true);notifies.success('Product bound to user')" dmx-on:error="notifies.danger('Failed to bind product')"></dmx-serverconnect>
 
@@ -217,7 +218,7 @@
 					<input id="text1" name="text1" type="number" class="form-control" placeholder="Enter user id" required="" data-rule-number="">
 				</div>
 				<div class="col">
-					<button id="btn6" class="btn btn-outline-success" dmx-on:click="bindProductToUser.load({product_id: id, user_id: text1.value})">Submit</button>
+					<button id="btn6" class="btn btn-outline-success" dmx-on:click="bindProductToUser.load({product_id: id, user_id: text1.value});showing.setValue(0);text1.setValue(0)">Submit</button>
 				</div>
 			</div>
 		</div>
@@ -225,6 +226,11 @@
 	<div class="row mt-2 pl-5">
 		<div class="col">
 			<button id="btn8" class="btn btn-outline-dark">Add new product</button>
+		</div>
+	</div>
+	<div class="row mt-2 pl-5">
+		<div class="col">
+			<h3 class="font-weight-light">Manage service hours</h3>
 		</div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>

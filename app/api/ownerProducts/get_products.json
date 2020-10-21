@@ -17,12 +17,12 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT cars.image, cars.id\nFROM cars, owned_products\nWHERE owned_products.car_id = cars.id AND owned_products.owned_by = :P1",
+            "query": "SELECT DISTINCT cars.image, cars.id, cars.make, cars.model\nFROM cars, owned_products\nWHERE owned_products.car_id = cars.id AND owned_products.owned_by = :P1",
             "params": [
               {
                 "name": ":P1",
                 "value": "{{$_GET.user_id}}",
-                "test": "33"
+                "test": "42"
               }
             ]
           }
@@ -36,6 +36,14 @@
           {
             "name": "id",
             "type": "number"
+          },
+          {
+            "name": "make",
+            "type": "text"
+          },
+          {
+            "name": "model",
+            "type": "text"
           }
         ],
         "outputType": "array"

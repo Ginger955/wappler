@@ -36,6 +36,10 @@
 </head>
 
 <body is="dmx-app" id="service">
+	<script is="dmx-flow" id="edit_timeFrames" type="text/dmx-flow">{
+  runJS: {function: "removeTimeframe"}
+}</script>
+	<dmx-value id="timeS"></dmx-value>
 	<dmx-value id="serv_hour_id" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 	<dmx-value id="startTime" dmx-bind:value="'00:00:00'" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 
@@ -56,7 +60,8 @@
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
 	<dmx-value id="date"></dmx-value>
-	<dmx-serverconnect id="get_available_timeframes" noload url="api/Service/get_available_timeframes" dmx-param:date="date.value"></dmx-serverconnect>
+	<dmx-serverconnect id="get_available_timeframes" noload url="api/Service/get_available_timeframes" dmx-param:date="date.value" dmx-on:success="timeS.setValue(get_available_timeframes.data.available_timeframes);edit_timeFrames.run()">
+	</dmx-serverconnect>
 	<dmx-serverconnect id="service_types" url="api/Service/get_service_types"></dmx-serverconnect>
 
 
@@ -81,10 +86,10 @@
 	</div>
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<button id="models" class="btn btn-sm ok flex-grow-1"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
-		<button id="service" class="btn btn-sm ok flex-grow-1"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="servicE" class="btn btn-sm ok flex-grow-1"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
 		<button id="login" class="btn btn-sm ok flex-grow-1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;</b><i class="fa fa-sign-in"></i></button>
 		<button id="account" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')"><b>My Account&nbsp;</b><i class="fa fa-user"></i></button>
-		<button id="logout" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+		<button id="logouT" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
 	</nav>
 	<div class="row mt-2">
 		<div class="col border-bottom">
@@ -92,15 +97,17 @@
 		</div>
 	</div>
 	<div class="row row-cols-3 mt-2 mb-4 pl-0" is="dmx-repeat" id="products" dmx-bind:repeat="serverconnect.data.products">
-		<div class="col pl-2">
+		<div class="col ml-2">
+
 			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
 			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>
 			<img class="img-fluid some" dmx-bind:src="image" dmx-on:click="selected_vehicle.setValue(id);hide_type.setValue(false)">
+			<h5 dmx-text="make+' - '+model">Fancy display heading</h5>
 		</div>
 	</div>
 
 
-	<div class="container mt-4" id="options" dmx-show="hide_type.value==false">
+	<div class="container mt-4" id="options">
 
 
 		<div class="row" id="serv_type">
@@ -150,7 +157,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container mt-3" id="calend" dmx-show="hide_calendar.value==false">
+	<div class="container mt-3" id="calend">
 		<div class="row" id="cal">
 			<div class="col">
 				<h3 class="ok23 mb-4" id="service_title">Service date</h3>
@@ -165,7 +172,7 @@
 		</div>
 	</div>
 
-	<div class="container mt-4" id="times" dmx-show="hide_duration.value==false">
+	<div class="container mt-4" id="times">
 
 		<div class="row" id="serv_durr">
 			<div class="col">
@@ -179,7 +186,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container mt-4" id="subb" dmx-show="hide_submit.value==false">
+	<div class="container mt-4" id="subb">
 		<div class="row text-left" id="sub">
 			<div class="col">
 				<h1 dmx-text="'End time:&nbsp;'+timeframes.value.addHours(total_duration.value)" class="inv">Fancy display heading</h1>
@@ -220,6 +227,72 @@
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+	<script>
+		function removeTimeframe(){
+
+		console.log("starting");
+		var timeFrames = dmx.parse('timeS.value');
+		var duration = dmx.parse('total_duration.value');
+		/*
+		0: Object { timeframe: "08:00:00" }
+		1: Object { timeframe: "09:00:00" }
+		2: Object { timeframe: "12:00:00" }
+		3: Object { timeframe: "13:00:00" }
+		4: Object { timeframe: "14:00:00" }
+		5: Object { timeframe: "15:00:00" }
+		*/
+		var parsedHours = [];
+		var ok = [];
+		
+		for(var i = 0; i < timeFrames.length; i++){
+			if(timeFrames[i].timeframe.slice(0,1) === "0"){
+				parsedHours.push(timeFrames[i].timeframe.slice(1, 2));
+			} else {
+				parsedHours.push(timeFrames[i].timeframe.slice(0, 2));
+			}
+		}
+		console.log('parsedHours = ', parsedHours, duration);
+
+		var result = parsedHours;
+
+		for(var i = 0; i < parsedHours.length; i++){
+
+			var endTime = parseInt(parsedHours[i]) + duration;
+			var prevFine = 0;
+			console.log('endTime for', parsedHours[i],' = ', endTime);
+			for(var j = 0; j < parsedHours.length; j++){
+
+				var current = parseInt(parsedHours[j]);
+				var next = current + 1;//not used for now;
+				// console.log('next = ', next);
+
+				if(missingTimes(current, parsedHours, endTime)){
+					console.log('deleting ', result.indexOf(current));
+					result.splice(result.indexOf(current), 1);
+					console.log('result = ', result);
+				} else {
+					break;
+				}
+			} 
+		}
+
+		console.log('final result = ', result);
+
+	}
+
+	function missingTimes(startTime, parsedTimes, endTime){
+		console.log('loop from', startTime, 'to', endTime);
+		for(var i = startTime; i <= endTime; i++){
+			if(parsedTimes.indexOf(i) == -1){
+				console.log('true for',i);
+				return true;
+			}
+			console.log('skipped', i);
+		}
+		console.log('false for',startTime);
+		return false;
+	}
+	</script>
 </body>
 
 </html>
