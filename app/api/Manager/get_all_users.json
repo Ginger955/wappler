@@ -9,7 +9,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT id, email, username, role\nFROM users",
+            "query": "SELECT id, email, username, role\nFROM users\nORDER BY id ASC",
             "params": []
           }
         },

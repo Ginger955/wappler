@@ -21,7 +21,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT service_types.rev_type, service_duration.duration\nFROM service_types\nINNER JOIN service_duration ON (service_duration.service_type_id = service_types.id)",
+            "query": "SELECT service_types.rev_type, service_duration.duration\nFROM service_types\nINNER JOIN service_duration ON (service_duration.service_type_id = service_types.id)\nORDER BY service_types.id ASC",
             "params": []
           }
         },

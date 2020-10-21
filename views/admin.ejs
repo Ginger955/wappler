@@ -28,7 +28,7 @@
 
 <body id="admin">
 
-	<dmx-notifications id="notifies"></dmx-notifications>
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<dmx-serverconnect id="bindProductToUser" url="api/Manager/bind_product" noload dmx-on:success="cars.load({},true);notifies.success('Product bound to user')" dmx-on:error="notifies.danger('Failed to bind product')"></dmx-serverconnect>
 
 
@@ -36,7 +36,7 @@
 	<dmx-serverconnect id="deleteService" noload url="api/Manager/delete_service" dmx-on:success="loadServices.load({},true);notifies.success('Service deleted')" dmx-on:error="notifies.danger('Failed to delete service')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadServices" url="api/Manager/get_all_services" noload></dmx-serverconnect>
-	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="loadUsers.load({: true});notifies.success('User role changed')"></dmx-serverconnect>
+	<dmx-serverconnect id="changeUserRole" url="api/Manager/change_user_role" noload dmx-on:success="notifies.success('User role changed');loadUsers.load(true)"></dmx-serverconnect>
 
 	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
 	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="loadServices.load({},true);notifies.success('Service added')" dmx-on:error="notifies.danger('Failed to add service')"></dmx-serverconnect>
@@ -162,11 +162,12 @@
 
 				<div class="col-6">
 
-					<input id="service_name_edit" name="text1" type="text" class="form-control" placeholder="Service name" required="">
-					<button id="submit_service_edit" class="btn btn-outline-success mt-2 mb-0" dmx-on:click="updateService.load({name: rev_type, new_name: service_name_edit.value, new_duration: service_duration_edit.value})">Submit</button></div>
+					<input id="service_name_edit" name="text1" type="text" class="form-control" placeholder="Service name" required="" dmx-bind:value="rev_type">
+					<button id="submit_service_edit" class="btn btn-outline-success mt-2 mb-0"
+						dmx-on:click="updateService.load({name: rev_type, new_name: service_name_edit.value, new_duration: service_duration_edit.value});show_popup_editing.setValue(0)">Submit</button></div>
 				<div class="col-4 pl-0">
 
-					<input id="service_duration_edit" name="text1" type="number" class="form-control" placeholder="Duration" required="" data-rule-number=""></div>
+					<input id="service_duration_edit" name="text1" type="number" class="form-control" placeholder="Duration" required="" data-rule-number="" dmx-bind:value="duration"></div>
 			</div>
 		</div>
 	</div>
@@ -175,13 +176,13 @@
 			<dmx-value id="show_add_service" dmx-bind:value="0"></dmx-value>
 
 
-			<button id="add_new_service" class="btn btn-outline-primary" wappler-command="editContent"
+			<button id="add_new_service" class="btn btn-outline-dark" wappler-command="editContent"
 				dmx-on:click="run({condition:{if:`show_add_service.value==0`,then:{steps:{run:{action:`show_add_service.setValue(1)`}}},else:{steps:{run:{action:`show_add_service.setValue(0)`}}}}})">Add new</button>
 			<div class="row mt-1" dmx-show="show_add_service.value==1">
 				<div class="col-3">
 
 					<input id="add_service_name" name="text1" type="text" class="form-control mt-2" placeholder="Service name" required="">
-					<button id="btn5" class="btn mt-2 btn-outline-success" dmx-on:click="add_service_type.load({type_duration: add_service_duration.value, type_name: add_service_name.value})">Submit</button></div>
+					<button id="btn5" class="btn mt-2 btn-outline-success" dmx-on:click="add_service_type.load({type_duration: add_service_duration.value, type_name: add_service_name.value});show_add_service.setValue(0)">Submit</button></div>
 				<div class="col-2 pl-0">
 					<input id="add_service_duration" name="text1" type="number" class="form-control mt-2" placeholder="Duration" required="" data-rule-number="">
 				</div>
@@ -224,66 +225,6 @@
 	<div class="row mt-2 pl-5">
 		<div class="col">
 			<button id="btn8" class="btn btn-outline-dark">Add new product</button>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="service_type_added" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-success"><i class="fa fa-check"></i></p>
-						<h4 class="text-center font-weight-light">Service has been added!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="service_type_add_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Could not add the service!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="service_delete_ok" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-success"><i class="fa fa-check"></i></p>
-						<h4 class="text-center font-weight-light">Service has been deleted!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3">
-		<div class="modal" id="service_delete_error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Could not delete the service! Please try again</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>

@@ -227,7 +227,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "SELECT reviews.title, reviews.text, reviews.author, reviews.date\nFROM reviews\nWHERE reviews.review_for_car = :P1",
+            "query": "SELECT reviews.title, reviews.text, reviews.author, reviews.date, reviews.id\nFROM reviews\nWHERE reviews.review_for_car = :P1",
             "params": [
               {
                 "name": ":P1",
@@ -254,6 +254,10 @@
           {
             "name": "date",
             "type": "text"
+          },
+          {
+            "name": "id",
+            "type": "number"
           }
         ],
         "outputType": "array"

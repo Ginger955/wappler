@@ -8,6 +8,14 @@
       {
         "type": "number",
         "name": "car_id"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "number",
+        "name": "rev_id"
       }
     ]
   },
@@ -47,12 +55,34 @@
                     "column": "author"
                   },
                   "operation": "="
+                },
+                {
+                  "id": "by_user",
+                  "field": "by_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.user_id}}",
+                  "data": {
+                    "column": "by_user"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.rev_id}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
                 }
               ],
               "conditional": null,
               "valid": true
             },
-            "query": "DELETE\nFROM reviews\nWHERE review_for_car = :P1 /* {{$_GET.car_id}} */ AND author = :P2 /* {{$_GET.author}} */",
+            "query": "DELETE\nFROM reviews\nWHERE review_for_car = :P1 /* {{$_GET.car_id}} */ AND author = :P2 /* {{$_GET.author}} */ AND by_user = :P3 /* {{$_GET.user_id}} */ AND id = :P4 /* {{$_GET.rev_id}} */",
             "params": [
               {
                 "operator": "equal",
@@ -65,6 +95,18 @@
                 "type": "expression",
                 "name": ":P2",
                 "value": "{{$_GET.author}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.user_id}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P4",
+                "value": "{{$_GET.rev_id}}"
               }
             ]
           }

@@ -193,6 +193,15 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "by_user": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "users"
+            }
           }
         }
       },

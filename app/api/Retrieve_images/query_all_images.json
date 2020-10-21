@@ -56,8 +56,15 @@
               "name": "cars"
             },
             "joins": [],
-            "query": "SELECT id, make, model, year, price, image, class\nFROM cars",
-            "params": []
+            "query": "SELECT id, make, model, year, price, image, class\nFROM cars\nORDER BY id ASC",
+            "params": [],
+            "orders": [
+              {
+                "table": "cars",
+                "column": "id",
+                "direction": "ASC"
+              }
+            ]
           }
         },
         "output": true,

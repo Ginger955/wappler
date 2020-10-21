@@ -20,6 +20,10 @@
       {
         "type": "date",
         "name": "date"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
       }
     ]
   },
@@ -63,12 +67,18 @@
                 "table": "reviews",
                 "column": "date",
                 "type": "text",
-                "value": "{{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}}"
+                "value": "{{NOW_UTC}}"
+              },
+              {
+                "table": "reviews",
+                "column": "by_user",
+                "type": "text",
+                "value": "{{$_GET.user_id}}"
               }
             ],
             "table": "reviews",
             "returning": "id",
-            "query": "INSERT INTO reviews\n(review_for_car, title, text, author, date) VALUES (:P1 /* {{$_GET.car_id}} */, :P2 /* {{$_GET.title}} */, :P3 /* {{$_GET.text}} */, :P4 /* {{$_GET.author}} */, :P5 /* {{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}} */)",
+            "query": "INSERT INTO reviews\n(review_for_car, title, text, author, date, by_user) VALUES (:P1 /* {{$_GET.car_id}} */, :P2 /* {{$_GET.title}} */, :P3 /* {{$_GET.text}} */, :P4 /* {{$_GET.author}} */, :P5 /* {{NOW_UTC}} */, :P6 /* {{$_GET.user_id}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -93,7 +103,12 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_GET.date.formatDate('yyyy-MM-dd HH:mm')}}"
+                "value": "{{NOW_UTC}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_GET.user_id}}"
               }
             ]
           }
@@ -107,7 +122,47 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "disabled": true
+      },
+      {
+        "name": "custom1",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "INSERT INTO reviews (review_for_car, title, text, author, date, by_user) VALUES (:P1, :P2, :P3, :P4, :P6, :P5)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.car_id}}"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.title}}"
+              },
+              {
+                "name": ":P3",
+                "value": "{{$_GET.text}}"
+              },
+              {
+                "name": ":P4",
+                "value": "{{$_GET.author}}"
+              },
+              {
+                "name": ":P5",
+                "value": "{{$_GET.user_id}}"
+              },
+              {
+                "name": ":P6",
+                "value": "{{NOW_UTC}}"
+              }
+            ]
+          }
+        },
+        "meta": [],
+        "outputType": "array"
       }
     ]
   }

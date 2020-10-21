@@ -24,16 +24,19 @@
 	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
 	<link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 </head>
 
 <body id="modelx" is="dmx-app">
-	<dmx-datetime id="dateTime" interval="minutes"></dmx-datetime>
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
+	<dmx-datetime id="dateTime" interval="hours" utc="true"></dmx-datetime>
 
-	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="serverconnect.load({id: var.value},true)" dmx-param:author="session.data.username"
-		dmx-param:car_id="serverconnect.data.query1[0].id"></dmx-serverconnect>
+	<dmx-serverconnect id="del_review" url="api/remove_review/del_review" dmx-param:username="session.data.username" noload="noload" dmx-on:success="serverconnect.load({id: var.value},true);notifies.success('Review deleted')"
+		dmx-param:author="session.data.username" dmx-param:car_id="serverconnect.data.query1[0].id" dmx-param:user_id="session.data.user_id" dmx-on:error="notifies.danger('Failed to delete review')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="post_review" url="api/insert/insert_review" noload="noload" dmx-param:id="var.value" dmx-param:author="session.data.username" dmx-param:text="text.value" dmx-param:title="title.value"
-		dmx-on:success="serverconnect.load({id: var.value},true)" dmx-on:error="modalerror.show()" dmx-param:car_id="serverconnect.data.query1[0].id" dmx-param:date="dateTime.datetime">
+		dmx-on:success="serverconnect.load({id: var.value},true)" dmx-on:error="notifies.danger('Failed to post review')" dmx-param:car_id="serverconnect.data.query1[0].id" dmx-param:date="dateTime.datetime" dmx-param:user_id="session.data.user_id">
 	</dmx-serverconnect>
 	<dmx-value id="var" dmx-bind:value="serverconnect.data.query1[0].id"></dmx-value>
 	<div is="dmx-browser" id="redirect"></div>
@@ -121,12 +124,15 @@
 			<div class="col mt-2 border rounded-lg border-warning">
 
 
-				<p dmx-text="'Author:&nbsp;'+author+'\t\t Date:&nbsp;'+date.formatDate('yyyy-MM-dd HH:mm')" id="author_and_date" class="mt-2 mb-0 pb-1">Author:&nbsp;Martin Date:&nbsp;19.09.2020</p>
-				<h6 dmx-text="title" class="mt-0 mb-3 font-weight-bold">
+
+				<p dmx-text="'Author:&nbsp;'+author" id="auth" class="mt-2 mb-0 pb-1">Author:&nbsp;Martin Date:&nbsp;19.09.2020</p>
+				<p id="date_of_rev" dmx-text="'Date:&nbsp;'+date.formatDate('yyyy-MM-dd')" class="mb-1">A nice paragraph</p>
+				<h6 dmx-text="title" class="font-weight-bold mt-0 mb-1">
 					Fancy display heading</h6>
 
-				<p id="review_text" class="mt-n2" dmx-text="text">A nice paragraph</p>
-				<button id="remove" class="btn btn-outline-danger mb-2" dmx-show="author.contains(session.data.username)" dmx-text="'Remove'" dmx-on:click="del_review.load({username: session.data.username})">Button</button>
+				<p id="review_text" class="mt-1 mb-3" dmx-text="text">A nice paragraph</p>
+				<button id="remove" class="btn btn-outline-danger mb-2" dmx-show="author.contains(session.data.username)"
+					dmx-on:click="del_review.load({username: session.data.username, author: session.data.username, car_id: var.value, user_id: session.data.user_id, rev_id: id})">Remove</button>
 
 			</div>
 		</div>
@@ -156,7 +162,7 @@
 	</div>
 	<div class="container mt-xl-2 mt-4">
 
-		<div class="row text-lg-center">
+		<div class="row text-lg-center mt-3">
 			<div class="col border-bottom">
 				<h2 class="text-left" dmx-text="'Nearest&nbsp;'+serverconnect.data.query1[0].make+'&nbsp;dealership'">Nearest seller</h2>
 			</div>

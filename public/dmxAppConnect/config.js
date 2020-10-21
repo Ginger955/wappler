@@ -210,6 +210,10 @@ dmx.config({
       {
         "type": "number",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "email"
       }
     ],
     "gallery_display": {
@@ -862,6 +866,27 @@ dmx.config({
     "var5": {
       "meta": null,
       "outputType": "text"
+    },
+    "reviews_section": {
+      "meta": [
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "text",
+          "type": "text"
+        },
+        {
+          "name": "author",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

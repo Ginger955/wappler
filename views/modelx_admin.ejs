@@ -22,9 +22,11 @@
 	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 	<link rel="stylesheet" href="dmxAppConnect/dmxBootstrap4TableGenerator/dmxBootstrap4TableGenerator.css" />
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body is="dmx-app" id="modelx_admin">
+	<dmx-serverconnect id="remove_review" noload url="api/ModelAdmin/remove_rev" dmx-on:success="notifies.success('Review deleted')" dmx-on:error="notifies.danger('Failed to delete review')"></dmx-serverconnect>
 	<script is="dmx-flow" id="flow" type="text/dmx-flow"></script>
 	<dmx-serverconnect id="insert_image" noload url="api/ModelAdmin/insert_img" dmx-on:success="notifies.success('Image added');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to add image')"></dmx-serverconnect>
 
@@ -78,7 +80,7 @@
 		</div>
 		<div class="row">
 			<div class="col border-bottom">
-				<h2 class="mt-4" id="specs">Specifications</h2>
+				<h2 class="mt-4 mb-2" id="specs">Specifications</h2>
 			</div>
 		</div>
 		<div class="row mt-4">
@@ -147,7 +149,7 @@
 			<div class="col-12">
 
 				<dmx-value id="var1" dmx-bind:value="0"></dmx-value>
-				<button id="btn1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`var1.value == 0`,then:{steps:{run:{action:`var1.setValue(1)`}}},else:{steps:{run:{action:`var1.setValue(0)`}}}}})">Add new</button>
+				<button id="btn1" class="btn btn-outline-dark" dmx-on:click="run({condition:{if:`var1.value == 0`,then:{steps:{run:{action:`var1.setValue(1)`}}},else:{steps:{run:{action:`var1.setValue(0)`}}}}})">Add new</button>
 				<div class="row mt-2" dmx-show="var1.value == 1">
 
 					<div class="col-2">
@@ -164,13 +166,13 @@
 	<div class="container">
 		<div class="row">
 			<div class="col border-bottom mb-3">
-				<h2 class="mb-3">Gallery</h2>
+				<h2 class="mb-2">Gallery</h2>
 			</div>
 		</div>
 		<div class="row row-cols-2" is="dmx-repeat" id="gallery" dmx-bind:repeat="serverconnect.data.gallery">
 			<div class="col">
 
-				<img dmx-bind:src="images" class="img-fluid">
+				<img dmx-bind:src="images" class="img-fluid style9">
 				<div class="row mt-2">
 					<div class="col">
 						<dmx-value id="var2" dmx-bind:value="0"></dmx-value>
@@ -254,8 +256,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="row"></div>
-		<div class="row"></div>
+		<div class="row mt-3 mb-2">
+			<div class="col border-bottom">
+				<h2 class="mb-2">Reviews</h2>
+			</div>
+		</div>
+		<div class="row mb-2" id="reviews_section" is="dmx-repeat" dmx-bind:repeat="serverconnect.data.reviews">
+			<div class="col border rounded-lg border-warning mt-2">
+
+
+
+
+				<p class="mt-2 mb-0 pb-1" id="auth" dmx-text="'Author:&nbsp;'+author">A nice paragraph</p>
+				<p id="date_of_rev" dmx-text="'Date:&nbsp;'+date.formatDate('yyyy-MM-dd HH:mm')" class="mb-1">A nice paragraph</p>
+				<h6 class="font-weight-bold mt-0 mb-1" dmx-text="title">Fancy display heading</h6>
+				<p class="mt-1 mb-3" id="rev_text" dmx-text="text">A nice paragraph</p><button id="remove_re" class="btn mb-2 btn-outline-danger"
+					dmx-on:click="remove_review.load({review_id: id});serverconnect.load({id: product.value},true)">Remove</button>
+			</div>
+		</div>
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
