@@ -24,9 +24,14 @@
 	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
 	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
 	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+	<script src="dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxBootstrap4TableGenerator/dmxBootstrap4TableGenerator.css" />
 </head>
 
 <body id="admin">
+
+	<dmx-data-view id="data_view" dmx-bind:data="query_service_hours.data.query" sortOn="date"></dmx-data-view>
+	<dmx-serverconnect id="query_service_hours" noload url="api/Manager/get_service_hours"></dmx-serverconnect>
 
 
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
@@ -148,7 +153,7 @@
 	<div class="row row-cols-2 mt-2 mb-2 pl-5" is="dmx-repeat" id="repeat3" dmx-bind:repeat="loadServices.data.custom">
 
 		<div class="col-5">
-			<h5 class="font-weight-light" dmx-text="rev_type+', aprox. duration: '+duration+'&nbsp;hours'">Fancy display heading</h5>
+			<h5 class="font-weight-light" dmx-text="rev_type+', Duration: '+duration+'&nbsp;hours'">Fancy display heading</h5>
 		</div>
 		<div class="col mb-2">
 
@@ -229,10 +234,35 @@
 		</div>
 	</div>
 	<div class="row mt-2 pl-5">
-		<div class="col">
-			<h3 class="font-weight-light">Manage service hours</h3>
+		<div class="col border-bottom">
+
+			<h3 class="font-weight-light">Manage service hours<button id="btn9" class="btn ml-4 btn-outline-primary" dmx-on:click="query_service_hours.load({})">Load timetable</button></h3>
 		</div>
 	</div>
+	<div class="row mt-2 pl-5 no-gutters row-cols-1">
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Timeframe</th>
+						<th>Date</th>
+						<th>Max appointments</th>
+					</tr>
+				</thead>
+				<tbody is="dmx-repeat" dmx-generator="bs4table" dmx-bind:repeat="data_view.data" id="tableRepeat1">
+					<tr>
+
+						<td dmx-text="timeframe"></td>
+						<td dmx-text="date.formatDate('yyyy-MM-dd')"></td>
+						<td dmx-text="max_appointments"></td>
+						<td>
+							<button id="btn10" class="btn btn-outline-danger">Delete</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row"></div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 </body>

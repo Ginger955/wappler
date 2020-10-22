@@ -135,3 +135,8 @@
 .style8 {
 }
 .style9 {}
+.style10 {
+    border-color: rgba(108, 117, 125, 0);
+    border-style: none;
+    background-color: #343a40;
+    color: #fff}

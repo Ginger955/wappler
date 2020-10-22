@@ -33,9 +33,16 @@
 	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Alert/dmxBootstrap4Alert.js" defer=""></script>
 	<script src="dmxAppConnect/dmxSmoothScroll/dmxSmoothScroll.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="service">
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
+	<script is="dmx-flow" id="flow1" type="text/dmx-flow">{
+  run: {action: "{{timeframes.setValue(TIMES.items)}}"}
+}</script>
+	<dmx-array id="TIMES" dmx-on:updated="flow1.run()"></dmx-array>
 	<script is="dmx-flow" id="edit_timeFrames" type="text/dmx-flow">{
   runJS: {function: "removeTimeframe"}
 }</script>
@@ -50,7 +57,7 @@
 	<dmx-value id="selected_vehicle"></dmx-value>
 
 	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
-		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="modalsuccess.show()" dmx-on:error="modalerror.show()"></dmx-serverconnect>
+		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="notifies.success('Appointment created')" dmx-on:error="notifies.danger('Could not create appointment')"></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
 	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="date.value" dmx-param:end_time="timeframes.value.addHours(total_duration.value)" noload dmx-param:userid="session.data.user_id"
@@ -98,11 +105,13 @@
 	</div>
 	<div class="row row-cols-3 mt-2 mb-4 pl-0" is="dmx-repeat" id="products" dmx-bind:repeat="serverconnect.data.products">
 		<div class="col ml-2">
+			<dmx-value id="SELECTED" dmx-bind:value="0"></dmx-value>
 
 			<dmx-value id="modeL" dmx-bind:value="model"></dmx-value>
 			<dmx-value id="makE" dmx-bind:value="make"></dmx-value>
-			<img class="img-fluid some" dmx-bind:src="image" dmx-on:click="selected_vehicle.setValue(id);hide_type.setValue(false)">
-			<h5 dmx-text="make+' - '+model">Fancy display heading</h5>
+			<img class="img-fluid some" dmx-bind:src="image"
+				dmx-on:click="run([{run:{action:`selected_vehicle.setValue(id)`}},{run:{action:`hide_type.setValue(false)`}},{condition:{if:`SELECTED.value == 0`,then:{steps:{run:{action:`SELECTED.setValue(1)`}}},else:{steps:{run:{action:`SELECTED.setValue(0)`}}}}}])">
+			<h5 dmx-text="make+' - '+model" class="font-weight-light text-center" dmx-class:style10="SELECTED.value == 1" dmx-class="SELECTED.value == 0">Fancy display heading</h5>
 		</div>
 	</div>
 
@@ -181,7 +190,7 @@
 		</div>
 		<div class="row" id="time_options">
 			<div class="col">
-				<select id="timeframes" class="form-control" dmx-bind:options="get_available_timeframes.data.available_timeframes" optionvalue="timeframe" optiontext="timeframe" dmx-on:changed="hide_submit.setValue(false);startTime.setValue(value)">
+				<select id="timeframes" class="form-control" dmx-bind:options="TIMES.items" optionvalue="$value" dmx-on:changed="hide_submit.setValue(false);startTime.setValue(value)" optiontext="$value">
 				</select>
 			</div>
 		</div>
@@ -192,36 +201,6 @@
 				<h1 dmx-text="'End time:&nbsp;'+timeframes.value.addHours(total_duration.value)" class="inv">Fancy display heading</h1>
 				<button id="submit" class="btn btn-lg btn-outline-primary"
 					dmx-on:click="insertAppointment.load({date: date.value, end_time: timeframes.value.addHours(total_duration.value), user_id: session.data.user_id, services: services.items, durations: durations.items, userid: session.data.user_id, start_time: startTime.value})">Submit</button>
-			</div>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3 style6">
-		<div class="modal" id="modal-success" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-success"><i class="fa fa-check"></i></p>
-						<h4 class="text-center font-weight-light">Appointment created!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container wappler-block pt-3 pb-3 ok122">
-		<div class="modal" id="modal-error" is="dmx-bs4-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p class="text-center text-danger"><i class="fa fa-times"></i></p>
-						<h4 class="text-center font-weight-light">Something went wrong!</h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -274,8 +253,15 @@
 				}
 			} 
 		// }
-
+		dmx.parse('TIMES.empty()');
 		console.log('final result = ', result);
+		for(var i = 0; i < result.length; i++){
+			var k = transformToTime(result[i]);
+			dmx.parse('TIMES.add('+k+')');
+		}
+		console.log('set available_starting_time to', result, '\nchecking actual value...');
+		var check = dmx.parse('TIMES.items');
+		console.log('value of this variable: ', check);
 
 	}
 
@@ -290,6 +276,22 @@
 		}
 		// console.log('false for',startTime);
 		return false;
+	}
+
+	function transformToTime(value){
+		console.log('transorming', value, 'to time');
+		const FORMAT = ":00:00";
+		var parsedValue = parseInt(value);
+		var output = "";
+		if(parsedValue < 10){
+			output = "0"+value+FORMAT;
+		} else {
+			output = value+FORMAT;
+		}
+		output = "'"+output+"'";
+		console.log('output of transformToTime of', value, 'is', output);
+
+		return output;
 	}
 	</script>
 </body>

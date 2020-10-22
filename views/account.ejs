@@ -24,9 +24,12 @@
 	<script src="dmxAppConnect/dmxDatePicker/dmxDatePicker.js" defer=""></script>
 
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="account">
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 
 
 	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="modalsuccess.show();redirect.goto('http://localhost:8100/account')" dmx-on:error="modalerror.show()" dmx-param:app_id="" dmx-param:start_time=""
@@ -36,7 +39,8 @@
 
 
 	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
-		dmx-on:success="modal_success.show();redirect.goto('http://localhost:8100/');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email')" dmx-on:error="modal_error.show()">
+		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('http://localhost:8100/')"
+		dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 
 	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
@@ -45,7 +49,7 @@
 
 	<dmx-session-manager id="session"></dmx-session-manager>
 	<div is="dmx-browser" id="redirect"></div>
-	<dmx-serverconnect id="userDetails" url="api/Login/userDetails"></dmx-serverconnect>
+	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
 
 
 	<div class="container" id="greeting">

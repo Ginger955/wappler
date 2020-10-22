@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "number",
+        "name": "serv_hour_entry_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "get_details",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [],
+            "table": {
+              "name": "service_appointments"
+            },
+            "joins": [
+              {
+                "table": "service_hours",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "service_hours",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "service_appointments",
+                        "column": "serv_hours_refk"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_appointments.serv_hours_refk",
+                  "field": "service_appointments.serv_hours_refk",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.serv_hour_entry_id}}",
+                  "data": {
+                    "table": "service_appointments",
+                    "column": "serv_hours_refk",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT *\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.serv_hours_refk = :P1 /* {{$_GET.serv_hour_entry_id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.serv_hour_entry_id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "for_user",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "duration",
+            "type": "text"
+          },
+          {
+            "name": "for_car",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_refk",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          },
+          {
+            "name": "no_appointments",
+            "type": "text"
+          },
+          {
+            "name": "max_appointments",
+            "type": "text"
+          },
+          {
+            "name": "for_users_ids",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{get_details.id0.inRange(1, 100000000000000000)}}",
+          "then": {
+            "steps": [
+              {
+                "name": "delete",
+                "module": "dbupdater",
+                "action": "delete",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "delete",
+                    "table": "service_appointments",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{get_details[0].id}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "DELETE\nFROM service_appointments\nWHERE id = :P1 /* {{get_details[0].id}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{get_details[0].id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "endTime",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{get_details.timeframe0.dateAdd('hours', get_details[0].duration.toNumber())}}"
+                }
+              },
+              {
+                "name": "update_serv_hours",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "db"
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

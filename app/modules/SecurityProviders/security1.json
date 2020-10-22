@@ -9,7 +9,7 @@
     "users": {
       "table": "users",
       "identity": "id",
-      "username": "email",
+      "username": "username",
       "password": "password"
     },
     "permissions": {

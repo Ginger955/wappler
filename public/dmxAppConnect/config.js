@@ -814,6 +814,40 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "repeat4": {
+      "meta": [
+        {
+          "name": "timeframe",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        },
+        {
+          "name": "max_appointments",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "data_view": {
+      "meta": [
+        {
+          "name": "timeframe",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "text"
+        },
+        {
+          "name": "max_appointments",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "modelx_admin": {

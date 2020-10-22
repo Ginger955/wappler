@@ -37,7 +37,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND (timeframe >= :P4 AND timeframe <= :P2) AND no_appointments < 2",
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments + 1\nWHERE date = :P1 AND (timeframe >= :P4 AND timeframe <= :P2)",
             "params": [
               {
                 "name": ":P1",

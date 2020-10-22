@@ -18,11 +18,14 @@
 	<script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
 	<script src="dmxAppConnect/dmxValidatorUnicode/dmxValidatorUnicode.js" defer=""></script>
 	<script src="dmxAppConnect/dmxBootstrap4Navigation/dmxBootstrap4Navigation.js" defer=""></script>
+	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="signup">
+	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<div class="text-center container text-lg-center mt-5">
-		<form id="signup" method="post" is="dmx-serverconnect-form" action="api/Signup/singup" dmx-on:error="modalerror.show()" dmx-on:success="redirect.goto('http://localhost:8100/login')">
+		<form id="signup" method="post" is="dmx-serverconnect-form" action="api/Signup/singup" dmx-on:error="notifies.danger('An error ocurred')" dmx-on:success="redirect.goto('http://localhost:8100/login')">
 			<div class="row align-items-lg-center justify-content-lg-center row-cols-lg-2">
 				<div class="col-12 col-md-8 col-xl-5 text-left col-lg">
 					<div class="row text-center">
