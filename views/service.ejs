@@ -251,45 +251,44 @@
 				parsedHours.push(timeFrames[i].timeframe.slice(0, 2));
 			}
 		}
-		console.log('parsedHours = ', parsedHours, duration);
+		// console.log('parsedHours = ', parsedHours, duration);
 
 		var result = parsedHours;
 
-		for(var i = 0; i < parsedHours.length; i++){
+		// for(var i = 0; i < parsedHours.length; i++){
 
-			var endTime = parseInt(parsedHours[i]) + duration;
-			var prevFine = 0;
-			console.log('endTime for', parsedHours[i],' = ', endTime);
+			
+		// 	var prevFine = 0;
+			
 			for(var j = 0; j < parsedHours.length; j++){
-
+				// console.log('currently at', j);
 				var current = parseInt(parsedHours[j]);
-				var next = current + 1;//not used for now;
-				// console.log('next = ', next);
-
+				var endTime = current + duration;
+				// console.log('endTime for', current,' = ', endTime);
+			
 				if(missingTimes(current, parsedHours, endTime)){
-					console.log('deleting ', result.indexOf(current));
-					result.splice(result.indexOf(current), 1);
-					console.log('result = ', result);
-				} else {
-					break;
+					// console.log('deleting ', result.indexOf(String(current)));
+					result.splice(result.indexOf(String(current)), 1);
+					// console.log('result = ', result);
+					j--;
 				}
 			} 
-		}
+		// }
 
 		console.log('final result = ', result);
 
 	}
 
 	function missingTimes(startTime, parsedTimes, endTime){
-		console.log('loop from', startTime, 'to', endTime);
+		// console.log('loop from', startTime, 'to', endTime);
 		for(var i = startTime; i <= endTime; i++){
-			if(parsedTimes.indexOf(i) == -1){
-				console.log('true for',i);
+			if(parsedTimes.indexOf(String(i)) == -1){
+				// console.log('true for',i);
 				return true;
 			}
-			console.log('skipped', i);
+			// console.log('skipped', i);
 		}
-		console.log('false for',startTime);
+		// console.log('false for',startTime);
 		return false;
 	}
 	</script>
