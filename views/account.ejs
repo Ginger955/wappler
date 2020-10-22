@@ -30,7 +30,7 @@
 
 <body is="dmx-app" id="account">
 	<dmx-serverconnect id="fetch_all_details" url="api/Account/fetch" noload dmx-param:id="session.data.user_id"
-	 dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.toISODate()})">
+		dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.toISODate()})">
 	</dmx-serverconnect>
 	<dmx-value id="endingTime" dmx-on:updated="run({runJS:{function:'printThis'}})"></dmx-value>
 	<h1 class="text-center" dmx-text="">Title</h1>
