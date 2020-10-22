@@ -12,6 +12,30 @@
       {
         "type": "text",
         "name": "dir"
+      },
+      {
+        "type": "number",
+        "name": "product_id"
+      },
+      {
+        "type": "number",
+        "name": "serv_app_id"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "number",
+        "name": "serv_hour_ref"
+      },
+      {
+        "type": "time",
+        "name": "start_time"
+      },
+      {
+        "type": "time",
+        "name": "endtime"
       }
     ]
   },
@@ -74,7 +98,8 @@
             "type": "text"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "disabled": true
       },
       {
         "name": "fetch_reviews",
@@ -151,7 +176,8 @@
             "type": "text"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "disabled": true
       },
       {
         "name": "fetch_user_appointments",
@@ -224,7 +250,8 @@
             "type": "text"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "disabled": true
       },
       {
         "name": "fetch_service_hours",
@@ -268,7 +295,8 @@
                 "value": "{{fetch_user_appointments[0].serv_hours_refk}}"
               }
             ]
-          }
+          },
+          "test": true
         },
         "output": true,
         "meta": [
@@ -297,7 +325,8 @@
             "type": "text"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "disabled": true
       },
       {
         "name": "",
@@ -349,7 +378,8 @@
                   "name": "affected",
                   "type": "number"
                 }
-              ]
+              ],
+              "disabled": true
             }
           }
         },
@@ -405,7 +435,8 @@
                   "name": "affected",
                   "type": "number"
                 }
-              ]
+              ],
+              "disabled": true
             }
           }
         },
@@ -461,7 +492,8 @@
                   "name": "affected",
                   "type": "number"
                 }
-              ]
+              ],
+              "disabled": true
             }
           }
         },
@@ -476,13 +508,33 @@
           "then": {
             "steps": [
               {
+                "name": "durr",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{fetch_user_appointments[0].duration}}"
+                },
+                "outputType": "number"
+              },
+              {
+                "name": "startTime",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{fetch_service_hours[0].timeframe}}"
+                },
+                "outputType": "time"
+              },
+              {
                 "name": "endTime",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{fetch_service_hours[0].timeframe.dateAdd('hours', fetch_user_appointments[0].duration.toNumber()).formatDate('HH:mm:ss')}}"
+                  "value": "{{$_GET.endtime}}",
+                  "key": "endTime"
                 },
-                "outputType": "time"
+                "outputType": "date",
+                "output": true
               },
               {
                 "name": "update_serv_hours",
@@ -509,11 +561,13 @@
                         "test": "12:00:00"
                       }
                     ]
-                  }
+                  },
+                  "test": true
                 },
                 "meta": [],
                 "outputType": "array",
-                "output": false
+                "output": false,
+                "disabled": true
               }
             ]
           }
@@ -563,7 +617,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "disabled": true
       }
     ]
   }

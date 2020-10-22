@@ -29,6 +29,11 @@
 </head>
 
 <body is="dmx-app" id="account">
+	<dmx-serverconnect id="fetch_all_details" url="api/Account/fetch" noload dmx-param:id="session.data.user_id"
+	 dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.toISODate()})">
+	</dmx-serverconnect>
+	<dmx-value id="endingTime" dmx-on:updated="run({runJS:{function:'printThis'}})"></dmx-value>
+	<h1 class="text-center" dmx-text="">Title</h1>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 
 
@@ -38,8 +43,7 @@
 	<div is="dmx-browser" id="redirect"></div>
 
 
-	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
-		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('http://localhost:8100/')"
+	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="notifies.success('Account deleted');endingTime.setValue(delete_account.data.endTime)"
 		dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 
@@ -48,7 +52,6 @@
 	<dmx-datetime id="today" interval="hours"></dmx-datetime>
 
 	<dmx-session-manager id="session"></dmx-session-manager>
-	<div is="dmx-browser" id="redirect"></div>
 	<dmx-serverconnect id="userDetails" url="api/Login/userDetails" noload></dmx-serverconnect>
 
 
@@ -145,7 +148,7 @@
 						<h5 class="text-center font-weight-light">Are you sure you want to delete your account?</h5>
 					</div>
 					<div class="modal-footer">
-						<button id="del" class="btn btn-outline-danger style5" dmx-on:click="delete_account.load({id: session.data.user_id})">Delete</button>
+						<button id="delete" class="btn btn-outline-danger style5" dmx-on:click="fetch_all_details.load({id: session.data.user_id})">Delete</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
 					</div>
 				</div>
@@ -214,6 +217,13 @@
 	</div>
 	<script src="bootstrap/4/js/popper.min.js"></script>
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
+	<script>
+		function printThis(){
+		console.log('starting...');
+		var toPrint = dmx.parse('endingTime.value');
+		console.log(toPrint);
+	}
+	</script>
 </body>
 
 </html>
