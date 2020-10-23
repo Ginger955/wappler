@@ -41,11 +41,20 @@
       "postgresVersion": "11.1.x",
       "postgres_rootName": "db_user",
       "postgres_rootPassword": "qObCnb2F",
+      "postgres_databaseName": "trial_project"
+    },
+    {
+      "name": "Heroku",
+      "remoteURL": "https://wapplerintro.herokuapp.com/",
+      "targetType": "heroku",
+      "databasePort": 9906,
+      "postgres_rootName": "db_user",
+      "postgres_rootPassword": "qObCnb2F",
       "postgres_databaseName": "trial_project",
-      "dockerBuild": true
+      "usage": "production"
     }
   ],
-  "activeTarget": "Development",
+  "activeTarget": "Heroku",
   "projectType": "web",
   "npmInstall": true
 }
