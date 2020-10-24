@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "time",
+        "name": "starttime"
+      },
+      {
+        "type": "time",
+        "name": "endtime"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "custom",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.starttime}}"
+              },
+              {
+                "name": ":P3",
+                "value": "{{$_GET.endtime}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      }
+    ]
+  }
+}

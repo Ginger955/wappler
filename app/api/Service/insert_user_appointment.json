@@ -19,11 +19,11 @@
       },
       {
         "type": "number",
-        "name": "serv_hours_id"
+        "name": "total_time_for_service"
       },
       {
         "type": "number",
-        "name": "total_time_for_service"
+        "name": "serv"
       }
     ]
   },
@@ -61,11 +61,12 @@
               },
               {
                 "name": ":P6",
-                "value": "{{$_GET.serv_hours_id}}",
+                "value": "{{$_GET.serv}}",
                 "test": "9"
               }
             ]
-          }
+          },
+          "test": true
         },
         "output": true,
         "meta": [],

@@ -83,10 +83,11 @@
               {
                 "name": ":P2",
                 "value": "{{$_GET.start_time}}",
-                "test": "9:00:00"
+                "test": "12:00:00"
               }
             ]
-          }
+          },
+          "test": true
         },
         "output": true,
         "meta": [
