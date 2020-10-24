@@ -54,7 +54,8 @@
       "app",
       "lib",
       "views",
-      "tmp/**/restart.txt"
+      "tmp/**/restart.txt",
+      "extensions"
     ],
     "ext": "ejs,js,json"
   }

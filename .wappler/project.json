@@ -41,7 +41,8 @@
       "postgresVersion": "11.1.x",
       "postgres_rootName": "db_user",
       "postgres_rootPassword": "qObCnb2F",
-      "postgres_databaseName": "trial_project"
+      "postgres_databaseName": "trial_project",
+      "dockerBuild": true
     },
     {
       "name": "Heroku",
@@ -54,7 +55,7 @@
       "usage": "production"
     }
   ],
-  "activeTarget": "Heroku",
+  "activeTarget": "Development",
   "projectType": "web",
   "npmInstall": true
 }

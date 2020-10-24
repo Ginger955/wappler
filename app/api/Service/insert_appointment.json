@@ -18,7 +18,7 @@
         "name": "end_time"
       },
       {
-        "type": "text",
+        "type": "number",
         "name": "userid"
       },
       {
@@ -78,7 +78,7 @@
               {
                 "name": ":P1",
                 "value": "{{$_GET.date}}",
-                "test": "10/5/2020"
+                "test": "10/12/2020"
               },
               {
                 "name": ":P2",

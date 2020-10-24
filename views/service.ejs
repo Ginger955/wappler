@@ -38,6 +38,11 @@
 </head>
 
 <body is="dmx-app" id="service">
+	<dmx-value id="fetched_id"></dmx-value>
+	<script is="dmx-flow" id="flow2" type="text/dmx-flow">{
+  runJS: {function: "logThis"}
+}</script>
+	<h1 dmx-text="timeframes.value.addHours(total_duration.value)">Title</h1>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<script is="dmx-flow" id="flow1" type="text/dmx-flow">{
   run: {action: "{{timeframes.setValue(TIMES.items)}}"}
@@ -57,12 +62,13 @@
 	<dmx-value id="selected_vehicle"></dmx-value>
 
 	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
-		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="notifies.success('Appointment created')" dmx-on:error="notifies.danger('Could not create appointment')"></dmx-serverconnect>
+		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="insertAppointment.data.get[0].id" dmx-on:success="notifies.success('Appointment created')" dmx-on:error="notifies.danger('Could not create appointment')"
+		dmx-param:total_time_for_service="total_duration.value"></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
 	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="date.value" dmx-param:end_time="timeframes.value.addHours(total_duration.value)" noload dmx-param:userid="session.data.user_id"
 		dmx-param:start_time="startTime.value"
-		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: insertAppointment.data.get[0].id, total_time_for_service: total_duration.value})">
+		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);fetched_id.setValue(insertAppointment.data.get[0].id);flow2.run();insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: serv_hour_id.value, total_time_for_service: total_duration.value})">
 	</dmx-serverconnect>
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
@@ -208,18 +214,9 @@
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 	<script>
 		function removeTimeframe(){
-
 		console.log("starting");
 		var timeFrames = dmx.parse('timeS.value');
 		var duration = dmx.parse('total_duration.value');
-		/*
-		0: Object { timeframe: "08:00:00" }
-		1: Object { timeframe: "09:00:00" }
-		2: Object { timeframe: "12:00:00" }
-		3: Object { timeframe: "13:00:00" }
-		4: Object { timeframe: "14:00:00" }
-		5: Object { timeframe: "15:00:00" }
-		*/
 		var parsedHours = [];
 		var ok = [];
 		
@@ -292,6 +289,12 @@
 		console.log('output of transformToTime of', value, 'is', output);
 
 		return output;
+	}
+	</script>
+	<script>
+		function logThis(){
+		var k = dmx.parse('fetched_id.value');
+		console.log('this is the fetched id: ', k);
 	}
 	</script>
 </body>

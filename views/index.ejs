@@ -82,7 +82,7 @@
 
 		<div class="col-lg mt-2 col">
 
-			<dmx-slideshow id="slideshow1" show-nav="true" delay="5000" show-paging="true" class="slideshow1">
+			<dmx-slideshow id="slideshow1" show-nav="true" delay="5000" show-paging="true" class="slideshow1" dmx-bind:slides="">
 				<dmx-slide url="assets/slideshow_images/unspl2.jpg" thumb="resized_images/thumbs/01-overview_M.png"></dmx-slide>
 				<dmx-slide url="assets/slideshow_images/ye-massa-JNpUte7dFl4-unsplash.jpg" thumb="resized_images/thumbs/alfieri-1569609760.png"></dmx-slide>
 				<dmx-slide url="assets/img/koe.jpg" thumb="resized_images/thumbs/cx-5-2020-teaser-mrt20.png"></dmx-slide>
@@ -96,8 +96,8 @@
 		<h2 class="text-lg-center font-weight-bold pt-md-0 text-md-center text-center">Top Models</h2>
 
 	</div>
-	<div class="row ml-4 row-ml-4-row-ml-4 row-cols-1" is="dmx-repeat" id="repeat" dmx-bind:repeat="query_images.data.query1">
-		<div class="col-md text-left col">
+	<div class="row ml-4 row-ml-4-row-ml-4 row-cols-3" is="dmx-repeat" id="repeat" dmx-bind:repeat="query_images.data.query1">
+		<div class="col-md text-left col-1">
 			<div class="card mw-100 mh-100 flex-grow-1 card-mw-100-mh-100-flex-grow-1">
 				<img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
 				<div class="card-body mw-100 mh-100">

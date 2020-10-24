@@ -42,7 +42,7 @@
               {
                 "name": ":P1",
                 "value": "{{$_GET.userid}}",
-                "test": "33"
+                "test": "46"
               },
               {
                 "name": ":P2",
@@ -62,7 +62,7 @@
               {
                 "name": ":P6",
                 "value": "{{$_GET.serv_hours_id}}",
-                "test": "1"
+                "test": "9"
               }
             ]
           }
