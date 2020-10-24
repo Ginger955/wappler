@@ -50,21 +50,46 @@
               {
                 "table": "cars",
                 "column": "class"
+              },
+              {
+                "table": "cars",
+                "column": "invisible"
               }
             ],
             "table": {
               "name": "cars"
             },
             "joins": [],
-            "query": "SELECT id, make, model, year, price, image, class\nFROM cars\nORDER BY id ASC",
+            "query": "SELECT id, make, model, year, price, image, class, invisible\nFROM cars\nWHERE invisible = 0\nORDER BY id ASC",
             "params": [],
             "orders": [
               {
                 "table": "cars",
                 "column": "id",
-                "direction": "ASC"
+                "direction": "ASC",
+                "recid": 1
               }
-            ]
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "cars.invisible",
+                  "field": "cars.invisible",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 0,
+                  "data": {
+                    "table": "cars",
+                    "column": "invisible",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
           }
         },
         "output": true,
@@ -95,6 +120,10 @@
           },
           {
             "name": "class",
+            "type": "text"
+          },
+          {
+            "name": "invisible",
             "type": "text"
           }
         ],

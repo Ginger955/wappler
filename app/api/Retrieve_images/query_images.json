@@ -46,14 +46,29 @@
               {
                 "table": "cars",
                 "column": "image"
+              },
+              {
+                "table": "cars",
+                "column": "class"
+              },
+              {
+                "table": "cars",
+                "column": "invisible"
               }
             ],
             "table": {
               "name": "cars"
             },
             "joins": [],
-            "orders": [],
-            "query": "SELECT id, make, model, year, price, image\nFROM cars\nWHERE price > 20000",
+            "orders": [
+              {
+                "table": "cars",
+                "column": "id",
+                "direction": "ASC",
+                "recid": 1
+              }
+            ],
+            "query": "SELECT id, make, model, year, price, image, class, invisible\nFROM cars\nWHERE price >= 20000 AND invisible = 0\nORDER BY id ASC",
             "params": [],
             "wheres": {
               "condition": "AND",
@@ -62,14 +77,27 @@
                   "id": "cars.price",
                   "field": "cars.price",
                   "type": "double",
-                  "operator": "greater",
+                  "operator": "greater_or_equal",
                   "value": 20000,
                   "data": {
                     "table": "cars",
                     "column": "price",
                     "type": "number"
                   },
-                  "operation": ">"
+                  "operation": ">="
+                },
+                {
+                  "id": "cars.invisible",
+                  "field": "cars.invisible",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 0,
+                  "data": {
+                    "table": "cars",
+                    "column": "invisible",
+                    "type": "number"
+                  },
+                  "operation": "="
                 }
               ],
               "conditional": null,
@@ -101,6 +129,14 @@
           },
           {
             "name": "image",
+            "type": "text"
+          },
+          {
+            "name": "class",
+            "type": "text"
+          },
+          {
+            "name": "invisible",
             "type": "text"
           }
         ],

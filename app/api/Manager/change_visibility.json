@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "product_id"
+      },
+      {
+        "type": "number",
+        "name": "visibility_status"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "cars",
+                "column": "invisible",
+                "type": "number",
+                "value": "{{$_GET.visibility_status}}"
+              }
+            ],
+            "table": "cars",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.product_id}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "UPDATE cars\nSET invisible = :P1 /* {{$_GET.visibility_status}} */\nWHERE id = :P2 /* {{$_GET.product_id}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.visibility_status}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.product_id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

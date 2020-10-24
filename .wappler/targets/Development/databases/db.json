@@ -10,6 +10,71 @@
   },
   "schema": {
     "tables": {
+      "gallery": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "images": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "image_for_car": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "cars"
+            }
+          }
+        }
+      },
+      "service_duration": {
+        "db": {
+          "schema": "public",
+          "comment": null
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "service_type_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_types"
+            }
+          },
+          "duration": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "cars": {
         "db": {
           "schema": "public",
@@ -71,66 +136,8 @@
               "primary": false,
               "nullable": true
             }
-          }
-        }
-      },
-      "gallery": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
           },
-          "images": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "image_for_car": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "cars"
-            }
-          }
-        }
-      },
-      "service_duration": {
-        "db": {
-          "schema": "public",
-          "comment": null
-        },
-        "columns": {
-          "id": {
-            "db": {
-              "type": "increments",
-              "default": "",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "service_type_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "id",
-              "inTable": "service_types"
-            }
-          },
-          "duration": {
+          "invisible": {
             "db": {
               "type": "integer",
               "primary": false,

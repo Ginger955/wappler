@@ -848,6 +848,14 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "make_opposite": {
+      "meta": null,
+      "outputType": "text"
+    },
+    "proD_iD": {
+      "meta": null,
+      "outputType": "text"
     }
   },
   "modelx_admin": {
