@@ -59,7 +59,7 @@
 	<dmx-value id="selected_vehicle"></dmx-value>
 
 	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
-		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="serv_hour_id.value" dmx-on:success="notifies.success('Appointment created')"
+		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="serv_hour_id.value" dmx-on:success="notifies.success('Appointment created');get_available_timeframes.load({date: date.value},true)"
 		dmx-on:error="notifies.danger('Could not create appointment. Please try again.');revert_appointment.load({date: date.value, starttime: startTime.value, endtime: startTime.value.addHours(total_duration.value).toISOTime()})"
 		dmx-param:total_time_for_service="total_duration.value" dmx-param:serv="serv_hour_id.value"></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
