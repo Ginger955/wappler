@@ -29,7 +29,8 @@
 </head>
 
 <body id="admin">
-	<dmx-serverconnect id="make_product_invisible" noload url="api/Manager/change_visibility" dmx-on:success="notifies.success('Changed visibility')" dmx-on:error="notifies.danger('An error ocurred when changing visibility')"></dmx-serverconnect>
+	<dmx-serverconnect id="make_product_invisible" noload url="api/Manager/change_visibility" dmx-on:success="notifies.success('Changed visibility');cars.load({},true)" dmx-on:error="notifies.danger('An error ocurred when changing visibility')">
+	</dmx-serverconnect>
 
 	<dmx-data-view id="data_view" dmx-bind:data="query_service_hours.data.query" sortOn="date"></dmx-data-view>
 	<dmx-serverconnect id="query_service_hours" noload url="api/Manager/get_service_hours"></dmx-serverconnect>
@@ -48,7 +49,7 @@
 	<dmx-serverconnect id="loadUsers" url="api/Manager/get_all_users" noload></dmx-serverconnect>
 	<dmx-serverconnect id="add_service_type" url="api/Manager/add_service" noload dmx-on:success="loadServices.load({},true);notifies.success('Service added')" dmx-on:error="notifies.danger('Failed to add service')"></dmx-serverconnect>
 	<dmx-serverconnect id="view_service_types" url="api/Manager/view_service_types" noload></dmx-serverconnect>
-	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images" noload></dmx-serverconnect>
+	<dmx-serverconnect id="cars" url="api/Retrieve_images/query_all_images_moderator" noload></dmx-serverconnect>
 
 	<dmx-serverconnect id="add_moderator" url="api/Manager/add_new_moderator" noload dmx-on:success="moderator_added.show()" dmx-on:error="moderator_error.show()"></dmx-serverconnect>
 
@@ -209,20 +210,22 @@
 
 			<div class="card mb-3">
 				<dmx-value id="proD_iD" dmx-bind:value="id"></dmx-value>
-				<dmx-value id="make_opposite"></dmx-value>
+				<dmx-value id="make_oppositE"></dmx-value>
 				<dmx-value id="showing" dmx-bind:value="0"></dmx-value><img class="card-img-top" alt="Card image cap" dmx-bind:src="image">
 				<div class="card-body">
+
+
 					<script is="dmx-flow" id="flow2" type="text/dmx-flow" autorun>{
   condition: {
     if: "{{invisible == 0}}",
     then: {
       steps: {
-        run: {action: "{{make_opposite.setValue('invisible')}}"}
+        run: {action: "{{make_oppositE.setValue('invisible')}}"}
       }
     },
     else: {
       steps: {
-        run: {action: "{{make_opposite.setValue('visible')}}"}
+        run: {action: "{{make_oppositE.setValue('visible')}}"}
       }
     }
   }
@@ -231,11 +234,14 @@
 
 
 					<h4 class="card-title" dmx-text="make+' - '+model">Card title</h4>
-					<button id="btn7" class="btn btn-primary mr-3" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind" class="btn btn-primary style8"
-						dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to user</button>
-					<button id="btn11" class="btn btn-primary btn-block mt-2" dmx-text="'Make '+make_opposite.value"
-						dmx-on:click="run({condition:{if:`make_opposite.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: repeat1[0].proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: repeat1[0].proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})">Make
-						invisible&nbsp;<i class="fa fa-eye"></i></button>
+					<div class="row">
+
+						<button id="btn7" class="btn btn-primary mr-3 flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind"
+							class="btn btn-primary style8 flex-grow-1" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to
+							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3">Delete</button></div>
+					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2" dmx-text="'Make '+make_oppositE.value"
+							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})">Make
+							invisible&nbsp;<i class="fa fa-eye"></i></button></div>
 				</div>
 			</div>
 
@@ -253,6 +259,18 @@
 	<div class="row mt-2 pl-5">
 		<div class="col">
 			<button id="btn8" class="btn btn-outline-dark">Add new product</button>
+		</div>
+	</div>
+	<div class="row mt-2 pl-5">
+		<div class="col">
+			<div class="card">
+				<img class="card-img-top" alt="Card image cap">
+				<div class="card-body">
+					<h4 class="card-title">Card title</h4>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					<a href="#" class="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="row mt-2 pl-5">
