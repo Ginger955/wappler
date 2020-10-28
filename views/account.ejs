@@ -29,11 +29,13 @@
 </head>
 
 <body is="dmx-app" id="account">
+	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
+		<p>This is a nice alert!</p>
+	</div>
 	<dmx-serverconnect id="fetch_all_details" url="api/Account/fetch" noload dmx-param:id="session.data.user_id"
-		dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.toISODate()})">
+		dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.addHours(fetch_all_details.data.fetch_user_appointments[0].duration).toISOTime()})">
 	</dmx-serverconnect>
 	<dmx-value id="endingTime" dmx-on:updated="run({runJS:{function:'printThis'}})"></dmx-value>
-	<h1 class="text-center style11" dmx-text="">Title</h1>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 
 
@@ -43,8 +45,7 @@
 	<div is="dmx-browser" id="redirect"></div>
 
 
-	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="notifies.success('Account deleted');endingTime.setValue(delete_account.data.endTime)"
-		dmx-on:error="notifies.danger('Failed to delete account')">
+	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="notifies.success('Account deleted')" dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 
 	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
@@ -148,7 +149,7 @@
 						<h5 class="text-center font-weight-light">Are you sure you want to delete your account?</h5>
 					</div>
 					<div class="modal-footer">
-						<button id="delete" class="btn btn-outline-danger style5" dmx-on:click="fetch_all_details.load({id: session.data.user_id})">Delete</button>
+						<button id="delete" class="btn btn-outline-danger style5" dmx-on:click="delete_account.load({id: session.data.user_id})">Delete</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
 					</div>
 				</div>

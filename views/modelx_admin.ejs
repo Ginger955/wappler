@@ -26,7 +26,12 @@
 </head>
 
 <body is="dmx-app" id="modelx_admin">
-	<dmx-serverconnect id="remove_review" noload url="api/ModelAdmin/remove_rev" dmx-on:success="notifies.success('Review deleted')" dmx-on:error="notifies.danger('Failed to delete review')"></dmx-serverconnect>
+	<dmx-serverconnect id="edit_thumbnail" url="api/ModelAdmin/change_thumbnail" noload dmx-on:success="serverconnect.load({id: product.value},true);notifies.success('Thumbnail image changed')"
+		dmx-on:error="notifies.danger('Failed to change thumbnail image')"></dmx-serverconnect>
+	<dmx-serverconnect id="change_mod_and_make" url="api/ModelAdmin/change_model_and_make" noload dmx-on:success="notifies.success('Values have been changed');serverconnect.load({id: product.value},true)"
+		dmx-on:error="notifies.danger('Could not change values')"></dmx-serverconnect>
+	<dmx-serverconnect id="remove_review" noload url="api/ModelAdmin/remove_rev" dmx-on:success="notifies.success('Review deleted');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to delete review')">
+	</dmx-serverconnect>
 	<script is="dmx-flow" id="flow" type="text/dmx-flow"></script>
 	<dmx-serverconnect id="insert_image" noload url="api/ModelAdmin/insert_img" dmx-on:success="notifies.success('Image added');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to add image')"></dmx-serverconnect>
 
@@ -65,17 +70,56 @@
 
 	</nav>
 	<div class="container mt-3">
+
 		<div class="row">
+
 			<div class="col border-bottom">
+
 				<h3 dmx-text="serverconnect.data.query1[0].make+'&nbsp;-&nbsp;'+serverconnect.data.query1[0].model">Fancy display heading</h3>
+			</div>
+
+		</div>
+		<div class="row mt-2">
+			<div class="col">
+				<dmx-value id="show_this" dmx-bind:value="0"></dmx-value>
+
+
+				<button id="btn11" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this.value == 0`,then:{steps:{run:{action:`show_this.setValue(1)`}}},else:{steps:{run:{action:`show_this.setValue(0)`}}}}})">Edit</button>
+				<div class="row" dmx-show="show_this.value == 1">
+
+					<div class="col-5">
+						<input id="text5" name="text5" type="text" class="form-control mt-2 mb-1" placeholder="Model"><input id="text7" name="text7" type="text" class="form-control mt-2 mb-1" placeholder="Producer"><button id="btn12"
+							class="btn btn-success mt-2 mb-2" type="submit" dmx-on:click="change_mod_and_make.load({prod: product.value, mod: text5.value, mak: text7.value});show_this.setValue(0)">Submit</button>
+
+					</div>
+
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="container mt-5">
 
+
 		<div class="row">
 			<div class="col">
 				<img dmx-bind:src="serverconnect.data.query1[0].image" class="img-fluid" width="500">
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-12">
+				<dmx-value id="show_this_var6" dmx-bind:value="0"></dmx-value>
+
+				<button id="btn13" class="btn btn-outline-primary"
+					dmx-on:click="run({condition:{if:`show_this_var6.value == 0`,then:{steps:{run:{action:`show_this_var6.setValue(1)`}}},else:{steps:{run:{action:`show_this_var6.setValue(0)`}}}}})">Edit</button>
+				<div class="row mt-2" dmx-show="show_this_var6.value == 1">
+
+					<div class="col-5">
+						<input id="text6" name="text6" type="text" class="form-control" placeholder="Thumbnail image source" required="">
+					</div>
+					<div class="col-2">
+						<button id="btn14" class="btn btn-success" dmx-on:click="edit_thumbnail.load({prod: product.value, img_source: text6.value});show_this_var6.setValue(0)">Submit</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -90,7 +134,7 @@
 			<div class="col">
 
 				<button id="edit2" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this2.value == 0`,then:{steps:{run:{action:`show_this2.setValue(1)`}}},else:{steps:{run:{action:`show_this2.setValue(0)`}}}}})">Edit</button>
-				<button id="remove2" class="btn btn-outline-danger ml-2" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<button id="remove2" class="btn btn-outline-danger ml-2 disabled" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
 				<dmx-value id="show_this2" dmx-bind:value="0"></dmx-value>
 				<div class="row mt-2" dmx-show="show_this2.value == 1">
 
@@ -110,7 +154,7 @@
 			<div class="col">
 
 				<button id="edit1" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this1.value == 0`,then:{steps:{run:{action:`show_this1.setValue(1)`}}},else:{steps:{run:{action:`show_this1.setValue(0)`}}}}})">Edit</button>
-				<button id="remove1" class="btn btn-outline-danger ml-2" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<button id="remove1" class="btn btn-outline-danger ml-2 disabled" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
 				<dmx-value id="show_this1" dmx-bind:value="0"></dmx-value>
 				<div class="row mt-2" dmx-show="show_this1.value == 1">
 
@@ -120,6 +164,26 @@
 						<input id="prop_name1" name="text3" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
 						<button id="subm1" class="btn btn-outline-success mt-2">Submit</button></div>
 					<div class="ml-0 pl-0 col-6"><input id="prop_value1" name="text3" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-2 mb-2">
+			<div class="col-5">
+				<h4 id="year1" class="font-weight-light" dmx-text="'Class: '+serverconnect.data.query1[0].class">Fancy display heading</h4>
+			</div>
+			<div class="col">
+
+				<button id="edit3" class="btn btn-outline-primary" dmx-on:click="run({condition:{if:`show_this1.value == 0`,then:{steps:{run:{action:`show_this1.setValue(1)`}}},else:{steps:{run:{action:`show_this1.setValue(0)`}}}}})">Edit</button>
+				<button id="remove3" class="btn btn-outline-danger ml-2 disabled" dmx-on:click="delete_spec.load({prop_name: property, prop_value: value})">Remove</button>
+				<dmx-value id="show_this3" dmx-bind:value="0"></dmx-value>
+				<div class="row mt-2" dmx-show="show_this1.value == 1">
+
+					<div class="col mr-0">
+
+
+						<input id="prop_name3" name="text8" type="text" class="form-control" placeholder="Property name" required="" data-rule-lettersonly="">
+						<button id="subm3" class="btn btn-outline-success mt-2">Submit</button></div>
+					<div class="ml-0 pl-0 col-6"><input id="prop_value3" name="text8" type="text" class="form-control" placeholder="Property value" required="" data-msg-number=""></div>
 				</div>
 			</div>
 		</div>
@@ -170,7 +234,7 @@
 			</div>
 		</div>
 		<div class="row row-cols-2" is="dmx-repeat" id="gallery" dmx-bind:repeat="serverconnect.data.gallery">
-			<div class="col">
+			<div class="col mt-2">
 
 				<img dmx-bind:src="images" class="img-fluid style9">
 				<div class="row mt-2">
@@ -200,8 +264,7 @@
 					<div class="col-4">
 
 						<input id="text4" name="text4" type="text" class="form-control" placeholder="Image source (/assets/img/[image])">
-						<button id="btn10" class="btn btn-outline-success mt-2"
-							dmx-on:click="insert_image.load({img_source: text4.value, id: product.value});serverconnect.load({id: product.value},true);var5.setValue(0);text4.setValue('&nbsp;')">Submit</button></div>
+						<button id="btn10" class="btn btn-outline-success mt-2" dmx-on:click="insert_image.load({img_source: text4.value, id: product.value});serverconnect.load({id: product.value},true);var5.setValue(0)">Submit</button></div>
 				</div>
 			</div>
 		</div>

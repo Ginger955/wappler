@@ -24,6 +24,10 @@
       {
         "type": "number",
         "name": "serv"
+      },
+      {
+        "type": "number",
+        "name": "serv_end_id"
       }
     ]
   },
@@ -37,7 +41,7 @@
         "options": {
           "connection": "db",
           "sql": {
-            "query": "INSERT INTO service_appointments (for_user, type, duration, for_car, serv_hours_refk)\nVALUES (:P1, :P2, :P3, :P5, :P6)",
+            "query": "INSERT INTO service_appointments (for_user, type, duration, for_car, serv_hours_refk, serv_hours_end)\nVALUES (:P1, :P2, :P3, :P5, :P6, :P7)",
             "params": [
               {
                 "name": ":P1",
@@ -63,6 +67,10 @@
                 "name": ":P6",
                 "value": "{{$_GET.serv}}",
                 "test": "9"
+              },
+              {
+                "name": ":P7",
+                "value": "{{$_GET.serv_end_id}}"
               }
             ]
           },

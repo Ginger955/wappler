@@ -12,36 +12,81 @@
       {
         "type": "text",
         "name": "dir"
-      },
-      {
-        "type": "number",
-        "name": "product_id"
-      },
-      {
-        "type": "number",
-        "name": "serv_app_id"
-      },
-      {
-        "type": "date",
-        "name": "date"
-      },
-      {
-        "type": "number",
-        "name": "serv_hour_ref"
-      },
-      {
-        "type": "time",
-        "name": "start_time"
-      },
-      {
-        "type": "time",
-        "name": "endtime"
       }
     ]
   },
   "exec": {
     "steps": [
       "connections/db",
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [],
+            "table": {
+              "name": "users"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id",
+                  "field": "users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.id}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT *\nFROM users\nWHERE id = :P1 /* {{$_GET.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "password",
+            "type": "text"
+          },
+          {
+            "name": "username",
+            "type": "text"
+          },
+          {
+            "name": "role",
+            "type": "text"
+          }
+        ],
+        "outputType": "array",
+        "output": true
+      },
       {
         "name": "fetch_owned_products",
         "module": "dbconnector",
@@ -91,7 +136,6 @@
             ]
           }
         },
-        "output": true,
         "meta": [
           {
             "name": "id",
@@ -145,7 +189,6 @@
             ]
           }
         },
-        "output": true,
         "meta": [
           {
             "name": "id",
@@ -220,10 +263,10 @@
                 "name": ":P1",
                 "value": "{{$_GET.id}}"
               }
-            ]
+            ],
+            "orders": []
           }
         },
-        "output": true,
         "meta": [
           {
             "name": "id",
@@ -248,85 +291,14 @@
           {
             "name": "serv_hours_refk",
             "type": "text"
-          }
-        ],
-        "outputType": "array",
-        "disabled": true
-      },
-      {
-        "name": "fetch_service_hours",
-        "module": "dbconnector",
-        "action": "select",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "SELECT",
-            "columns": [],
-            "table": {
-              "name": "service_hours"
-            },
-            "joins": [],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "service_hours.id",
-                  "field": "service_hours.id",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{fetch_user_appointments[0].serv_hours_refk}}",
-                  "data": {
-                    "table": "service_hours",
-                    "column": "id",
-                    "type": "number"
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "SELECT *\nFROM service_hours\nWHERE id = :P1 /* {{fetch_user_appointments[0].serv_hours_refk}} */",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{fetch_user_appointments[0].serv_hours_refk}}"
-              }
-            ]
-          },
-          "test": true
-        },
-        "output": true,
-        "meta": [
-          {
-            "name": "id",
-            "type": "text"
           },
           {
-            "name": "timeframe",
-            "type": "text"
-          },
-          {
-            "name": "date",
-            "type": "text"
-          },
-          {
-            "name": "no_appointments",
-            "type": "text"
-          },
-          {
-            "name": "max_appointments",
-            "type": "text"
-          },
-          {
-            "name": "for_users_ids",
+            "name": "serv_hours_end",
             "type": "text"
           }
         ],
         "outputType": "array",
-        "disabled": true
+        "output": true
       },
       {
         "name": "",
@@ -383,7 +355,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "",
@@ -440,7 +413,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "",
@@ -497,82 +471,8 @@
             }
           }
         },
-        "outputType": "boolean"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{fetch_service_hours[0].id.inRange(1, 100000000000000000)}}",
-          "then": {
-            "steps": [
-              {
-                "name": "durr",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{fetch_user_appointments[0].duration}}"
-                },
-                "outputType": "number"
-              },
-              {
-                "name": "startTime",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{fetch_service_hours[0].timeframe}}"
-                },
-                "outputType": "time"
-              },
-              {
-                "name": "endTime",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{$_GET.endtime}}",
-                  "key": "endTime"
-                },
-                "outputType": "date",
-                "output": true
-              },
-              {
-                "name": "update_serv_hours",
-                "module": "dbupdater",
-                "action": "custom",
-                "options": {
-                  "connection": "db",
-                  "sql": {
-                    "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
-                    "params": [
-                      {
-                        "name": ":P1",
-                        "value": "{{fetch_service_hours[0].date}}",
-                        "test": "9/10/2020"
-                      },
-                      {
-                        "name": ":P2",
-                        "value": "{{fetch_service_hours[0].timeframe}}",
-                        "test": "8:00:00"
-                      },
-                      {
-                        "name": ":P3",
-                        "value": "{{endTime}}",
-                        "test": "12:00:00"
-                      }
-                    ]
-                  },
-                  "test": true
-                },
-                "meta": [],
-                "outputType": "array",
-                "output": false,
-                "disabled": true
-              }
-            ]
-          }
-        },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "delete_account",
@@ -619,6 +519,206 @@
           }
         ],
         "disabled": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "while",
+        "options": {
+          "while": "{{fetch_service_hours[0].id.inRange(1, 100000000000000)}}",
+          "exec": {
+            "steps": [
+              {
+                "name": "fetch_service_hours",
+                "module": "dbconnector",
+                "action": "select",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [],
+                    "table": {
+                      "name": "service_hours"
+                    },
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "service_hours.id",
+                          "field": "service_hours.id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{fetch_user_appointments[0].serv_hours_refk}}",
+                          "data": {
+                            "table": "service_hours",
+                            "column": "id",
+                            "type": "number"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT *\nFROM service_hours\nWHERE id = :P1 /* {{fetch_user_appointments[0].serv_hours_refk}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{fetch_user_appointments[0].serv_hours_refk}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "id",
+                    "type": "text"
+                  },
+                  {
+                    "name": "timeframe",
+                    "type": "text"
+                  },
+                  {
+                    "name": "date",
+                    "type": "text"
+                  },
+                  {
+                    "name": "no_appointments",
+                    "type": "text"
+                  },
+                  {
+                    "name": "max_appointments",
+                    "type": "text"
+                  },
+                  {
+                    "name": "for_users_ids",
+                    "type": "text"
+                  }
+                ],
+                "outputType": "array",
+                "output": true
+              },
+              {
+                "name": "fetch_service_hours_end",
+                "module": "dbconnector",
+                "action": "select",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [],
+                    "table": {
+                      "name": "service_hours"
+                    },
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "service_hours.id",
+                          "field": "service_hours.id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{fetch_user_appointments[0].serv_hours_end}}",
+                          "data": {
+                            "table": "service_hours",
+                            "column": "id",
+                            "type": "number"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT *\nFROM service_hours\nWHERE id = :P1 /* {{fetch_user_appointments[0].serv_hours_end}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{fetch_user_appointments[0].serv_hours_end}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "id",
+                    "type": "text"
+                  },
+                  {
+                    "name": "timeframe",
+                    "type": "text"
+                  },
+                  {
+                    "name": "date",
+                    "type": "text"
+                  },
+                  {
+                    "name": "no_appointments",
+                    "type": "text"
+                  },
+                  {
+                    "name": "max_appointments",
+                    "type": "text"
+                  },
+                  {
+                    "name": "for_users_ids",
+                    "type": "text"
+                  }
+                ],
+                "outputType": "array",
+                "output": true
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{fetch_service_hours[0].id.inRange(1, 100000000000000000)}}",
+                  "then": {
+                    "steps": {
+                      "name": "update_serv_hours",
+                      "module": "dbupdater",
+                      "action": "custom",
+                      "options": {
+                        "connection": "db",
+                        "sql": {
+                          "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "value": "{{fetch_service_hours[0].date}}",
+                              "test": "9/10/2020"
+                            },
+                            {
+                              "name": ":P2",
+                              "value": "{{fetch_service_hours[0].timeframe}}",
+                              "test": "8:00:00"
+                            },
+                            {
+                              "name": ":P3",
+                              "value": "{{fetch_service_hours_end[0].timeframe}}",
+                              "test": "12:00:00"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [],
+                      "outputType": "array",
+                      "output": false
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          }
+        }
       }
     ]
   }

@@ -26,32 +26,7 @@
           "connection": "db",
           "sql": {
             "type": "SELECT",
-            "columns": [
-              {
-                "table": "cars",
-                "column": "make"
-              },
-              {
-                "table": "cars",
-                "column": "model"
-              },
-              {
-                "table": "cars",
-                "column": "year"
-              },
-              {
-                "table": "cars",
-                "column": "price"
-              },
-              {
-                "table": "cars",
-                "column": "image"
-              },
-              {
-                "table": "cars",
-                "column": "id"
-              }
-            ],
+            "columns": [],
             "table": {
               "name": "cars"
             },
@@ -76,7 +51,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT make, model, year, price, image, id\nFROM cars\nWHERE id = :P1 /* {{$_GET.id}} */",
+            "query": "SELECT *\nFROM cars\nWHERE id = :P1 /* {{$_GET.id}} */",
             "params": [
               {
                 "operator": "equal",
@@ -90,6 +65,10 @@
         },
         "output": true,
         "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
           {
             "name": "make",
             "type": "text"
@@ -111,7 +90,11 @@
             "type": "text"
           },
           {
-            "name": "id",
+            "name": "class",
+            "type": "text"
+          },
+          {
+            "name": "invisible",
             "type": "text"
           }
         ],

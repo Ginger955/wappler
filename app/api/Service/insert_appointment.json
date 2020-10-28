@@ -67,7 +67,7 @@
         "outputType": "array"
       },
       {
-        "name": "get",
+        "name": "get_start_id",
         "module": "dbupdater",
         "action": "custom",
         "options": {
@@ -83,6 +83,38 @@
               {
                 "name": ":P2",
                 "value": "{{$_GET.start_time}}",
+                "test": "12:00:00"
+              }
+            ]
+          },
+          "test": true
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "get_end_id",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "SELECT id\nFROM service_hours\nWHERE date = :P1 AND timeframe = :P2",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{$_GET.date}}",
+                "test": "10/12/2020"
+              },
+              {
+                "name": ":P2",
+                "value": "{{$_GET.end_time}}",
                 "test": "12:00:00"
               }
             ]

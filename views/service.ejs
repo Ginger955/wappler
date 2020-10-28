@@ -65,7 +65,7 @@
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
 	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="" dmx-param:end_time="" noload dmx-param:userid="" dmx-param:start_time=""
-		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: serv_hour_id.value, total_time_for_service: total_duration.value, serv: serv_hour_id.value})">
+		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: serv_hour_id.value, total_time_for_service: total_duration.value, serv: insertAppointment.data.get_start_id[0].id, serv_end_id: insertAppointment.data.get_end_id[0].id})">
 	</dmx-serverconnect>
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>

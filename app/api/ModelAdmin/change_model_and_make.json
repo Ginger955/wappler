@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/modelx_admin.ejs",
+      "linkedForm": "form2"
+    },
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "prod"
+      },
+      {
+        "type": "text",
+        "name": "mod"
+      },
+      {
+        "type": "text",
+        "name": "mak"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "cars",
+                "column": "make",
+                "type": "text",
+                "value": "{{$_GET.mak}}"
+              },
+              {
+                "table": "cars",
+                "column": "model",
+                "type": "text",
+                "value": "{{$_GET.mod}}"
+              }
+            ],
+            "table": "cars",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.prod}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "UPDATE cars\nSET make = :P1 /* {{$_GET.mak}} */, model = :P2 /* {{$_GET.mod}} */\nWHERE id = :P3 /* {{$_GET.prod}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.mak}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.mod}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.prod}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

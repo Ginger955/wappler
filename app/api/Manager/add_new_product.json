@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "thumbnail_img"
+      },
+      {
+        "type": "text",
+        "name": "mod"
+      },
+      {
+        "type": "text",
+        "name": "producer"
+      },
+      {
+        "type": "number",
+        "name": "price"
+      },
+      {
+        "type": "number",
+        "name": "year"
+      },
+      {
+        "type": "text",
+        "name": "class"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "cars",
+                "column": "make",
+                "type": "text",
+                "value": "{{$_GET.producer}}"
+              },
+              {
+                "table": "cars",
+                "column": "model",
+                "type": "text",
+                "value": "{{$_GET.mod}}"
+              },
+              {
+                "table": "cars",
+                "column": "year",
+                "type": "number",
+                "value": "{{$_GET.year}}"
+              },
+              {
+                "table": "cars",
+                "column": "price",
+                "type": "number",
+                "value": "{{$_GET.price}}"
+              },
+              {
+                "table": "cars",
+                "column": "image",
+                "type": "text",
+                "value": "{{$_GET.thumbnail_img}}"
+              },
+              {
+                "table": "cars",
+                "column": "class",
+                "type": "text",
+                "value": "{{$_GET.class}}"
+              },
+              {
+                "table": "cars",
+                "column": "invisible",
+                "type": "number",
+                "value": "1"
+              }
+            ],
+            "table": "cars",
+            "returning": "id",
+            "query": "INSERT INTO cars\n(make, model, year, price, image, class, invisible) VALUES (:P1 /* {{$_GET.producer}} */, :P2 /* {{$_GET.mod}} */, :P3 /* {{$_GET.year}} */, :P4 /* {{$_GET.price}} */, :P5 /* {{$_GET.thumbnail_img}} */, :P6 /* {{$_GET.class}} */, '1')",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.producer}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.mod}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_GET.year}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_GET.price}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_GET.thumbnail_img}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_GET.class}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

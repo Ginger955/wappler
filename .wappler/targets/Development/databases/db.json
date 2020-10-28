@@ -300,6 +300,15 @@
               "references": "id",
               "inTable": "service_hours"
             }
+          },
+          "serv_hours_end": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "id",
+              "inTable": "service_hours"
+            }
           }
         }
       },
