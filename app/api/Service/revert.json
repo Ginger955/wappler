@@ -2,22 +2,158 @@
   "meta": {
     "$_GET": [
       {
-        "type": "date",
-        "name": "date"
+        "type": "number",
+        "name": "serv_hour_ref"
       },
       {
-        "type": "time",
-        "name": "starttime"
+        "type": "number",
+        "name": "serv_hour_end"
       },
       {
-        "type": "time",
-        "name": "endtime"
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
       }
     ]
   },
   "exec": {
     "steps": [
       "connections/db",
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.serv_hour_ref}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{$_GET.serv_hour_ref}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.serv_hour_ref}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "query2",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.serv_hour_end}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{$_GET.serv_hour_end}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.serv_hour_end}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
       {
         "name": "custom",
         "module": "dbupdater",
@@ -29,15 +165,15 @@
             "params": [
               {
                 "name": ":P1",
-                "value": "{{$_GET.date}}"
+                "value": "{{query[0].date}}"
               },
               {
                 "name": ":P2",
-                "value": "{{$_GET.starttime}}"
+                "value": "{{query[0].timeframe}}"
               },
               {
                 "name": ":P3",
-                "value": "{{$_GET.endtime}}"
+                "value": "{{query2[0].timeframe}}"
               }
             ]
           }

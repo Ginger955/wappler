@@ -49,7 +49,6 @@
   runJS: {function: "removeTimeframe"}
 }</script>
 	<dmx-value id="timeS"></dmx-value>
-	<dmx-value id="serv_hour_id" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 	<dmx-value id="startTime" dmx-bind:value="'00:00:00'" dmx-on:updated="alert1.show();alert1.setTextContent(value)"></dmx-value>
 
 	<dmx-value id="hide_submit" dmx-bind:value="true"></dmx-value>
@@ -58,14 +57,13 @@
 	<dmx-value id="hide_type" dmx-bind:value="true"></dmx-value>
 	<dmx-value id="selected_vehicle"></dmx-value>
 
-	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="session.data.user_id" dmx-param:service_type="services.items" dmx-param:service_type_duration="durations.items" noload
-		dmx-param:carid="selected_vehicle.value" dmx-param:serv_hours_id="serv_hour_id.value" dmx-on:success="notifies.success('Appointment created');get_available_timeframes.load({date: date.value},true)"
-		dmx-on:error="notifies.danger('Could not create appointment. Please try again.');revert_appointment.load({date: date.value, starttime: startTime.value, endtime: startTime.value.addHours(total_duration.value).toISOTime()})"
-		dmx-param:total_time_for_service="total_duration.value" dmx-param:serv="serv_hour_id.value"></dmx-serverconnect>
+	<dmx-serverconnect id="insertUserAppointment" url="api/Service/insert_user_appointment" dmx-param:userid="" dmx-param:service_type="" dmx-param:service_type_duration="" noload dmx-param:carid="" dmx-param:serv_hours_id="serv_hour_id.value"
+		dmx-on:success="notifies.success('Appointment created');get_available_timeframes.load({date: date.value},true)" dmx-on:error="notifies.danger('Could not create appointment. Please try again.')" dmx-param:total_time_for_service=""
+		dmx-param:serv=""></dmx-serverconnect>
 	<dmx-array id="durations"></dmx-array>
 	<dmx-array id="services"></dmx-array>
 	<dmx-serverconnect id="insertAppointment" url="api/Service/insert_appointment" dmx-param:date="" dmx-param:end_time="" noload dmx-param:userid="" dmx-param:start_time=""
-		dmx-on:success="serv_hour_id.setValue(insertAppointment.data.get[0].id);insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: serv_hour_id.value, total_time_for_service: total_duration.value, serv: insertAppointment.data.get_start_id[0].id, serv_end_id: insertAppointment.data.get_end_id[0].id})">
+		dmx-on:success="insertUserAppointment.load({userid: session.data.user_id, service_type: services.items, service_type_duration: durations.items, carid: selected_vehicle.value, serv_hours_id: serv_hour_id.value, total_time_for_service: total_duration.value, serv: insertAppointment.data.get_start_id[0].id, serv_end_id: insertAppointment.data.get_end_id[0].id})">
 	</dmx-serverconnect>
 
 	<dmx-value id="total_duration" dmx-bind:value="0"></dmx-value>
@@ -194,6 +192,7 @@
 		<div class="row" id="time_options">
 			<div class="col">
 				<select id="timeframes" class="form-control" dmx-bind:options="TIMES.items" optionvalue="$value" dmx-on:changed="hide_submit.setValue(false);startTime.setValue(value)" optiontext="$value">
+					<option selected="" value="Select time">Select time</option>
 				</select>
 			</div>
 		</div>
@@ -249,6 +248,8 @@
 		// }
 		dmx.parse('TIMES.empty()');
 		console.log('final result = ', result);
+		// const NONE = "Select time";
+		// dmx.parse('TIMES.add('+NONE+')');
 		for(var i = 0; i < result.length; i++){
 			var k = transformToTime(result[i]);
 			dmx.parse('TIMES.add('+k+')');

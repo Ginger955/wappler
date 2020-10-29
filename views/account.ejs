@@ -60,7 +60,8 @@
 
 
 	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
-		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('localhost:8100')" dmx-on:error="notifies.danger('Failed to delete account')">
+		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('http://localhost:8100/')"
+		dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 
 	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id">
