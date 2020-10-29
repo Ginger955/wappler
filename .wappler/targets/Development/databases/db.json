@@ -402,13 +402,6 @@
               "primary": false,
               "nullable": true
             }
-          },
-          "for_users_ids": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "nullable": true
-            }
           }
         }
       },

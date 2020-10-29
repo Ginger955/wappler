@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "serv_hour_start"
+      },
+      {
+        "type": "number",
+        "name": "serv_hour_end"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "number",
+        "name": "user_app_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "id"
+              },
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.serv_hour_start}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{$_GET.serv_hour_start}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.serv_hour_start}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "query2",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "id"
+              },
+              {
+                "table": "service_hours",
+                "column": "timeframe"
+              },
+              {
+                "table": "service_hours",
+                "column": "date"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.serv_hour_end}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, timeframe, date\nFROM service_hours\nWHERE id = :P1 /* {{$_GET.serv_hour_end}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.serv_hour_end}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "custom",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "query": "UPDATE service_hours\nSET no_appointments = no_appointments - 1\nWHERE date = :P1 AND (timeframe >= :P2 AND timeframe <= :P3)",
+            "params": [
+              {
+                "name": ":P1",
+                "value": "{{query[0].date}}"
+              },
+              {
+                "name": ":P2",
+                "value": "{{query[0].timeframe}}"
+              },
+              {
+                "name": ":P3",
+                "value": "{{query2[0].timeframe}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "service_appointments",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.user_app_id}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM service_appointments\nWHERE id = :P1 /* {{$_GET.user_app_id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.user_app_id}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

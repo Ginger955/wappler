@@ -3,15 +3,7 @@
     "$_GET": [
       {
         "type": "number",
-        "name": "id"
-      },
-      {
-        "type": "text",
-        "name": "sort"
-      },
-      {
-        "type": "text",
-        "name": "dir"
+        "name": "user_id"
       }
     ]
   },
@@ -19,25 +11,25 @@
     "steps": [
       "connections/db",
       {
-        "name": "delete_account",
+        "name": "delete",
         "module": "dbupdater",
         "action": "delete",
         "options": {
           "connection": "db",
           "sql": {
             "type": "delete",
-            "table": "users",
+            "table": "reviews",
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
+                  "id": "by_user",
+                  "field": "by_user",
                   "type": "string",
                   "operator": "equal",
-                  "value": "{{$_GET.id}}",
+                  "value": "{{$_GET.user_id}}",
                   "data": {
-                    "column": "id"
+                    "column": "by_user"
                   },
                   "operation": "="
                 }
@@ -45,13 +37,13 @@
               "conditional": null,
               "valid": true
             },
-            "query": "DELETE\nFROM users\nWHERE id = :P1 /* {{$_GET.id}} */",
+            "query": "DELETE\nFROM reviews\nWHERE by_user = :P1 /* {{$_GET.user_id}} */",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_GET.id}}"
+                "value": "{{$_GET.user_id}}"
               }
             ]
           }

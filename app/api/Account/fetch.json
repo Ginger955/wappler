@@ -225,6 +225,10 @@
           {
             "name": "serv_hours_refk",
             "type": "text"
+          },
+          {
+            "name": "serv_hours_end",
+            "type": "text"
           }
         ],
         "outputType": "array"
@@ -243,7 +247,7 @@
             },
             "joins": [],
             "wheres": {
-              "condition": "AND",
+              "condition": "OR",
               "rules": [
                 {
                   "id": "service_hours.id",
@@ -269,6 +273,79 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{fetch_user_appointments[0].serv_hours_refk}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "timeframe",
+            "type": "text"
+          },
+          {
+            "name": "date",
+            "type": "text"
+          },
+          {
+            "name": "no_appointments",
+            "type": "text"
+          },
+          {
+            "name": "max_appointments",
+            "type": "text"
+          },
+          {
+            "name": "for_users_ids",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "fetch_service_hour_details_end",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "OR",
+              "rules": [
+                {
+                  "id": "service_hours.id",
+                  "field": "service_hours.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{fetch_user_appointments[0].serv_hours_end}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT *\nFROM service_hours\nWHERE id = :P1 /* {{fetch_user_appointments[0].serv_hours_end}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{fetch_user_appointments[0].serv_hours_end}}"
               }
             ]
           }

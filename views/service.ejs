@@ -38,7 +38,7 @@
 </head>
 
 <body is="dmx-app" id="service">
-	<dmx-serverconnect id="revert_appointment" url="api/Service/revert" noload></dmx-serverconnect>
+	<dmx-serverconnect id="revert_appointment" url="api/Service/revert" noload dmx-on:error="notifies.danger('Failed to revert appointment')" dmx-on:success="notifies.success('Reverted appointment')"></dmx-serverconnect>
 	<dmx-value id="fetched_id" dmx-bind:value="0"></dmx-value>
 	<script is="dmx-flow" id="flow2" type="text/dmx-flow">{
   runJS: {function: "logThis"}

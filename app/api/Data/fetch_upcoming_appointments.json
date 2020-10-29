@@ -56,6 +56,10 @@
                 "column": "serv_hours_refk"
               },
               {
+                "table": "service_appointments",
+                "column": "serv_hours_end"
+              },
+              {
                 "table": "service_hours",
                 "column": "timeframe"
               },
@@ -123,7 +127,7 @@
               "valid": true
             },
             "orders": [],
-            "query": "SELECT service_appointments.id, service_appointments.for_user, service_appointments.type, service_appointments.duration, service_appointments.for_car, service_appointments.serv_hours_refk, service_hours.timeframe, service_hours.date\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.for_user = :P1 /* {{$_GET.id}} */ AND service_hours.date >= :P2 /* {{$_GET.date}} */",
+            "query": "SELECT service_appointments.id, service_appointments.for_user, service_appointments.type, service_appointments.duration, service_appointments.for_car, service_appointments.serv_hours_refk, service_appointments.serv_hours_end, service_hours.timeframe, service_hours.date\nFROM service_appointments\nINNER JOIN service_hours ON (service_hours.id = service_appointments.serv_hours_refk)\nWHERE service_appointments.for_user = :P1 /* {{$_GET.id}} */ AND service_hours.date >= :P2 /* {{$_GET.date}} */",
             "params": [
               {
                 "operator": "equal",
@@ -164,6 +168,10 @@
           },
           {
             "name": "serv_hours_refk",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_end",
             "type": "text"
           },
           {

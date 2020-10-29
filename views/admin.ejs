@@ -241,8 +241,7 @@
 							class="btn btn-primary style8 flex-grow-1" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to
 							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3">Delete</button></div>
 					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2" dmx-text="'Make '+make_oppositE.value"
-							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})"
-							dmx-html="">Make
+							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})">Make
 							invisible&nbsp;</button></div>
 				</div>
 			</div>

@@ -3,15 +3,7 @@
     "$_GET": [
       {
         "type": "number",
-        "name": "id"
-      },
-      {
-        "type": "text",
-        "name": "sort"
-      },
-      {
-        "type": "text",
-        "name": "dir"
+        "name": "user_id"
       }
     ]
   },
@@ -19,25 +11,25 @@
     "steps": [
       "connections/db",
       {
-        "name": "delete_account",
+        "name": "delete",
         "module": "dbupdater",
         "action": "delete",
         "options": {
           "connection": "db",
           "sql": {
             "type": "delete",
-            "table": "users",
+            "table": "owned_products",
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
+                  "id": "owned_by",
+                  "field": "owned_by",
                   "type": "string",
                   "operator": "equal",
-                  "value": "{{$_GET.id}}",
+                  "value": "{{$_GET.user_id}}",
                   "data": {
-                    "column": "id"
+                    "column": "owned_by"
                   },
                   "operation": "="
                 }
@@ -45,13 +37,13 @@
               "conditional": null,
               "valid": true
             },
-            "query": "DELETE\nFROM users\nWHERE id = :P1 /* {{$_GET.id}} */",
+            "query": "DELETE\nFROM owned_products\nWHERE owned_by = :P1 /* {{$_GET.user_id}} */",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_GET.id}}"
+                "value": "{{$_GET.user_id}}"
               }
             ]
           }

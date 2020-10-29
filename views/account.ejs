@@ -29,26 +29,42 @@
 </head>
 
 <body is="dmx-app" id="account">
+
+	<dmx-value id="currentProductIndex" dmx-bind:value="0"></dmx-value>
+
+	<dmx-value id="currentReviewIndex" dmx-bind:value="0"></dmx-value>
+
+
+	<dmx-value id="currentAppIndex" dmx-bind:value="0"></dmx-value>
+
+
+	<dmx-array id="Products"></dmx-array>
+	<dmx-array id="Reviews"></dmx-array>
+	<dmx-array id="Appointments"></dmx-array>
+	<dmx-serverconnect id="delete_appointment" url="api/Account/delete_all_appointment" noload dmx-on:success="run({runJS:{function:'appointmentRemoval'}})" dmx-on:error="notifies.danger('An error occured')"></dmx-serverconnect>
+	<dmx-serverconnect id="delete_rev" url="api/Account/delete_all_reviews" noload></dmx-serverconnect>
+	<dmx-serverconnect id="product_removal" url="api/Account/delete_all_prods" noload></dmx-serverconnect>
 	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
 		<p>This is a nice alert!</p>
 	</div>
 	<dmx-serverconnect id="fetch_all_details" url="api/Account/fetch" noload dmx-param:id="session.data.user_id"
-		dmx-on:success="delete_account.load({id: session.data.user_id, product_id: fetch_all_details.data.fetch_owned_products[0].id, serv_app_id: fetch_all_details.data.fetch_user_appointments[0].id, date: fetch_all_details.data.fetch_service_hour_details[0].date, serv_hour_ref: fetch_all_details.data.fetch_user_appointments[0].serv_hours_refk, start_time: fetch_all_details.data.fetch_service_hour_details[0].timeframe, endtime: fetch_all_details.data.fetch_service_hour_details[0].timeframe.addHours(fetch_all_details.data.fetch_user_appointments[0].duration).toISOTime()})">
+		dmx-on:success="run([{run:{action:`Appointments.add(fetch_all_details.data.fetch_user_appointments)`}},{runJS:{function:'appointmentRemoval'}},{wait:{delay:500}},{while:{condition:`currentAppIndex.value != 0`,exec:{steps:{wait:{delay:100}}}}},{run:{action:`Reviews.add(fetch_all_details.data.fetch_reviews)`}},{runJS:{function:'reviewRemoval'}},{wait:{delay:500}},{while:{condition:`currentProductIndex.value != 0`,exec:{steps:{wait:{delay:100}}}}},{run:{action:`Products.add(fetch_all_details.data.fetch_owned_products)`}},{runJS:{function:'productRemoval'}},{wait:{delay:500}},{while:{condition:`currentReviewIndex.value != 0`,exec:{steps:{wait:{delay:100}}}}},{run:{action:`delete_account.load({id: session.data.user_id})`}}])">
 	</dmx-serverconnect>
-	<dmx-value id="endingTime" dmx-on:updated="run({runJS:{function:'printThis'}})"></dmx-value>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 
 
-	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="modalsuccess.show();redirect.goto('http://localhost:8100/account')" dmx-on:error="modalerror.show()" dmx-param:app_id="" dmx-param:start_time=""
+	<dmx-serverconnect id="cancel_app" url="api/Account/cancel_appointment" noload dmx-on:success="notifies.success('Appointment cancelled')" dmx-on:error="notifies.danger('Could not cancel appointment')" dmx-param:app_id="" dmx-param:start_time=""
 		dmx-param:durr="" dmx-param:date="">
 	</dmx-serverconnect>
 	<div is="dmx-browser" id="redirect"></div>
 
 
-	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload dmx-on:success="notifies.success('Account deleted')" dmx-on:error="notifies.danger('Failed to delete account')">
+	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
+		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('localhost:8100')" dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 
-	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
+	<dmx-serverconnect id="past_appointments" url="api/Data/fetch_past_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id">
+	</dmx-serverconnect>
 	<dmx-serverconnect id="upcoming_appointments" url="api/Data/fetch_upcoming_appointments" dmx-param:date="today.datetime" dmx-param:id="session.data.user_id"></dmx-serverconnect>
 	<dmx-datetime id="today" interval="hours"></dmx-datetime>
 
@@ -149,7 +165,10 @@
 						<h5 class="text-center font-weight-light">Are you sure you want to delete your account?</h5>
 					</div>
 					<div class="modal-footer">
-						<button id="delete" class="btn btn-outline-danger style5" dmx-on:click="delete_account.load({id: session.data.user_id})">Delete</button>
+						<dmx-value id="spinner" dmx-bind:value="0"></dmx-value>
+						<button id="delete" class="btn btn-outline-danger style5" dmx-on:click="fetch_all_details.load({id: session.data.user_id});modalwarning.spinner.setValue(1)">Delete
+							<span class="spinner-border spinner-border-sm" role="status" dmx-show="spinner.value == 1"></span>
+						</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
 					</div>
 				</div>
@@ -220,10 +239,69 @@
 	<script src="bootstrap/4/js/bootstrap.min.js"></script>
 	<script>
 		function printThis(){
-		console.log('starting...');
-		var toPrint = dmx.parse('endingTime.value');
-		console.log(toPrint);
-	}
+			console.log('starting...');
+			var toPrint = dmx.parse('endingTime.value');
+			console.log(toPrint);
+		}
+
+		function productRemoval(){
+			var index = dmx.parse('currentProductIndex.value');
+			var products = dmx.parse('Products.items');
+			if(products[0].length > index){
+				console.log('removing product at index', index);
+				var toDelete = products[0][index].owned_by;
+				var increment = index + 1;
+				console.log('running serverconnect...');
+				dmx.parse('currentProductIndex.setValue('+increment+')');
+				dmx.parse('product_removal.load({user_id: '+toDelete+'})');
+				console.log('finished deleting product from DB');
+			} else {
+				console.log('nothing else to delete from Products...');
+				dmx.parse('currentProductIndex.setValue(0)');
+				dmx.parse('Products.empty()');
+			}
+		}
+
+		function reviewRemoval(){
+			var index = dmx.parse('currentReviewIndex.value');
+			var reviews = dmx.parse('Reviews.items');
+			if(reviews[0].length > index){
+				console.log('removing review at index', index);
+				var toDelete = reviews[0][index].by_user;
+				var increment = index + 1;
+				console.log('running serverconnect...');
+				dmx.parse('currentReviewIndex.setValue('+increment+')');
+				dmx.parse('delete_rev.load({user_id: '+toDelete+'})');
+				console.log('finished deleting reviews from DB');
+			} else {
+				console.log('nothing else to delete from Reviews...');
+				dmx.parse('currentReviewIndex.setValue(0)');
+				dmx.parse('Reviews.empty()');
+			}
+		}
+
+		function appointmentRemoval(){
+			var index = dmx.parse('currentAppIndex.value');
+			var appointments = dmx.parse('Appointments.items');
+			console.log('Appointments items:',appointments);
+			console.log('preparing data for cancellation...');
+			if(appointments[0].length > index){
+				console.log('removing app at index', index);
+				var id = appointments[0][index].id;
+				var start_time = appointments[0][index].serv_hours_refk;
+				var end_time = appointments[0][index].serv_hours_end;
+				var increment = index + 1;
+
+				console.log('running serverconnect...');
+				dmx.parse('currentAppIndex.setValue('+increment+')');
+				dmx.parse('delete_appointment.load({serv_hour_start: '+start_time+', serv_hour_end: '+end_time+', user_app_id: '+id+'})');
+				console.log('finished deleting appointments from DB');
+			} else {
+				console.log('nothing else to delete from Appointments...');
+				dmx.parse('currentAppIndex.setValue(0)');
+				dmx.parse('Appointments.empty()');
+			}
+		}
 	</script>
 </body>
 

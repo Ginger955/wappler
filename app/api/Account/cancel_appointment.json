@@ -16,6 +16,14 @@
       {
         "type": "date",
         "name": "date"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
       }
     ]
   },
