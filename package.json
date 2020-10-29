@@ -42,7 +42,8 @@
     "socket.io": "^2.3.0",
     "sqlite3": "^5.0.0",
     "unzipper": "^0.10.11",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "mocha": "^7.1.2",
