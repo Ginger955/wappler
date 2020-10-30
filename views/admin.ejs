@@ -35,10 +35,7 @@
 </head>
 
 <body id="admin">
-	<dmx-serverconnect id="delete_product" noload></dmx-serverconnect>
-	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
-		<p>This is a nice alert!</p>
-	</div>
+	<dmx-serverconnect id="delete_product" noload url="api/Manager/delete_product" dmx-on:success="notifies.success('Product deleted');cars.load({},true)" dmx-on:error="notifies.danger('Could not delete product')"></dmx-serverconnect>
 	<dmx-serverconnect id="add_new_service_hour_entry" noload url="api/Manager/add_serv_hour" dmx-on:success="notifies.success('Added service hour')" dmx-on:error="notifies.danger('Failed to add service hour')"></dmx-serverconnect>
 
 
@@ -110,13 +107,16 @@
 	</div>
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
+			<dmx-value id="show_row_repeat_users" dmx-bind:value="0"></dmx-value>
 
-			<h3 class="font-weight-light">Manage users<button id="load_users" class="btn ml-4 btn-outline-primary" dmx-on:click="loadUsers.load()">Load users</button></h3>
+			<h3 class="font-weight-light">Manage users<button id="load_users" class="btn ml-4 btn-outline-primary"
+					dmx-on:click="run([{run:{action:`loadUsers.load(true)`}},{condition:{if:`show_row_repeat_users.value == 0`,then:{steps:{run:{action:`show_row_repeat_users.setValue(1)`}}},else:{steps:{run:{action:`show_row_repeat_users.setValue(0)`}}}}}])">Load
+					users</button></h3>
 		</div>
 	</div>
 
 
-	<div class="row mt-2 pl-5 row-cols-3" is="dmx-repeat" id="repeat2" dmx-bind:repeat="loadUsers.data.custom">
+	<div class="row mt-2 pl-5 row-cols-3" is="dmx-repeat" id="repeat2" dmx-bind:repeat="loadUsers.data.custom" dmx-show="show_row_repeat_users.value == 1">
 
 		<div class="col-2 border-dark mb-1">
 			<h5 class="font-weight-light" id="number" dmx-text="id">Fancy display heading</h5>
@@ -214,12 +214,15 @@
 	</div>
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
+			<dmx-value id="show_row_repeat_products" dmx-bind:value="0"></dmx-value>
 
-			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({})" wappler-command="editContent">Load cars</button></h3>
+			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4"
+					dmx-on:click="run([{run:{action:`cars.load({},true)`}},{condition:{if:`show_row_repeat_products.value == 0`,then:{steps:{run:{action:`show_row_repeat_products.setValue(1)`}}},else:{steps:{run:{action:`show_row_repeat_products.setValue(0)`}}}}}])"
+					wappler-command="editContent">Load cars</button></h3>
 		</div>
 	</div>
 
-	<div class="row mt-3 pl-5 row-cols-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="cars.data.query1">
+	<div class="row mt-3 pl-5 row-cols-3" is="dmx-repeat" id="repeat1" dmx-bind:repeat="cars.data.query1" dmx-show="show_row_repeat_products.value == 1">
 		<div class="text-left col mb-2">
 
 
@@ -253,7 +256,7 @@
 
 						<button id="btn7" class="btn btn-primary mr-3 flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind"
 							class="btn btn-primary style8 flex-grow-1" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to
-							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3">Delete</button></div>
+							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3" dmx-on:click="delete_product.load({id: id})">Delete</button></div>
 					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2 style12" dmx-text="'Make '+make_oppositE.value"
 							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})"
 							dmx-class:style12="make_oppositE.value == 'visible'">Make
