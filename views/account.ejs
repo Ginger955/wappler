@@ -26,6 +26,7 @@
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 	<link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
 	<script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+	<script src="dmxAppConnect/dmxDatastore/dmxDatastore.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="account">
@@ -60,7 +61,7 @@
 
 
 	<dmx-serverconnect id="delete_account" url="api/Account/delete_account" dmx-param:id="session.data.user_id" noload
-		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');redirect.goto('http://localhost:8100/')"
+		dmx-on:success="notifies.success('Account deleted');session.remove('user_id');session.remove('username');session.remove('on');session.remove('email');session.remove('role');redirect.goto('http://localhost:8100/')"
 		dmx-on:error="notifies.danger('Failed to delete account')">
 	</dmx-serverconnect>
 

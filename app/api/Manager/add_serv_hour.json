@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "time",
+        "name": "time"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "number",
+        "name": "max_apps"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "service_hours",
+                "column": "timeframe",
+                "type": "time",
+                "value": "{{$_GET.time}}"
+              },
+              {
+                "table": "service_hours",
+                "column": "date",
+                "type": "date",
+                "value": "{{$_GET.date}}"
+              },
+              {
+                "table": "service_hours",
+                "column": "no_appointments",
+                "type": "number",
+                "value": "{{0}}"
+              },
+              {
+                "table": "service_hours",
+                "column": "max_appointments",
+                "type": "number",
+                "value": "{{$_GET.max_apps}}"
+              }
+            ],
+            "table": "service_hours",
+            "returning": "id",
+            "query": "INSERT INTO service_hours\n(timeframe, date, no_appointments, max_appointments) VALUES (:P1 /* {{$_GET.time}} */, :P2 /* {{$_GET.date}} */, :P3 /* {{0}} */, :P4 /* {{$_GET.max_apps}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.time}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_GET.date}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{0}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_GET.max_apps}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

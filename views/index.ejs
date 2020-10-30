@@ -64,11 +64,10 @@
 		<button id="account" class="btn text-center font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1 btn-sm" data-toggle="button" dmx-show="session.data.on.contains('on')"
 			dmx-on:click="browser1.goto('http://localhost:8100/account')">&nbsp;My Account&nbsp;<i class="fa fa-user"></i></button>
 
-		<button id="logout" class="btn text-lg-center flex-lg-grow-1 font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1 btn-sm"
-			dmx-on:click="logging_out.load();session.set('on','off');session.remove('username');session.remove('user_id')" dmx-show="session.data.on.contains('on')">Log
+		<button id="logout" class="btn text-lg-center flex-lg-grow-1 font-weight-bold btn-text-center-flex-grow-1-btn-sm-font-weight-bold flex-grow-1 btn-sm" dmx-on:click="logging_out.load()" dmx-show="session.data.on.contains('on')">Log
 			out&nbsp;<i class="fa fa-sign-out"></i></button></nav>
 	<dmx-query-manager id="query1"></dmx-query-manager>
-	<dmx-serverconnect id="logging_out" noload="noload" url="api/Logout/logout" dmx-on:success="browser1.goto('http://localhost:8100')"></dmx-serverconnect>
+	<dmx-serverconnect id="logging_out" noload="noload" url="api/Logout/logout" dmx-on:success="session.set('on','off');session.remove('username');session.remove('user_id');session.remove('email');session.remove('role')"></dmx-serverconnect>
 
 
 

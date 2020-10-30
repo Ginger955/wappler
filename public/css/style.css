@@ -146,10 +146,10 @@
 }
 .style12 {
     background-color: #28a745;
-    border-color: rgba(0, 0, 0, 0)
+    border-color: #218838
 }
 .style12:hover {
     background-color: #218838;
     border-color: #218838;
-    border-style: none
+    border-style: solid
 }

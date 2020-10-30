@@ -653,6 +653,10 @@ dmx.config({
       {
         "type": "text",
         "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "repeat1": {
@@ -754,6 +758,10 @@ dmx.config({
       {
         "type": "text",
         "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "repeat1": {
