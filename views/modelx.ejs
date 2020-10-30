@@ -29,6 +29,7 @@
 </head>
 
 <body id="modelx" is="dmx-app">
+	<dmx-serverconnect id="logout" url="api/Logout/logout" noload dmx-on:success="session.set('on','off');session.remove('username');session.remove('user_id');session.remove('email');session.remove('role')"></dmx-serverconnect>
 	<dmx-notifications id="notifies" position="bottom"></dmx-notifications>
 	<dmx-datetime id="dateTime" interval="hours" utc="true"></dmx-datetime>
 
@@ -53,10 +54,11 @@
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<button id="models" class="btn btn-sm ok flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/all_models')"><b>Models&nbsp;<i class="fa fa-car"></i></b></button>
 		<button id="service" class="btn btn-sm ok flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/service')"><b>Service&nbsp;</b><i class="fa fa-wrench"></i></button>
+		<button id="admin" class="btn btn-sm ok flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/admin')" dmx-show="session.data.role == 'Moderator'"><b>Admin&nbsp;</b><i class="fa fa-cog"></i></button>
 		<button id="login" class="btn btn-sm ok flex-grow-1" dmx-hide="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/login')"><b>Log in&nbsp;<i class="fa fa-sign-in"></i></b></button>
 
-		<button id="account" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>My Account&nbsp;<i class="fa fa-user"></i></b></button>
-		<button id="logout" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
+		<button id="account" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="redirect.goto('http://localhost:8100/account')"><b>My Account&nbsp;<i class="fa fa-user"></i></b></button>
+		<button id="logout" class="btn btn-sm ok flex-grow-1" dmx-show="session.data.on.contains('on')" dmx-on:click="logout.load()"><b>Log out&nbsp;<i class="fa fa-sign-out"></i></b></button>
 	</nav>
 
 	<div class="container mt-3">

@@ -151,6 +151,10 @@ dmx.config({
       {
         "type": "text",
         "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ]
   },
@@ -214,6 +218,10 @@ dmx.config({
       {
         "type": "text",
         "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "gallery_display": {
@@ -413,6 +421,14 @@ dmx.config({
       {
         "type": "number",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "data_view1": {
@@ -458,6 +474,14 @@ dmx.config({
       {
         "type": "number",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "repeat": {
@@ -894,6 +918,10 @@ dmx.config({
       {
         "type": "number",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "role"
       }
     ],
     "repeat2": {
@@ -929,6 +957,18 @@ dmx.config({
         }
       ],
       "outputType": "array"
-    }
+    },
+    "flow": [
+      {
+        "name": "$param",
+        "type": "object",
+        "sub": [
+          {
+            "type": "text",
+            "name": "ROLE"
+          }
+        ]
+      }
+    ]
   }
 });

@@ -201,7 +201,7 @@
 	<div class="row mt-3 pl-5">
 		<div class="col text-left border-bottom ml-0">
 
-			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({},true)" wappler-command="editContent">Load cars</button></h3>
+			<h3 class="font-weight-light">Manage products<button id="load" class="btn btn-outline-primary ml-4" dmx-on:click="cars.load({})" wappler-command="editContent">Load cars</button></h3>
 		</div>
 	</div>
 
@@ -240,8 +240,9 @@
 						<button id="btn7" class="btn btn-primary mr-3 flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind"
 							class="btn btn-primary style8 flex-grow-1" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to
 							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3">Delete</button></div>
-					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2" dmx-text="'Make '+make_oppositE.value"
-							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})">Make
+					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2 style12" dmx-text="'Make '+make_oppositE.value"
+							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})"
+							dmx-class:style12="make_oppositE.value == 'visible'">Make
 							invisible&nbsp;</button></div>
 				</div>
 			</div>
@@ -259,29 +260,32 @@
 	</div>
 	<div class="row mt-2 pl-5">
 		<div class="col">
-			<button id="btn8" class="btn btn-outline-dark">Add new product</button>
-		</div>
-	</div>
-	<div class="row mt-2 pl-5 row-cols-3">
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<form id="form1" method="post"><input id="text4" name="text4" type="text" class="form-control mb-2" placeholder="Thumbnail image source" required=""><input id="text2" name="text2" type="text" class="form-control"
-							placeholder="Model" required="">
-						<input id="text6" name="text6" type="text" class="form-control mt-2" placeholder="Producer" required=""><input id="text3" name="text3" type="text" class="form-control mt-2" placeholder="Price" required=""><input id="text5"
-							name="text5" type="text" class="form-control mt-2" placeholder="Year" required="">
-						<input id="text7" name="text7" type="text" class="form-control mt-2" placeholder="Class" required=""><button id="btn13" class="btn mt-2 flex-grow-1 btn-success btn-block"
-							dmx-on:click="insert_new_product.load({thumbnail_img: text4.value, mod: text2.value, producer: text6.value, price: text3.value, year: text5.value, class: text7.value})">Add product</button></form>
+			<dmx-value id="show_add_product" dmx-bind:value="0"></dmx-value>
+			<button id="btn8" class="btn btn-outline-dark" dmx-on:click="run({condition:{if:`show_add_product.value == 0`,then:{steps:{run:{action:`show_add_product.setValue(1)`}}},else:{steps:{run:{action:`show_add_product.setValue(0)`}}}}})">Add
+				new product</button>
+			<div class="row row-cols-3 mt-2 mb-2 ml-0" dmx-show="show_add_product.value == 1">
+				<div class="col pl-0">
+					<div class="card">
+						<div class="card-body">
+							<form id="form1" method="post"><input id="text4" name="text4" type="text" class="form-control mb-2" placeholder="Thumbnail image source" required=""><input id="text2" name="text2" type="text" class="form-control"
+									placeholder="Model" required="">
+								<input id="text6" name="text6" type="text" class="form-control mt-2" placeholder="Producer" required=""><input id="text3" name="text3" type="text" class="form-control mt-2" placeholder="Price" required=""><input
+									id="text5" name="text5" type="text" class="form-control mt-2" placeholder="Year" required="">
+								<input id="text7" name="text7" type="text" class="form-control mt-2" placeholder="Class" required=""><button id="btn13" class="btn mt-2 flex-grow-1 btn-success btn-block"
+									dmx-on:click="insert_new_product.load({thumbnail_img: text4.value, mod: text2.value, producer: text6.value, price: text3.value, year: text5.value, class: text7.value})">Add product</button></form>
 
 
 
 
 
 
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="row mt-2 pl-5">
 		<div class="col border-bottom">
 

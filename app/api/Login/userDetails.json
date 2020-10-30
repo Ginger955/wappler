@@ -46,6 +46,10 @@
               {
                 "table": "users",
                 "column": "email"
+              },
+              {
+                "table": "users",
+                "column": "role"
               }
             ],
             "table": {
@@ -72,7 +76,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT username, id, email\nFROM users\nWHERE id = :P1 /* {{security1.identity}} */",
+            "query": "SELECT username, id, email, role\nFROM users\nWHERE id = :P1 /* {{security1.identity}} */",
             "params": [
               {
                 "operator": "equal",
@@ -96,6 +100,10 @@
           },
           {
             "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "role",
             "type": "text"
           }
         ],

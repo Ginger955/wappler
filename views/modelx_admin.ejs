@@ -23,16 +23,46 @@
 	<link rel="stylesheet" href="dmxAppConnect/dmxBootstrap4TableGenerator/dmxBootstrap4TableGenerator.css" />
 	<script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
 	<link rel="stylesheet" href="css/style.css" />
+	<script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
 </head>
 
 <body is="dmx-app" id="modelx_admin">
+	<dmx-serverconnect id="restrict_access" url="api/Data/restrict" dmx-param:id="session.data.user_id" dmx-on:success="flow.run({ROLE: restrict_access.data.query[0].role})"></dmx-serverconnect>
+	<dmx-serverconnect id="logout" url="api/Logout/logout" noload dmx-on:success="session.set('on','off');session.remove('username');session.remove('email');session.remove('user_id');session.remove('role')"></dmx-serverconnect>
+	<div is="dmx-browser" id="redirect"></div>
 	<dmx-serverconnect id="edit_thumbnail" url="api/ModelAdmin/change_thumbnail" noload dmx-on:success="serverconnect.load({id: product.value},true);notifies.success('Thumbnail image changed')"
 		dmx-on:error="notifies.danger('Failed to change thumbnail image')"></dmx-serverconnect>
 	<dmx-serverconnect id="change_mod_and_make" url="api/ModelAdmin/change_model_and_make" noload dmx-on:success="notifies.success('Values have been changed');serverconnect.load({id: product.value},true)"
 		dmx-on:error="notifies.danger('Could not change values')"></dmx-serverconnect>
 	<dmx-serverconnect id="remove_review" noload url="api/ModelAdmin/remove_rev" dmx-on:success="notifies.success('Review deleted');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to delete review')">
 	</dmx-serverconnect>
-	<script is="dmx-flow" id="flow" type="text/dmx-flow"></script>
+	<script is="dmx-flow" id="flow" type="text/dmx-flow">{
+  meta: {
+    $param: [
+      {type: "text", name: "ROLE"}
+    ]
+  },
+  exec: {
+    steps: {
+      condition: {
+        if: "{{$param.ROLE == 'Moderator'}}",
+        then: {
+          steps: {
+            run: {name: "do_nothing"}
+          }
+        },
+        else: {
+          steps: {
+            run: {
+              action: "{{redirect.goto('http://localhost:8100/')}}",
+              name: "redirect"
+            }
+          }
+        }
+      }
+    }
+  }
+}</script>
 	<dmx-serverconnect id="insert_image" noload url="api/ModelAdmin/insert_img" dmx-on:success="notifies.success('Image added');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Failed to add image')"></dmx-serverconnect>
 
 	<dmx-serverconnect id="remove_image" url="api/ModelAdmin/remove_img" noload dmx-on:success="notifies.success('Image deleted');serverconnect.load({id: product.value},true)" dmx-on:error="notifies.danger('Error deleting image')">
@@ -58,15 +88,16 @@
 		</div>
 	</div>
 	<nav class="navbar navbar-expand-lg">
-		<button id="models" class="btn font-weight-bold btn-sm flex-grow-1">Models&nbsp;<i class="fa fa-car"></i></button>
+		<button id="models" class="btn font-weight-bold btn-sm flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/all_models')">Models&nbsp;<i class="fa fa-car"></i></button>
 
-		<button id="service" class="btn btn-sm font-weight-bold flex-grow-1">Service&nbsp;<i class="fa fa-wrench"></i></button>
+		<button id="service" class="btn btn-sm font-weight-bold flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/service')">Service&nbsp;<i class="fa fa-wrench"></i></button>
+		<button id="admin" class="btn btn-sm font-weight-bold flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/admin')" dmx-show="session.data.role == 'Moderator'">Admin&nbsp;<i class="fa fa-cog"></i></button>
 
-		<button id="login" class="btn btn-sm font-weight-bold flex-grow-1">Log in&nbsp;<i class="fa fa-sign-in"></i></button>
+		<button id="login" class="btn btn-sm font-weight-bold flex-grow-1" dmx-hide="session.data.on.contains('off')" dmx-on:click="redirect.goto('http://localhost:8100/login')">Log in&nbsp;<i class="fa fa-sign-in"></i></button>
 
-		<button id="account" class="btn flex-grow-1 font-weight-bold btn-sm">My Account&nbsp;<i class="fa fa-user"></i></button>
+		<button id="account" class="btn flex-grow-1 font-weight-bold btn-sm" dmx-on:click="redirect.goto('http://localhost:8100/account')" dmx-hide="session.data.on.contains('off')">My Account&nbsp;<i class="fa fa-user"></i></button>
 
-		<button id="logout" class="btn flex-grow-1 btn-sm font-weight-bold">Log out&nbsp;<i class="fa fa-sign-out"></i></button>
+		<button id="logout" class="btn flex-grow-1 btn-sm font-weight-bold" dmx-hide="session.data.on.contains('off')" dmx-on:click="logout.load()">Log out&nbsp;<i class="fa fa-sign-out"></i></button>
 
 	</nav>
 	<div class="container mt-3">

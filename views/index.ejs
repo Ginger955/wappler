@@ -53,8 +53,11 @@
 
 		</button><button id="service" class="btn flex-xl-grow-1 text-xl-center font-weight-bold flex-lg-grow-1 btn-flex-xl-grow-1-btn-sm-text-xl-center-font-weight-bold-flex-lg-grow-1 btn-sm flex-grow-1"
 			dmx-on:click="browser1.goto('http://localhost:8100/service')">Service
-			<i class="fa fa-wrench"></i></button><button id="login" class="btn flex-lg-grow-1 text-lg-center font-weight-bold hover btn-text-dark-flex-lg-grow-1-text-lg-center-btn-sm-font-weight-bold-hover flex-grow-1 btn-sm"
-			dmx-on:click="browser1.goto('http://localhost:8100/login')" dmx-hide="session.data.on.contains('on')">Log in
+			<i class="fa fa-wrench"></i></button>
+		<button id="admin" class="btn flex-xl-grow-1 text-xl-center font-weight-bold flex-lg-grow-1 btn-flex-xl-grow-1-btn-sm-text-xl-center-font-weight-bold-flex-lg-grow-1 btn-sm flex-grow-1"
+			dmx-on:click="browser1.goto('http://localhost:8100/admin')" dmx-show="session.data.role == 'Moderator'">Admin&nbsp; &nbsp;<i class="fa fa-cog"></i></button><button id="login"
+			class="btn flex-lg-grow-1 text-lg-center font-weight-bold hover btn-text-dark-flex-lg-grow-1-text-lg-center-btn-sm-font-weight-bold-hover flex-grow-1 btn-sm" dmx-on:click="browser1.goto('http://localhost:8100/login')"
+			dmx-hide="session.data.on.contains('on')">Log in
 			<i class="fa fa-sign-in"></i></button></button>
 
 
@@ -72,7 +75,8 @@
 
 
 	<dmx-serverconnect id="userDetails" url="api/Login/userDetails"
-		dmx-on:success="session.set('username',userDetails.data.query1[0].username);session.set('user_id',userDetails.data.query1[0].id);session.set('email',userDetails.data.query1[0].email)"></dmx-serverconnect>
+		dmx-on:success="session.set('username',userDetails.data.query1[0].username);session.set('user_id',userDetails.data.query1[0].id);session.set('email',userDetails.data.query1[0].email);session.set('role',userDetails.data.query1[0].role)">
+	</dmx-serverconnect>
 	<dmx-serverconnect id="query_images" url="api/Retrieve_images/query_images"></dmx-serverconnect>
 	<div is="dmx-browser" id="browser1"></div>
 
