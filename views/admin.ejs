@@ -35,6 +35,12 @@
 </head>
 
 <body id="admin">
+	<dmx-serverconnect id="delete_user" noload url="api/Account/delete_account" dmx-on:success="notifies.success('User deleted');loadUsers.load({},true})" dmx-on:error="notifies.danger('Could not delete user')"></dmx-serverconnect>
+	<dmx-value id="to_delete_user_id"></dmx-value>
+	<dmx-serverconnect id="clear_appointments_from_user" noload url="api/Manager/clear_product_appointments" dmx-on:success="run({runJS:{function:'removeUserAppointments'}})"></dmx-serverconnect>
+	<dmx-serverconnect id="fetch_user_appointments" noload url="api/Manager/fetch_user_appointments" dmx-on:success="run([{run:{action:`arr3.add(fetch_user_appointments.data.query1)`}},{runJS:{function:'removeUserAppointments'}}])">
+	</dmx-serverconnect>
+	<dmx-array id="arr3"></dmx-array>
 	<dmx-value id="product_to_delete"></dmx-value>
 	<dmx-serverconnect id="clear_product_appointments" noload url="api/Manager/clear_product_appointments" dmx-on:success="run({runJS:{function:'removeProductAppointments'}})"></dmx-serverconnect>
 	<dmx-array id="arr2"></dmx-array>
@@ -170,7 +176,7 @@
 				<div class="col-5"><button id="btn1" class="btn btn-sm btn-outline-primary" dmx-text="'Make&nbsp;'+make_opposite.value" dmx-on:click="changeUserRole.load({email: email, role: make_opposite.value})">Button
 					</button></div>
 				<div class="col-3">
-					<button id="btn2" class="btn btn-outline-danger btn-sm">Delete</button>
+					<button id="btn2" class="btn btn-outline-danger btn-sm" dmx-on:click="fetch_user_appointments.load({id: id});to_delete_user_id.setValue(id)">Delete</button>
 				</div>
 			</div>
 
@@ -392,6 +398,37 @@
 		var toRemove = 0;
 
 		var turn_2 = 0;
+		var turn_3 = 0;
+
+		function removeUserAppointments(){
+			var array = dmx.parse('arr3.items');
+			console.log(array);
+			try{
+				if(turn_3 < array[0].length){
+					console.log('removing appointments for user');
+					var s_key = array[0][turn_3].serv_hours_refk;
+					var e_key = array[0][turn_3].serv_hours_end;
+					dmx.parse('clear_appointments_from_user.load({start_key: '+s_key+', end_key: '+e_key+'})');
+					console.log('cleared appointment');
+					turn_3++;
+				} else {
+					console.log('done clearing appointments');
+					turn_3 = 0;
+					var toDelete = dmx.parse('to_delete_user_id.value');
+					dmx.parse('delete_user.load({id: '+toDelete+'})');
+					dmx.parse('arr3.empty()');
+					dmx.parse('to_delete_user_id.setValue()');
+				}
+
+			} catch (err){
+				console.log('done clearing appointments');
+				turn_3 = 0;
+				var toDelete = dmx.parse('to_delete_user_id.value');
+				dmx.parse('delete_user.load({id: '+toDelete+'})');
+				dmx.parse('arr3.empty()');
+				dmx.parse('to_delete_user_id.setValue()');
+			}
+		}
 
 		function removeProductAppointments(){
 			var array = dmx.parse('arr2.items');
@@ -410,6 +447,7 @@
 					dmx.parse('delete_product.load({id: '+toDelete+'})');
 					turn_2 = 0;
 					dmx.parse('arr2.empty()');
+					dmx.parse('product_to_delete.setValue()');
 				}
 			} catch (err) {
 				console.log('finished removing appointments...');
