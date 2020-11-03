@@ -50,11 +50,8 @@
 	<dmx-serverconnect id="remove_service_hour_entry" noload url="api/Manager/delete_serv_hours_entry" dmx-on:success="run({runJS:{function:'subtractAppointment'}})" dmx-on:error="notifies.danger('An error ocurred while deleting')">
 	</dmx-serverconnect>
 	<dmx-array id="arr1"></dmx-array>
-	<div class="alert" id="alert1" is="dmx-bs4-alert" role="alert">
-		<p>This is a nice alert!</p>
-	</div>
 	<dmx-serverconnect id="get_service_hours_id" noload url="api/Manager/get_service_hours_ids"
-		dmx-on:success="run([{run:{action:`arr1.add(get_service_hours_id.data.query);arr1.add(get_service_hours_id.data.query2);arr1.add(get_service_hours_id.data.query1)`}},{run:{action:`alert1.show()`}},{run:{action:`alert1.setTextContent(arr1.items)`}},{runJS:{function:'subtractAppointment'}}])">
+		dmx-on:success="run([{run:{action:`arr1.add(get_service_hours_id.data.query);arr1.add(get_service_hours_id.data.query2);arr1.add(get_service_hours_id.data.query1)`}},{runJS:{function:'subtractAppointment'}}])">
 	</dmx-serverconnect>
 	<dmx-serverconnect id="delete_product" noload url="api/Manager/delete_product" dmx-on:success="notifies.success('Product deleted');cars.load({},true)" dmx-on:error="notifies.danger('Could not delete product')"></dmx-serverconnect>
 	<dmx-serverconnect id="add_new_service_hour_entry" noload url="api/Manager/add_serv_hour" dmx-on:success="notifies.success('Added service hour');query_service_hours.load({},true)" dmx-on:error="notifies.danger('Failed to add service hour')">
