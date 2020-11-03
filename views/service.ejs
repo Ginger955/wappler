@@ -264,7 +264,7 @@
 
 	function missingTimes(startTime, parsedTimes, endTime){
 		// console.log('loop from', startTime, 'to', endTime);
-		for(var i = startTime; i <= endTime; i++){
+		for(var i = startTime; i < endTime; i++){
 			if(parsedTimes.indexOf(String(i)) == -1){
 				// console.log('true for',i);
 				return true;

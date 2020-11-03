@@ -1,0 +1,236 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "time",
+        "name": "time"
+      },
+      {
+        "type": "date",
+        "name": "date"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      "connections/db",
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_hours",
+                "column": "id"
+              },
+              {
+                "table": "service_hours",
+                "column": "no_appointments"
+              }
+            ],
+            "table": {
+              "name": "service_hours"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_hours.timeframe",
+                  "field": "service_hours.timeframe",
+                  "type": "time",
+                  "operator": "equal",
+                  "value": "{{$_GET.time}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "timeframe",
+                    "type": "time"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "service_hours.date",
+                  "field": "service_hours.date",
+                  "type": "date",
+                  "operator": "equal",
+                  "value": "{{$_GET.date}}",
+                  "data": {
+                    "table": "service_hours",
+                    "column": "date",
+                    "type": "date"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, no_appointments\nFROM service_hours\nWHERE timeframe = :P1 /* {{$_GET.time}} */ AND date = :P2 /* {{$_GET.date}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.time}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.date}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          },
+          {
+            "name": "no_appointments",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_appointments",
+                "column": "id"
+              }
+            ],
+            "table": {
+              "name": "service_appointments"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_appointments.serv_hours_refk",
+                  "field": "service_appointments.serv_hours_refk",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{query[0].id}}",
+                  "data": {
+                    "table": "service_appointments",
+                    "column": "serv_hours_refk",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id\nFROM service_appointments\nWHERE serv_hours_refk = :P1 /* {{query[0].id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{query[0].id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "id",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "query2",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "service_appointments",
+                "column": "serv_hours_refk"
+              },
+              {
+                "table": "service_appointments",
+                "column": "serv_hours_end"
+              }
+            ],
+            "table": {
+              "name": "service_appointments"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "service_appointments.id",
+                  "field": "service_appointments.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{query1[0].id}}",
+                  "data": {
+                    "table": "service_appointments",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT serv_hours_refk, serv_hours_end\nFROM service_appointments\nWHERE id = :P1 /* {{query1[0].id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{query1[0].id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "serv_hours_refk",
+            "type": "text"
+          },
+          {
+            "name": "serv_hours_end",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}
