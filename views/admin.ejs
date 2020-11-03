@@ -35,6 +35,10 @@
 </head>
 
 <body id="admin">
+	<dmx-value id="product_to_delete"></dmx-value>
+	<dmx-serverconnect id="clear_product_appointments" noload url="api/Manager/clear_product_appointments" dmx-on:success="run({runJS:{function:'removeProductAppointments'}})"></dmx-serverconnect>
+	<dmx-array id="arr2"></dmx-array>
+	<dmx-serverconnect id="fetch_product_details" noload url="api/Manager/fetch_product_details" dmx-on:success="run([{run:{action:`arr2.add(fetch_product_details.data.query1)`}},{runJS:{function:'removeProductAppointments'}}])"></dmx-serverconnect>
 	<dmx-serverconnect id="delete_service_hour" url="api/Manager/delete_service_hour" noload dmx-on:success="query_service_hours.load({},true);notifies.success('Entry has been deleted')" dmx-on:error="notifies.danger('Failed to delete entry')">
 	</dmx-serverconnect>
 	<dmx-serverconnect id="remove_service_hour_entry" noload url="api/Manager/delete_serv_hours_entry" dmx-on:success="run({runJS:{function:'subtractAppointment'}})" dmx-on:error="notifies.danger('An error ocurred while deleting')">
@@ -268,7 +272,7 @@
 
 						<button id="btn7" class="btn btn-primary mr-3 flex-grow-1" dmx-on:click="redirect.goto('http://localhost:8100/modelx_admin?product_id='+id)">Edit&nbsp;<i class="fa fa-search-plus"></i></button><button id="bind"
 							class="btn btn-primary style8 flex-grow-1" dmx-on:click="run({condition:{if:`showing.value==0`,then:{steps:{run:{action:`showing.setValue(1)`}}},else:{steps:{run:{action:`showing.setValue(0)`}}}}})">Bind to
-							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3" dmx-on:click="delete_product.load({id: id})">Delete</button></div>
+							user</button><button id="btn12" class="btn btn-danger flex-grow-1 ml-3" dmx-on:click="fetch_product_details.load({id: id});product_to_delete.setValue(id)">Delete</button></div>
 					<div class="row"><button id="btn11" class="btn btn-primary btn-block mt-2 style12" dmx-text="'Make '+make_oppositE.value"
 							dmx-on:click="run({condition:{if:`make_oppositE.value == \'visible\'`,then:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 0});cars.load({},true)`}}},else:{steps:{run:{action:`make_product_invisible.load({product_id: proD_iD.value, visibility_status: 1});cars.load({},true)`}}}}})"
 							dmx-class:style12="make_oppositE.value == 'visible'">Make
@@ -386,6 +390,36 @@
 	<script>
 		var turn = 0;
 		var toRemove = 0;
+
+		var turn_2 = 0;
+
+		function removeProductAppointments(){
+			var array = dmx.parse('arr2.items');
+			console.log(array, array[0].length);
+			
+			try{
+				if(turn_2 < array[0].length){
+					console.log('removing existing appointment');
+					var s_key = array[0][turn_2].serv_hours_refk;
+					var e_key = array[0][turn_2].serv_hours_end;
+					dmx.parse('clear_product_appointments.load({start_key: '+s_key+', end_key: '+e_key+'})');
+					turn_2++;
+				} else {
+					console.log('finished removing appointments...');
+					var toDelete = dmx.parse('product_to_delete.value');
+					dmx.parse('delete_product.load({id: '+toDelete+'})');
+					turn_2 = 0;
+					dmx.parse('arr2.empty()');
+				}
+			} catch (err) {
+				console.log('finished removing appointments...');
+				var toDelete = dmx.parse('product_to_delete.value');
+				dmx.parse('delete_product.load({id: '+toDelete+'})');
+				turn_2 = 0;
+				dmx.parse('arr2.empty()');
+			}
+		}
+
 		function subtractAppointment(){
 			var array = dmx.parse('arr1.items');
 			try{
